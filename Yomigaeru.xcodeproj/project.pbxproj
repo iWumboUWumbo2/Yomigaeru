@@ -1,0 +1,464 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
+		03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
+		03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */; };
+		03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */; };
+		03DCE24D2F0DBFAE00E49AB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE24C2F0DBFAE00E49AB9 /* main.m */; };
+		03DCE2512F0DBFAE00E49AB9 /* YGRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */; };
+		03DCE2542F0DBFAE00E49AB9 /* YGRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2532F0DBFAE00E49AB9 /* YGRViewController.m */; };
+		03DCE2572F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE2552F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib */; };
+		03DCE25A2F0DBFAE00E49AB9 /* YGRViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE2582F0DBFAE00E49AB9 /* YGRViewController_iPad.xib */; };
+		03DCE2622F0DBFAE00E49AB9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */; };
+		03DCE2632F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
+		03DCE2642F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
+		03DCE26C2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE26A2F0DBFAE00E49AB9 /* InfoPlist.strings */; };
+		03DCE26F2F0DBFAE00E49AB9 /* YomigaeruTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE26E2F0DBFAE00E49AB9 /* YomigaeruTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		03DCE2652F0DBFAE00E49AB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 03DCE2332F0DBFAE00E49AB9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03DCE23B2F0DBFAE00E49AB9;
+			remoteInfo = Yomigaeru;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03DCE23C2F0DBFAE00E49AB9 /* Yomigaeru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomigaeru.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Yomigaeru-Info.plist"; sourceTree = "<group>"; };
+		03DCE24A2F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03DCE24C2F0DBFAE00E49AB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		03DCE24E2F0DBFAE00E49AB9 /* Yomigaeru-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Yomigaeru-Prefix.pch"; sourceTree = "<group>"; };
+		03DCE24F2F0DBFAE00E49AB9 /* YGRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGRAppDelegate.h; sourceTree = "<group>"; };
+		03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGRAppDelegate.m; sourceTree = "<group>"; };
+		03DCE2522F0DBFAE00E49AB9 /* YGRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGRViewController.h; sourceTree = "<group>"; };
+		03DCE2532F0DBFAE00E49AB9 /* YGRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGRViewController.m; sourceTree = "<group>"; };
+		03DCE2562F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/YGRViewController_iPhone.xib; sourceTree = "<group>"; };
+		03DCE2592F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/YGRViewController_iPad.xib; sourceTree = "<group>"; };
+		03DCE2602F0DBFAE00E49AB9 /* YomigaeruTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YomigaeruTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		03DCE2692F0DBFAE00E49AB9 /* YomigaeruTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YomigaeruTests-Info.plist"; sourceTree = "<group>"; };
+		03DCE26B2F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03DCE26D2F0DBFAE00E49AB9 /* YomigaeruTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YomigaeruTests.h; sourceTree = "<group>"; };
+		03DCE26E2F0DBFAE00E49AB9 /* YomigaeruTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YomigaeruTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03DCE2392F0DBFAE00E49AB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */,
+				03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */,
+				03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03DCE25C2F0DBFAE00E49AB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03DCE2622F0DBFAE00E49AB9 /* SenTestingKit.framework in Frameworks */,
+				03DCE2632F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */,
+				03DCE2642F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03DCE2312F0DBFAE00E49AB9 = {
+			isa = PBXGroup;
+			children = (
+				03DCE2462F0DBFAE00E49AB9 /* Yomigaeru */,
+				03DCE2672F0DBFAE00E49AB9 /* YomigaeruTests */,
+				03DCE23F2F0DBFAE00E49AB9 /* Frameworks */,
+				03DCE23D2F0DBFAE00E49AB9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		03DCE23D2F0DBFAE00E49AB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE23C2F0DBFAE00E49AB9 /* Yomigaeru.app */,
+				03DCE2602F0DBFAE00E49AB9 /* YomigaeruTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		03DCE23F2F0DBFAE00E49AB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */,
+				03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */,
+				03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */,
+				03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		03DCE2462F0DBFAE00E49AB9 /* Yomigaeru */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE24F2F0DBFAE00E49AB9 /* YGRAppDelegate.h */,
+				03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */,
+				03DCE2522F0DBFAE00E49AB9 /* YGRViewController.h */,
+				03DCE2532F0DBFAE00E49AB9 /* YGRViewController.m */,
+				03DCE2552F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib */,
+				03DCE2582F0DBFAE00E49AB9 /* YGRViewController_iPad.xib */,
+				03DCE2472F0DBFAE00E49AB9 /* Supporting Files */,
+			);
+			path = Yomigaeru;
+			sourceTree = "<group>";
+		};
+		03DCE2472F0DBFAE00E49AB9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */,
+				03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */,
+				03DCE24C2F0DBFAE00E49AB9 /* main.m */,
+				03DCE24E2F0DBFAE00E49AB9 /* Yomigaeru-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03DCE2672F0DBFAE00E49AB9 /* YomigaeruTests */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE26D2F0DBFAE00E49AB9 /* YomigaeruTests.h */,
+				03DCE26E2F0DBFAE00E49AB9 /* YomigaeruTests.m */,
+				03DCE2682F0DBFAE00E49AB9 /* Supporting Files */,
+			);
+			path = YomigaeruTests;
+			sourceTree = "<group>";
+		};
+		03DCE2682F0DBFAE00E49AB9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2692F0DBFAE00E49AB9 /* YomigaeruTests-Info.plist */,
+				03DCE26A2F0DBFAE00E49AB9 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03DCE23B2F0DBFAE00E49AB9 /* Yomigaeru */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03DCE2722F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "Yomigaeru" */;
+			buildPhases = (
+				03DCE2382F0DBFAE00E49AB9 /* Sources */,
+				03DCE2392F0DBFAE00E49AB9 /* Frameworks */,
+				03DCE23A2F0DBFAE00E49AB9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Yomigaeru;
+			productName = Yomigaeru;
+			productReference = 03DCE23C2F0DBFAE00E49AB9 /* Yomigaeru.app */;
+			productType = "com.apple.product-type.application";
+		};
+		03DCE25F2F0DBFAE00E49AB9 /* YomigaeruTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03DCE2752F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "YomigaeruTests" */;
+			buildPhases = (
+				03DCE25B2F0DBFAE00E49AB9 /* Sources */,
+				03DCE25C2F0DBFAE00E49AB9 /* Frameworks */,
+				03DCE25D2F0DBFAE00E49AB9 /* Resources */,
+				03DCE25E2F0DBFAE00E49AB9 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03DCE2662F0DBFAE00E49AB9 /* PBXTargetDependency */,
+			);
+			name = YomigaeruTests;
+			productName = YomigaeruTests;
+			productReference = 03DCE2602F0DBFAE00E49AB9 /* YomigaeruTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03DCE2332F0DBFAE00E49AB9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = YGR;
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "Wumbo World";
+			};
+			buildConfigurationList = 03DCE2362F0DBFAE00E49AB9 /* Build configuration list for PBXProject "Yomigaeru" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 03DCE2312F0DBFAE00E49AB9;
+			productRefGroup = 03DCE23D2F0DBFAE00E49AB9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03DCE23B2F0DBFAE00E49AB9 /* Yomigaeru */,
+				03DCE25F2F0DBFAE00E49AB9 /* YomigaeruTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		03DCE23A2F0DBFAE00E49AB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
+				03DCE2572F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib in Resources */,
+				03DCE25A2F0DBFAE00E49AB9 /* YGRViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03DCE25D2F0DBFAE00E49AB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03DCE26C2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		03DCE25E2F0DBFAE00E49AB9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03DCE2382F0DBFAE00E49AB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03DCE24D2F0DBFAE00E49AB9 /* main.m in Sources */,
+				03DCE2512F0DBFAE00E49AB9 /* YGRAppDelegate.m in Sources */,
+				03DCE2542F0DBFAE00E49AB9 /* YGRViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03DCE25B2F0DBFAE00E49AB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03DCE26F2F0DBFAE00E49AB9 /* YomigaeruTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03DCE2662F0DBFAE00E49AB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03DCE23B2F0DBFAE00E49AB9 /* Yomigaeru */;
+			targetProxy = 03DCE2652F0DBFAE00E49AB9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03DCE24A2F0DBFAE00E49AB9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		03DCE2552F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03DCE2562F0DBFAE00E49AB9 /* en */,
+			);
+			name = YGRViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		03DCE2582F0DBFAE00E49AB9 /* YGRViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03DCE2592F0DBFAE00E49AB9 /* en */,
+			);
+			name = YGRViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+		03DCE26A2F0DBFAE00E49AB9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03DCE26B2F0DBFAE00E49AB9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		03DCE2702F0DBFAE00E49AB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		03DCE2712F0DBFAE00E49AB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		03DCE2732F0DBFAE00E49AB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
+				INFOPLIST_FILE = "Yomigaeru/Yomigaeru-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		03DCE2742F0DBFAE00E49AB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
+				INFOPLIST_FILE = "Yomigaeru/Yomigaeru-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		03DCE2762F0DBFAE00E49AB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Yomigaeru.app/Yomigaeru";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
+				INFOPLIST_FILE = "YomigaeruTests/YomigaeruTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		03DCE2772F0DBFAE00E49AB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Yomigaeru.app/Yomigaeru";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
+				INFOPLIST_FILE = "YomigaeruTests/YomigaeruTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03DCE2362F0DBFAE00E49AB9 /* Build configuration list for PBXProject "Yomigaeru" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03DCE2702F0DBFAE00E49AB9 /* Debug */,
+				03DCE2712F0DBFAE00E49AB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03DCE2722F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "Yomigaeru" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03DCE2732F0DBFAE00E49AB9 /* Debug */,
+				03DCE2742F0DBFAE00E49AB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		03DCE2752F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "YomigaeruTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03DCE2762F0DBFAE00E49AB9 /* Debug */,
+				03DCE2772F0DBFAE00E49AB9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 03DCE2332F0DBFAE00E49AB9 /* Project object */;
+}
