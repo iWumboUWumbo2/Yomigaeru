@@ -14,13 +14,57 @@
 		03DCE24D2F0DBFAE00E49AB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE24C2F0DBFAE00E49AB9 /* main.m */; };
 		03DCE2512F0DBFAE00E49AB9 /* YGRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */; };
 		03DCE2542F0DBFAE00E49AB9 /* YGRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2532F0DBFAE00E49AB9 /* YGRViewController.m */; };
-		03DCE2572F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE2552F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib */; };
-		03DCE25A2F0DBFAE00E49AB9 /* YGRViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE2582F0DBFAE00E49AB9 /* YGRViewController_iPad.xib */; };
 		03DCE2622F0DBFAE00E49AB9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */; };
 		03DCE2632F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
 		03DCE2642F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
 		03DCE26C2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE26A2F0DBFAE00E49AB9 /* InfoPlist.strings */; };
 		03DCE26F2F0DBFAE00E49AB9 /* YomigaeruTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE26E2F0DBFAE00E49AB9 /* YomigaeruTests.m */; };
+		03DCE2972F0DC0FE00E49AB9 /* YGRCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE28E2F0DC0FE00E49AB9 /* YGRCategory.m */; };
+		03DCE2982F0DC0FE00E49AB9 /* YGRCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE28E2F0DC0FE00E49AB9 /* YGRCategory.m */; };
+		03DCE2992F0DC0FE00E49AB9 /* YGRChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2902F0DC0FE00E49AB9 /* YGRChapter.m */; };
+		03DCE29A2F0DC0FE00E49AB9 /* YGRChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2902F0DC0FE00E49AB9 /* YGRChapter.m */; };
+		03DCE29B2F0DC0FE00E49AB9 /* YGRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2922F0DC0FE00E49AB9 /* YGRExtension.m */; };
+		03DCE29C2F0DC0FE00E49AB9 /* YGRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2922F0DC0FE00E49AB9 /* YGRExtension.m */; };
+		03DCE29D2F0DC0FE00E49AB9 /* YGRManga.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2942F0DC0FE00E49AB9 /* YGRManga.m */; };
+		03DCE29E2F0DC0FE00E49AB9 /* YGRManga.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2942F0DC0FE00E49AB9 /* YGRManga.m */; };
+		03DCE29F2F0DC0FE00E49AB9 /* YGRSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2962F0DC0FE00E49AB9 /* YGRSource.m */; };
+		03DCE2A02F0DC0FE00E49AB9 /* YGRSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2962F0DC0FE00E49AB9 /* YGRSource.m */; };
+		03DCE2A52F0DC19000E49AB9 /* YGRMangaStatusUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2A22F0DC18F00E49AB9 /* YGRMangaStatusUtility.m */; };
+		03DCE2A62F0DC19000E49AB9 /* YGRMangaStatusUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2A22F0DC18F00E49AB9 /* YGRMangaStatusUtility.m */; };
+		03DCE2A72F0DC19000E49AB9 /* YGRUpdateStrategyUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2A42F0DC18F00E49AB9 /* YGRUpdateStrategyUtility.m */; };
+		03DCE2A82F0DC19000E49AB9 /* YGRUpdateStrategyUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2A42F0DC18F00E49AB9 /* YGRUpdateStrategyUtility.m */; };
+		03DCE2AB2F0DC21F00E49AB9 /* WebP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2AA2F0DC21F00E49AB9 /* WebP.framework */; };
+		03DCE2AC2F0DC21F00E49AB9 /* WebP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2AA2F0DC21F00E49AB9 /* WebP.framework */; };
+		03DCE2AF2F0DC23400E49AB9 /* YGRImageUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2AE2F0DC23400E49AB9 /* YGRImageUtility.m */; };
+		03DCE2B02F0DC23400E49AB9 /* YGRImageUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2AE2F0DC23400E49AB9 /* YGRImageUtility.m */; };
+		03DCE2BB2F0DC31B00E49AB9 /* YGRCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2B42F0DC31B00E49AB9 /* YGRCategoryService.m */; };
+		03DCE2BC2F0DC31B00E49AB9 /* YGRCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2B42F0DC31B00E49AB9 /* YGRCategoryService.m */; };
+		03DCE2BD2F0DC31B00E49AB9 /* YGRExtensionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2B62F0DC31B00E49AB9 /* YGRExtensionService.m */; };
+		03DCE2BE2F0DC31B00E49AB9 /* YGRExtensionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2B62F0DC31B00E49AB9 /* YGRExtensionService.m */; };
+		03DCE2BF2F0DC31B00E49AB9 /* YGRMangaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2B82F0DC31B00E49AB9 /* YGRMangaService.m */; };
+		03DCE2C02F0DC31B00E49AB9 /* YGRMangaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2B82F0DC31B00E49AB9 /* YGRMangaService.m */; };
+		03DCE2C12F0DC31B00E49AB9 /* YGRSourceService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2BA2F0DC31B00E49AB9 /* YGRSourceService.m */; };
+		03DCE2C22F0DC31B00E49AB9 /* YGRSourceService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2BA2F0DC31B00E49AB9 /* YGRSourceService.m */; };
+		03DCE2C82F0DC34000E49AB9 /* YGRNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2C52F0DC34000E49AB9 /* YGRNetworkManager.m */; };
+		03DCE2C92F0DC34000E49AB9 /* YGRNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2C52F0DC34000E49AB9 /* YGRNetworkManager.m */; };
+		03DCE2CA2F0DC34000E49AB9 /* YGRSettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2C72F0DC34000E49AB9 /* YGRSettingsManager.m */; };
+		03DCE2CB2F0DC34000E49AB9 /* YGRSettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2C72F0DC34000E49AB9 /* YGRSettingsManager.m */; };
+		03DCE2D62F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CD2F0DC3D300E49AB9 /* YGRAPITestViewController.m */; };
+		03DCE2D72F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CD2F0DC3D300E49AB9 /* YGRAPITestViewController.m */; };
+		03DCE2D82F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */; };
+		03DCE2D92F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */; };
+		03DCE2DA2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */; };
+		03DCE2DB2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */; };
+		03DCE2DC2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */; };
+		03DCE2DD2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */; };
+		03DCE2DE2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */; };
+		03DCE2DF2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */; };
+		03DCE2E62F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */; };
+		03DCE2E72F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */; };
+		03DCE2E82F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */; };
+		03DCE2E92F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */; };
+		70D16D28C3AB9EFAD576A708 /* libPods-Yomigaeru.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCF7370D363A13B8D97C155 /* libPods-Yomigaeru.a */; };
+		D5185BB292259624AA114037 /* libPods-YomigaeruTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0817C01DA4C9B027C88D490 /* libPods-YomigaeruTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,14 +90,62 @@
 		03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGRAppDelegate.m; sourceTree = "<group>"; };
 		03DCE2522F0DBFAE00E49AB9 /* YGRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGRViewController.h; sourceTree = "<group>"; };
 		03DCE2532F0DBFAE00E49AB9 /* YGRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGRViewController.m; sourceTree = "<group>"; };
-		03DCE2562F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/YGRViewController_iPhone.xib; sourceTree = "<group>"; };
-		03DCE2592F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/YGRViewController_iPad.xib; sourceTree = "<group>"; };
 		03DCE2602F0DBFAE00E49AB9 /* YomigaeruTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YomigaeruTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		03DCE2692F0DBFAE00E49AB9 /* YomigaeruTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YomigaeruTests-Info.plist"; sourceTree = "<group>"; };
 		03DCE26B2F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03DCE26D2F0DBFAE00E49AB9 /* YomigaeruTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YomigaeruTests.h; sourceTree = "<group>"; };
 		03DCE26E2F0DBFAE00E49AB9 /* YomigaeruTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YomigaeruTests.m; sourceTree = "<group>"; };
+		03DCE28D2F0DC0FE00E49AB9 /* YGRCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRCategory.h; sourceTree = "<group>"; };
+		03DCE28E2F0DC0FE00E49AB9 /* YGRCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRCategory.m; sourceTree = "<group>"; };
+		03DCE28F2F0DC0FE00E49AB9 /* YGRChapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRChapter.h; sourceTree = "<group>"; };
+		03DCE2902F0DC0FE00E49AB9 /* YGRChapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRChapter.m; sourceTree = "<group>"; };
+		03DCE2912F0DC0FE00E49AB9 /* YGRExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtension.h; sourceTree = "<group>"; };
+		03DCE2922F0DC0FE00E49AB9 /* YGRExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtension.m; sourceTree = "<group>"; };
+		03DCE2932F0DC0FE00E49AB9 /* YGRManga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRManga.h; sourceTree = "<group>"; };
+		03DCE2942F0DC0FE00E49AB9 /* YGRManga.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRManga.m; sourceTree = "<group>"; };
+		03DCE2952F0DC0FE00E49AB9 /* YGRSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSource.h; sourceTree = "<group>"; };
+		03DCE2962F0DC0FE00E49AB9 /* YGRSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSource.m; sourceTree = "<group>"; };
+		03DCE2A12F0DC18F00E49AB9 /* YGRMangaStatusUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRMangaStatusUtility.h; sourceTree = "<group>"; };
+		03DCE2A22F0DC18F00E49AB9 /* YGRMangaStatusUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRMangaStatusUtility.m; sourceTree = "<group>"; };
+		03DCE2A32F0DC18F00E49AB9 /* YGRUpdateStrategyUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRUpdateStrategyUtility.h; sourceTree = "<group>"; };
+		03DCE2A42F0DC18F00E49AB9 /* YGRUpdateStrategyUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRUpdateStrategyUtility.m; sourceTree = "<group>"; };
+		03DCE2AA2F0DC21F00E49AB9 /* WebP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebP.framework; sourceTree = "<group>"; };
+		03DCE2AD2F0DC23400E49AB9 /* YGRImageUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRImageUtility.h; sourceTree = "<group>"; };
+		03DCE2AE2F0DC23400E49AB9 /* YGRImageUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRImageUtility.m; sourceTree = "<group>"; };
+		03DCE2B22F0DC31B00E49AB9 /* YGRHttpStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRHttpStatus.h; sourceTree = "<group>"; };
+		03DCE2B32F0DC31B00E49AB9 /* YGRCategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRCategoryService.h; sourceTree = "<group>"; };
+		03DCE2B42F0DC31B00E49AB9 /* YGRCategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRCategoryService.m; sourceTree = "<group>"; };
+		03DCE2B52F0DC31B00E49AB9 /* YGRExtensionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionService.h; sourceTree = "<group>"; };
+		03DCE2B62F0DC31B00E49AB9 /* YGRExtensionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionService.m; sourceTree = "<group>"; };
+		03DCE2B72F0DC31B00E49AB9 /* YGRMangaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRMangaService.h; sourceTree = "<group>"; };
+		03DCE2B82F0DC31B00E49AB9 /* YGRMangaService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRMangaService.m; sourceTree = "<group>"; };
+		03DCE2B92F0DC31B00E49AB9 /* YGRSourceService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSourceService.h; sourceTree = "<group>"; };
+		03DCE2BA2F0DC31B00E49AB9 /* YGRSourceService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSourceService.m; sourceTree = "<group>"; };
+		03DCE2C42F0DC34000E49AB9 /* YGRNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRNetworkManager.h; sourceTree = "<group>"; };
+		03DCE2C52F0DC34000E49AB9 /* YGRNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRNetworkManager.m; sourceTree = "<group>"; };
+		03DCE2C62F0DC34000E49AB9 /* YGRSettingsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSettingsManager.h; sourceTree = "<group>"; };
+		03DCE2C72F0DC34000E49AB9 /* YGRSettingsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSettingsManager.m; sourceTree = "<group>"; };
+		03DCE2CC2F0DC3D300E49AB9 /* YGRAPITestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRAPITestViewController.h; sourceTree = "<group>"; };
+		03DCE2CD2F0DC3D300E49AB9 /* YGRAPITestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRAPITestViewController.m; sourceTree = "<group>"; };
+		03DCE2CE2F0DC3D300E49AB9 /* YGRTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRTabBarController.h; sourceTree = "<group>"; };
+		03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRTabBarController.m; sourceTree = "<group>"; };
+		03DCE2D02F0DC3D300E49AB9 /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
+		03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRBrowseViewController.m; sourceTree = "<group>"; };
+		03DCE2D22F0DC3D300E49AB9 /* YGRUpdatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRUpdatesViewController.h; sourceTree = "<group>"; };
+		03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRUpdatesViewController.m; sourceTree = "<group>"; };
+		03DCE2D42F0DC3D300E49AB9 /* YGRHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRHistoryViewController.h; sourceTree = "<group>"; };
+		03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRHistoryViewController.m; sourceTree = "<group>"; };
+		03DCE2E22F0DC41300E49AB9 /* YGRLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryViewController.h; sourceTree = "<group>"; };
+		03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryViewController.m; sourceTree = "<group>"; };
+		03DCE2E42F0DC41300E49AB9 /* YGRMangaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRMangaViewController.h; sourceTree = "<group>"; };
+		03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRMangaViewController.m; sourceTree = "<group>"; };
+		64AA31E88B5EF77E3D7D7D31 /* Pods-YomigaeruTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YomigaeruTests.release.xcconfig"; path = "Target Support Files/Pods-YomigaeruTests/Pods-YomigaeruTests.release.xcconfig"; sourceTree = "<group>"; };
+		7066D610C04B17028E21BD90 /* Pods-Yomigaeru.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomigaeru.debug.xcconfig"; path = "Target Support Files/Pods-Yomigaeru/Pods-Yomigaeru.debug.xcconfig"; sourceTree = "<group>"; };
+		B0817C01DA4C9B027C88D490 /* libPods-YomigaeruTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YomigaeruTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C37C68E47A47E81581CD4ED2 /* Pods-YomigaeruTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YomigaeruTests.debug.xcconfig"; path = "Target Support Files/Pods-YomigaeruTests/Pods-YomigaeruTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C38258450F3C2F1586EE9EE3 /* Pods-Yomigaeru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yomigaeru.release.xcconfig"; path = "Target Support Files/Pods-Yomigaeru/Pods-Yomigaeru.release.xcconfig"; sourceTree = "<group>"; };
+		DBCF7370D363A13B8D97C155 /* libPods-Yomigaeru.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomigaeru.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +156,8 @@
 				03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */,
 				03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */,
 				03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */,
+				03DCE2AB2F0DC21F00E49AB9 /* WebP.framework in Frameworks */,
+				70D16D28C3AB9EFAD576A708 /* libPods-Yomigaeru.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +168,8 @@
 				03DCE2622F0DBFAE00E49AB9 /* SenTestingKit.framework in Frameworks */,
 				03DCE2632F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */,
 				03DCE2642F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */,
+				03DCE2AC2F0DC21F00E49AB9 /* WebP.framework in Frameworks */,
+				D5185BB292259624AA114037 /* libPods-YomigaeruTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +183,7 @@
 				03DCE2672F0DBFAE00E49AB9 /* YomigaeruTests */,
 				03DCE23F2F0DBFAE00E49AB9 /* Frameworks */,
 				03DCE23D2F0DBFAE00E49AB9 /* Products */,
+				72ABBFFC9C45361B4F355D3B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,10 +199,13 @@
 		03DCE23F2F0DBFAE00E49AB9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				03DCE2AA2F0DC21F00E49AB9 /* WebP.framework */,
 				03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */,
 				03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */,
 				03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */,
 				03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */,
+				DBCF7370D363A13B8D97C155 /* libPods-Yomigaeru.a */,
+				B0817C01DA4C9B027C88D490 /* libPods-YomigaeruTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -113,12 +213,14 @@
 		03DCE2462F0DBFAE00E49AB9 /* Yomigaeru */ = {
 			isa = PBXGroup;
 			children = (
+				03DCE27A2F0DC04B00E49AB9 /* Models */,
+				03DCE2B12F0DC23C00E49AB9 /* Utilities */,
+				03DCE2792F0DC04100E49AB9 /* Services */,
+				03DCE2782F0DBFD600E49AB9 /* Views */,
 				03DCE24F2F0DBFAE00E49AB9 /* YGRAppDelegate.h */,
 				03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */,
 				03DCE2522F0DBFAE00E49AB9 /* YGRViewController.h */,
 				03DCE2532F0DBFAE00E49AB9 /* YGRViewController.m */,
-				03DCE2552F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib */,
-				03DCE2582F0DBFAE00E49AB9 /* YGRViewController_iPad.xib */,
 				03DCE2472F0DBFAE00E49AB9 /* Supporting Files */,
 			);
 			path = Yomigaeru;
@@ -154,6 +256,120 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		03DCE2782F0DBFD600E49AB9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2CE2F0DC3D300E49AB9 /* YGRTabBarController.h */,
+				03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */,
+				03DCE2E02F0DC3EA00E49AB9 /* Test */,
+				03DCE2E12F0DC40300E49AB9 /* Library */,
+				03DCE2D02F0DC3D300E49AB9 /* YGRBrowseViewController.h */,
+				03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */,
+				03DCE2D22F0DC3D300E49AB9 /* YGRUpdatesViewController.h */,
+				03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */,
+				03DCE2D42F0DC3D300E49AB9 /* YGRHistoryViewController.h */,
+				03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		03DCE2792F0DC04100E49AB9 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2C32F0DC33300E49AB9 /* Managers */,
+				03DCE2B22F0DC31B00E49AB9 /* YGRHttpStatus.h */,
+				03DCE2B32F0DC31B00E49AB9 /* YGRCategoryService.h */,
+				03DCE2B42F0DC31B00E49AB9 /* YGRCategoryService.m */,
+				03DCE2B52F0DC31B00E49AB9 /* YGRExtensionService.h */,
+				03DCE2B62F0DC31B00E49AB9 /* YGRExtensionService.m */,
+				03DCE2B72F0DC31B00E49AB9 /* YGRMangaService.h */,
+				03DCE2B82F0DC31B00E49AB9 /* YGRMangaService.m */,
+				03DCE2B92F0DC31B00E49AB9 /* YGRSourceService.h */,
+				03DCE2BA2F0DC31B00E49AB9 /* YGRSourceService.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		03DCE27A2F0DC04B00E49AB9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2A92F0DC19700E49AB9 /* Enums */,
+				03DCE28D2F0DC0FE00E49AB9 /* YGRCategory.h */,
+				03DCE28E2F0DC0FE00E49AB9 /* YGRCategory.m */,
+				03DCE28F2F0DC0FE00E49AB9 /* YGRChapter.h */,
+				03DCE2902F0DC0FE00E49AB9 /* YGRChapter.m */,
+				03DCE2912F0DC0FE00E49AB9 /* YGRExtension.h */,
+				03DCE2922F0DC0FE00E49AB9 /* YGRExtension.m */,
+				03DCE2932F0DC0FE00E49AB9 /* YGRManga.h */,
+				03DCE2942F0DC0FE00E49AB9 /* YGRManga.m */,
+				03DCE2952F0DC0FE00E49AB9 /* YGRSource.h */,
+				03DCE2962F0DC0FE00E49AB9 /* YGRSource.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		03DCE2A92F0DC19700E49AB9 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2A12F0DC18F00E49AB9 /* YGRMangaStatusUtility.h */,
+				03DCE2A22F0DC18F00E49AB9 /* YGRMangaStatusUtility.m */,
+				03DCE2A32F0DC18F00E49AB9 /* YGRUpdateStrategyUtility.h */,
+				03DCE2A42F0DC18F00E49AB9 /* YGRUpdateStrategyUtility.m */,
+			);
+			name = Enums;
+			sourceTree = "<group>";
+		};
+		03DCE2B12F0DC23C00E49AB9 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2AD2F0DC23400E49AB9 /* YGRImageUtility.h */,
+				03DCE2AE2F0DC23400E49AB9 /* YGRImageUtility.m */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		03DCE2C32F0DC33300E49AB9 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2C42F0DC34000E49AB9 /* YGRNetworkManager.h */,
+				03DCE2C52F0DC34000E49AB9 /* YGRNetworkManager.m */,
+				03DCE2C62F0DC34000E49AB9 /* YGRSettingsManager.h */,
+				03DCE2C72F0DC34000E49AB9 /* YGRSettingsManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		03DCE2E02F0DC3EA00E49AB9 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2CC2F0DC3D300E49AB9 /* YGRAPITestViewController.h */,
+				03DCE2CD2F0DC3D300E49AB9 /* YGRAPITestViewController.m */,
+			);
+			name = Test;
+			sourceTree = "<group>";
+		};
+		03DCE2E12F0DC40300E49AB9 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				03DCE2E22F0DC41300E49AB9 /* YGRLibraryViewController.h */,
+				03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */,
+				03DCE2E42F0DC41300E49AB9 /* YGRMangaViewController.h */,
+				03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		72ABBFFC9C45361B4F355D3B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7066D610C04B17028E21BD90 /* Pods-Yomigaeru.debug.xcconfig */,
+				C38258450F3C2F1586EE9EE3 /* Pods-Yomigaeru.release.xcconfig */,
+				C37C68E47A47E81581CD4ED2 /* Pods-YomigaeruTests.debug.xcconfig */,
+				64AA31E88B5EF77E3D7D7D31 /* Pods-YomigaeruTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -161,6 +377,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03DCE2722F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "Yomigaeru" */;
 			buildPhases = (
+				65553208FBE6F0571E4B163A /* [CP] Check Pods Manifest.lock */,
 				03DCE2382F0DBFAE00E49AB9 /* Sources */,
 				03DCE2392F0DBFAE00E49AB9 /* Frameworks */,
 				03DCE23A2F0DBFAE00E49AB9 /* Resources */,
@@ -178,6 +395,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03DCE2752F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "YomigaeruTests" */;
 			buildPhases = (
+				4FD929577C93773F58D38F77 /* [CP] Check Pods Manifest.lock */,
 				03DCE25B2F0DBFAE00E49AB9 /* Sources */,
 				03DCE25C2F0DBFAE00E49AB9 /* Frameworks */,
 				03DCE25D2F0DBFAE00E49AB9 /* Resources */,
@@ -227,8 +445,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
-				03DCE2572F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib in Resources */,
-				03DCE25A2F0DBFAE00E49AB9 /* YGRViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +472,42 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		4FD929577C93773F58D38F77 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-YomigaeruTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		65553208FBE6F0571E4B163A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Yomigaeru-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -266,6 +518,27 @@
 				03DCE24D2F0DBFAE00E49AB9 /* main.m in Sources */,
 				03DCE2512F0DBFAE00E49AB9 /* YGRAppDelegate.m in Sources */,
 				03DCE2542F0DBFAE00E49AB9 /* YGRViewController.m in Sources */,
+				03DCE2972F0DC0FE00E49AB9 /* YGRCategory.m in Sources */,
+				03DCE2992F0DC0FE00E49AB9 /* YGRChapter.m in Sources */,
+				03DCE29B2F0DC0FE00E49AB9 /* YGRExtension.m in Sources */,
+				03DCE29D2F0DC0FE00E49AB9 /* YGRManga.m in Sources */,
+				03DCE29F2F0DC0FE00E49AB9 /* YGRSource.m in Sources */,
+				03DCE2A52F0DC19000E49AB9 /* YGRMangaStatusUtility.m in Sources */,
+				03DCE2A72F0DC19000E49AB9 /* YGRUpdateStrategyUtility.m in Sources */,
+				03DCE2AF2F0DC23400E49AB9 /* YGRImageUtility.m in Sources */,
+				03DCE2BB2F0DC31B00E49AB9 /* YGRCategoryService.m in Sources */,
+				03DCE2BD2F0DC31B00E49AB9 /* YGRExtensionService.m in Sources */,
+				03DCE2BF2F0DC31B00E49AB9 /* YGRMangaService.m in Sources */,
+				03DCE2C12F0DC31B00E49AB9 /* YGRSourceService.m in Sources */,
+				03DCE2C82F0DC34000E49AB9 /* YGRNetworkManager.m in Sources */,
+				03DCE2CA2F0DC34000E49AB9 /* YGRSettingsManager.m in Sources */,
+				03DCE2D62F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */,
+				03DCE2D82F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */,
+				03DCE2DA2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */,
+				03DCE2DC2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */,
+				03DCE2DE2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */,
+				03DCE2E62F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */,
+				03DCE2E82F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +547,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				03DCE26F2F0DBFAE00E49AB9 /* YomigaeruTests.m in Sources */,
+				03DCE2982F0DC0FE00E49AB9 /* YGRCategory.m in Sources */,
+				03DCE29A2F0DC0FE00E49AB9 /* YGRChapter.m in Sources */,
+				03DCE29C2F0DC0FE00E49AB9 /* YGRExtension.m in Sources */,
+				03DCE29E2F0DC0FE00E49AB9 /* YGRManga.m in Sources */,
+				03DCE2A02F0DC0FE00E49AB9 /* YGRSource.m in Sources */,
+				03DCE2A62F0DC19000E49AB9 /* YGRMangaStatusUtility.m in Sources */,
+				03DCE2A82F0DC19000E49AB9 /* YGRUpdateStrategyUtility.m in Sources */,
+				03DCE2B02F0DC23400E49AB9 /* YGRImageUtility.m in Sources */,
+				03DCE2BC2F0DC31B00E49AB9 /* YGRCategoryService.m in Sources */,
+				03DCE2BE2F0DC31B00E49AB9 /* YGRExtensionService.m in Sources */,
+				03DCE2C02F0DC31B00E49AB9 /* YGRMangaService.m in Sources */,
+				03DCE2C22F0DC31B00E49AB9 /* YGRSourceService.m in Sources */,
+				03DCE2C92F0DC34000E49AB9 /* YGRNetworkManager.m in Sources */,
+				03DCE2CB2F0DC34000E49AB9 /* YGRSettingsManager.m in Sources */,
+				03DCE2D72F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */,
+				03DCE2D92F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */,
+				03DCE2DB2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */,
+				03DCE2DD2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */,
+				03DCE2DF2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */,
+				03DCE2E72F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */,
+				03DCE2E92F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,22 +588,6 @@
 				03DCE24A2F0DBFAE00E49AB9 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		03DCE2552F0DBFAE00E49AB9 /* YGRViewController_iPhone.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				03DCE2562F0DBFAE00E49AB9 /* en */,
-			);
-			name = YGRViewController_iPhone.xib;
-			sourceTree = "<group>";
-		};
-		03DCE2582F0DBFAE00E49AB9 /* YGRViewController_iPad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				03DCE2592F0DBFAE00E49AB9 /* en */,
-			);
-			name = YGRViewController_iPad.xib;
 			sourceTree = "<group>";
 		};
 		03DCE26A2F0DBFAE00E49AB9 /* InfoPlist.strings */ = {
@@ -376,10 +654,16 @@
 		};
 		03DCE2732F0DBFAE00E49AB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7066D610C04B17028E21BD90 /* Pods-Yomigaeru.debug.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
 				INFOPLIST_FILE = "Yomigaeru/Yomigaeru-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -387,10 +671,16 @@
 		};
 		03DCE2742F0DBFAE00E49AB9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C38258450F3C2F1586EE9EE3 /* Pods-Yomigaeru.release.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
 				INFOPLIST_FILE = "Yomigaeru/Yomigaeru-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -398,11 +688,13 @@
 		};
 		03DCE2762F0DBFAE00E49AB9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C37C68E47A47E81581CD4ED2 /* Pods-YomigaeruTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Yomigaeru.app/Yomigaeru";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
@@ -415,11 +707,13 @@
 		};
 		03DCE2772F0DBFAE00E49AB9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64AA31E88B5EF77E3D7D7D31 /* Pods-YomigaeruTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Yomigaeru.app/Yomigaeru";
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Yomigaeru/Yomigaeru-Prefix.pch";
@@ -449,6 +743,7 @@
 				03DCE2742F0DBFAE00E49AB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		03DCE2752F0DBFAE00E49AB9 /* Build configuration list for PBXNativeTarget "YomigaeruTests" */ = {
 			isa = XCConfigurationList;
@@ -457,6 +752,7 @@
 				03DCE2772F0DBFAE00E49AB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
