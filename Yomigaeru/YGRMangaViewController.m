@@ -9,6 +9,8 @@
 #import "YGRMangaViewController.h"
 
 #import "YGRMangaService.h"
+#import "YGRChapterViewController.h"
+#import "YGRChapter.h"
 
 @interface YGRMangaViewController ()
 
@@ -33,9 +35,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationItem.title = self.manga.title;
 
     __weak typeof(self) weakSelf = self;
-    [self.mangaService fetchChaptersWithMangaId:self.mangaId completion:^(NSArray *chapters, NSError *error) {
+    [self.mangaService fetchChaptersWithMangaId:self.manga.id_ completion:^(NSArray *chapters, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         if (error)
@@ -80,9 +84,13 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
     // Configure the cell...
-//    YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
-//    cell.textLabel.text = selectedChapter.name;
+    YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
+    cell.textLabel.text = selectedChapter.name;
     
     return cell;
 }
@@ -131,12 +139,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc] init];
+    
+    YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
+    chapterViewController.manga = self.manga;
+    chapterViewController.chapter = selectedChapter;
+
+    // Pass the selected object to the new view controller.
+    [self.navigationController pushViewController:chapterViewController animated:YES];
 }
 
 @end

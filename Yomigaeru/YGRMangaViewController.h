@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "YGRManga.h"
+
 @interface YGRMangaViewController : UITableViewController
 
-@property (nonatomic, strong) NSString * mangaId;
+@property (nonatomic, strong) YGRManga * manga;
 
 @end

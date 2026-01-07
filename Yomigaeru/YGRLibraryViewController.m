@@ -45,6 +45,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.title = @"Library";
     
     __weak typeof(self) weakSelf = self;
     
@@ -213,7 +214,7 @@
     YGRMangaViewController *mangaViewController = [[YGRMangaViewController alloc] initWithStyle:UITableViewStylePlain];
     
     YGRManga *selectedManga = [self.mangas objectAtIndex:indexPath.row];
-    mangaViewController.mangaId = selectedManga.id_;
+    mangaViewController.manga = selectedManga;
     
     // Pass the selected object to the new view controller.
     [self.navigationController pushViewController:mangaViewController animated:YES];
