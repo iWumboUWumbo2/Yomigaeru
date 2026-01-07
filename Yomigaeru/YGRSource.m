@@ -19,7 +19,8 @@
         _id_ = [dictionary objectForKey:@"id"];
         _name = [dictionary objectForKey:@"name"];
         _lang = [dictionary objectForKey:@"lang"];
-        _iconUrl = [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
+        _iconUrl =
+            [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
         _supportsLatest = [[dictionary objectForKey:@"supportsLatest"] boolValue];
         _isConfigurable = [[dictionary objectForKey:@"isConfigurable"] boolValue];
         _isNsfw = [[dictionary objectForKey:@"isNsfw"] boolValue];
@@ -28,27 +29,22 @@
     return self;
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:
-            @"<%@: %p> {\n"
-            "  id_ = %@;\n"
-            "  name = %@;\n"
-            "  lang = %@;\n"
-            "  iconUrl = %@;\n"
-            "  supportsLatest = %@;\n"
-            "  isConfigurable = %@;\n"
-            "  isNsfw = %@;\n"
-            "  displayName = %@;\n"
-            "}",
-            NSStringFromClass([self class]), self,
-            self.id_,
-            self.name,
-            self.lang,
-            self.iconUrl,
-            self.supportsLatest ? @"YES" : @"NO",
-            self.isConfigurable ? @"YES" : @"NO",
-            self.isNsfw ? @"YES" : @"NO",
-            self.displayName];
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p> {\n"
+                                       "  id_ = %@;\n"
+                                       "  name = %@;\n"
+                                       "  lang = %@;\n"
+                                       "  iconUrl = %@;\n"
+                                       "  supportsLatest = %@;\n"
+                                       "  isConfigurable = %@;\n"
+                                       "  isNsfw = %@;\n"
+                                       "  displayName = %@;\n"
+                                       "}",
+                                      NSStringFromClass([self class]), self, self.id_, self.name,
+                                      self.lang, self.iconUrl, self.supportsLatest ? @"YES" : @"NO",
+                                      self.isConfigurable ? @"YES" : @"NO",
+                                      self.isNsfw ? @"YES" : @"NO", self.displayName];
 }
 
 @end

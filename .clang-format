@@ -1,0 +1,25 @@
+---
+BasedOnStyle: LLVM
+
+# Braces
+BreakBeforeBraces: Allman
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ObjCBlockIndentWidth: 4
+
+# Column limit
+ColumnLimit: 100
+
+# Objective-C specific
+ObjCSpaceAfterProperty: true
+ObjCSpaceBeforeProtocolList: true
+
+# Pointer alignment
+PointerAlignment: Right
+
+# Spacing
+SpaceAfterCStyleCast: true
+SpaceBeforeParens: ControlStatements

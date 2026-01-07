@@ -37,48 +37,35 @@
     return self;
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:
-            @"<%@: %p> {\n"
-            "  id_ = %@;\n"
-            "  url = %@;\n"
-            "  name = %@;\n"
-            "  uploadDate = %lld;\n"
-            "  chapterNumber = %.3f;\n"
-            "  scanlator = %@;\n"
-            "  mangaId = %@;\n"
-            "  read = %@;\n"
-            "  bookmarked = %@;\n"
-            "  lastPageRead = %ld;\n"
-            "  lastReadAt = %lld;\n"
-            "  index = %ld;\n"
-            "  fetchedAt = %lld;\n"
-            "  realUrl = %@;\n"
-            "  downloaded = %@;\n"
-            "  pageCount = %ld;\n"
-            "  chapterCount = %ld;\n"
-            "  meta = %@;\n"
-            "}",
-            NSStringFromClass([self class]), self,
-            self.id_,
-            self.url,
-            self.name,
-            self.uploadDate,
-            self.chapterNumber,
-            self.scanlator,
-            self.mangaId,
-            self.read ? @"YES" : @"NO",
-            self.bookmarked ? @"YES" : @"NO",
-            (long)self.lastPageRead,
-            self.lastReadAt,
-            (long)self.index,
-            self.fetchedAt,
-            self.realUrl,
-            self.downloaded ? @"YES" : @"NO",
-            (long)self.pageCount,
-            (long)self.chapterCount,
-            self.meta];
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p> {\n"
+                                       "  id_ = %@;\n"
+                                       "  url = %@;\n"
+                                       "  name = %@;\n"
+                                       "  uploadDate = %lld;\n"
+                                       "  chapterNumber = %.3f;\n"
+                                       "  scanlator = %@;\n"
+                                       "  mangaId = %@;\n"
+                                       "  read = %@;\n"
+                                       "  bookmarked = %@;\n"
+                                       "  lastPageRead = %ld;\n"
+                                       "  lastReadAt = %lld;\n"
+                                       "  index = %ld;\n"
+                                       "  fetchedAt = %lld;\n"
+                                       "  realUrl = %@;\n"
+                                       "  downloaded = %@;\n"
+                                       "  pageCount = %ld;\n"
+                                       "  chapterCount = %ld;\n"
+                                       "  meta = %@;\n"
+                                       "}",
+                                      NSStringFromClass([self class]), self, self.id_, self.url,
+                                      self.name, self.uploadDate, self.chapterNumber,
+                                      self.scanlator, self.mangaId, self.read ? @"YES" : @"NO",
+                                      self.bookmarked ? @"YES" : @"NO", (long) self.lastPageRead,
+                                      self.lastReadAt, (long) self.index, self.fetchedAt,
+                                      self.realUrl, self.downloaded ? @"YES" : @"NO",
+                                      (long) self.pageCount, (long) self.chapterCount, self.meta];
 }
-
 
 @end

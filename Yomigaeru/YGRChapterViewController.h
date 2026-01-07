@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-#import "YGRManga.h"
 #import "YGRChapter.h"
+#import "YGRManga.h"
 
 @interface YGRChapterViewController : UIPageViewController
 
 - (id)init;
 
-@property (nonatomic, strong) YGRManga * manga;
-@property (nonatomic, strong) YGRChapter * chapter;
+@property (nonatomic, strong) YGRManga *manga;
+@property (nonatomic, strong) YGRChapter *chapter;
 
 @end

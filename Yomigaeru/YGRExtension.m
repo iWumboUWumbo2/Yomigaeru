@@ -31,36 +31,28 @@
     return self;
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:
-            @"<%@: %p> {\n"
-            "  repo = %@;\n"
-            "  apkName = %@;\n"
-            "  iconUrl = %@;\n"
-            "  name = %@;\n"
-            "  pkgName = %@;\n"
-            "  versionName = %@;\n"
-            "  versionCode = %ld;\n"
-            "  lang = %@;\n"
-            "  isNsfw = %@;\n"
-            "  installed = %@;\n"
-            "  hasUpdate = %@;\n"
-            "  obsolete = %@;\n"
-            "}",
-            NSStringFromClass([self class]), self,
-            self.repo,
-            self.apkName,
-            self.iconUrl,
-            self.name,
-            self.pkgName,
-            self.versionName,
-            (long)self.versionCode,
-            self.lang,
-            self.isNsfw ? @"YES" : @"NO",
-            self.installed ? @"YES" : @"NO",
-            self.hasUpdate ? @"YES" : @"NO",
-            self.obsolete ? @"YES" : @"NO"];
+- (NSString *)description
+{
+    return
+        [NSString stringWithFormat:@"<%@: %p> {\n"
+                                    "  repo = %@;\n"
+                                    "  apkName = %@;\n"
+                                    "  iconUrl = %@;\n"
+                                    "  name = %@;\n"
+                                    "  pkgName = %@;\n"
+                                    "  versionName = %@;\n"
+                                    "  versionCode = %ld;\n"
+                                    "  lang = %@;\n"
+                                    "  isNsfw = %@;\n"
+                                    "  installed = %@;\n"
+                                    "  hasUpdate = %@;\n"
+                                    "  obsolete = %@;\n"
+                                    "}",
+                                   NSStringFromClass([self class]), self, self.repo, self.apkName,
+                                   self.iconUrl, self.name, self.pkgName, self.versionName,
+                                   (long) self.versionCode, self.lang, self.isNsfw ? @"YES" : @"NO",
+                                   self.installed ? @"YES" : @"NO", self.hasUpdate ? @"YES" : @"NO",
+                                   self.obsolete ? @"YES" : @"NO"];
 }
-
 
 @end

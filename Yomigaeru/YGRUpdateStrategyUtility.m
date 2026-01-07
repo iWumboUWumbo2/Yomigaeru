@@ -16,7 +16,7 @@
     {
         return YGRUpdateStrategyAlwaysUpdate;
     }
-    
+
     if ([updateStrategyString isEqualToString:@"ONLY_FETCH_ONCE"])
     {
         return YGRUpdateStrategyOnlyFetchOnce;
@@ -25,17 +25,19 @@
     {
         return YGRUpdateStrategyAlwaysUpdate;
     }
-    
+
     return YGRUpdateStrategyAlwaysUpdate;
 }
 
-+ (NSString *)stringFromUpdateStrategy:(YGRUpdateStrategy)strategy {
-    switch (strategy) {
-        case YGRUpdateStrategyOnlyFetchOnce:
-            return @"ONLY_FETCH_ONCE";
-        case YGRUpdateStrategyAlwaysUpdate:
-        default:
-            return @"ALWAYS_UPDATE";
++ (NSString *)stringFromUpdateStrategy:(YGRUpdateStrategy)strategy
+{
+    switch (strategy)
+    {
+    case YGRUpdateStrategyOnlyFetchOnce:
+        return @"ONLY_FETCH_ONCE";
+    case YGRUpdateStrategyAlwaysUpdate:
+    default:
+        return @"ALWAYS_UPDATE";
     }
 }
 

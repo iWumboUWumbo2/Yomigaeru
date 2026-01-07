@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * const kServerAddressKey = @"serverAddress";
+static NSString *const kServerAddressKey = @"serverAddress";
 
 @interface YGRSettingsManager : NSObject
 

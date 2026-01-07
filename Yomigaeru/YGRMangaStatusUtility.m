@@ -16,7 +16,7 @@
     {
         return YGRMangaStatusUnknown;
     }
-    
+
     if ([statusString isEqualToString:@"ONGOING"])
     {
         return YGRMangaStatusOngoing;
@@ -41,28 +41,29 @@
     {
         return YGRMangaStatusOnHiatus;
     }
-    
+
     return YGRMangaStatusUnknown;
 }
 
-
-+ (NSString *)stringFromMangaStatus:(YGRMangaStatus)status {
-    switch (status) {
-        case YGRMangaStatusOngoing:
-            return @"ONGOING";
-        case YGRMangaStatusCompleted:
-            return @"COMPLETED";
-        case YGRMangaStatusLicensed:
-            return @"LICENSED";
-        case YGRMangaStatusPublishingFinished:
-            return @"PUBLISHING_FINISHED";
-        case YGRMangaStatusCancelled:
-            return @"CANCELLED";
-        case YGRMangaStatusOnHiatus:
-            return @"ON_HIATUS";
-        case YGRMangaStatusUnknown:
-        default:
-            return @"UNKNOWN";
++ (NSString *)stringFromMangaStatus:(YGRMangaStatus)status
+{
+    switch (status)
+    {
+    case YGRMangaStatusOngoing:
+        return @"ONGOING";
+    case YGRMangaStatusCompleted:
+        return @"COMPLETED";
+    case YGRMangaStatusLicensed:
+        return @"LICENSED";
+    case YGRMangaStatusPublishingFinished:
+        return @"PUBLISHING_FINISHED";
+    case YGRMangaStatusCancelled:
+        return @"CANCELLED";
+    case YGRMangaStatusOnHiatus:
+        return @"ON_HIATUS";
+    case YGRMangaStatusUnknown:
+    default:
+        return @"UNKNOWN";
     }
 }
 

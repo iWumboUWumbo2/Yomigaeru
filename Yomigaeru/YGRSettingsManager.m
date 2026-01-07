@@ -28,10 +28,13 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         // Load saved URL from UserDefaults on initialization
-        NSString *baseURLString = [[NSUserDefaults standardUserDefaults] objectForKey:kServerAddressKey];
-        if (baseURLString) {
+        NSString *baseURLString =
+            [[NSUserDefaults standardUserDefaults] objectForKey:kServerAddressKey];
+        if (baseURLString)
+        {
             _serverBaseURL = [NSURL URLWithString:baseURLString];
         }
     }
@@ -42,11 +45,13 @@
 {
     _serverBaseURL = serverBaseURL;
     _apiBaseURL = [NSURL URLWithString:@"api/v1/" relativeToURL:self.serverBaseURL];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:serverBaseURL.absoluteString forKey:kServerAddressKey];
+
+    [[NSUserDefaults standardUserDefaults] setObject:serverBaseURL.absoluteString
+                                              forKey:kServerAddressKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification" object:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification"
+                                                        object:nil];
 }
 
 - (NSURL *)URLForPath:(NSString *)path

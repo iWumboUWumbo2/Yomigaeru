@@ -10,14 +10,14 @@
 
 @interface YGRSource : NSObject
 
-@property (nonatomic, strong) NSString * id_;
-@property (nonatomic, strong) NSString * name;
-@property (nonatomic, strong) NSString * lang;
-@property (nonatomic, strong) NSURL * iconUrl;
+@property (nonatomic, strong) NSString *id_;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *lang;
+@property (nonatomic, strong) NSURL *iconUrl;
 @property (nonatomic, assign) BOOL supportsLatest;
 @property (nonatomic, assign) BOOL isConfigurable;
 @property (nonatomic, assign) BOOL isNsfw;
-@property (nonatomic, strong) NSString * displayName;
+@property (nonatomic, strong) NSString *displayName;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 - (NSString *)description;

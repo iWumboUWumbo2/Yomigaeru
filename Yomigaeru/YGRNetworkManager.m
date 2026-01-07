@@ -59,19 +59,20 @@
 - (void)ensureClientsAreUpToDate
 {
     NSURL *baseURL = [YGRSettingsManager sharedInstance].apiBaseURL;
-    
-    if (![self.currentBaseURL isEqual:baseURL]) {
+
+    if (![self.currentBaseURL isEqual:baseURL])
+    {
         self.currentBaseURL = baseURL;
-        
+
         // JSON client
         self.jsonClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
         [self.jsonClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
         [self.jsonClient setDefaultHeader:@"Accept" value:@"application/json"];
-        
+
         // HTTP client
         self.httpClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
         [self.httpClient registerHTTPOperationClass:[AFHTTPRequestOperation class]];
-        
+
         // Image client
         self.imageClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
         [self.imageClient registerHTTPOperationClass:[AFImageRequestOperation class]];

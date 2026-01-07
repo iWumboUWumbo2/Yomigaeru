@@ -18,7 +18,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;
@@ -26,18 +27,22 @@
 
 - (void)setupTabs
 {
-    YGRLibraryViewController *libraryViewController = [[YGRLibraryViewController alloc] initWithStyle:UITableViewStylePlain];    
+    YGRLibraryViewController *libraryViewController =
+        [[YGRLibraryViewController alloc] initWithStyle:UITableViewStylePlain];
     UIImage *libraryIcon = [UIImage imageNamed:@"library"];
-    UINavigationController *libraryNavigationController = [[UINavigationController alloc] initWithRootViewController:libraryViewController];
-    libraryNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Library" image:libraryIcon tag:0];
-    
+    UINavigationController *libraryNavigationController =
+        [[UINavigationController alloc] initWithRootViewController:libraryViewController];
+    libraryNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Library"
+                                                                           image:libraryIcon
+                                                                             tag:0];
+
     [self setViewControllers:@[ libraryNavigationController ]];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     [self setupTabs];
 }
 

@@ -12,6 +12,6 @@
 
 @interface YGRMangaViewController : UITableViewController
 
-@property (nonatomic, strong) YGRManga * manga;
+@property (nonatomic, strong) YGRManga *manga;
 
 @end
