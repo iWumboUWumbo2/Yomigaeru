@@ -11,6 +11,8 @@
 		0314977B2F0DD7030018F3F1 /* YGRChapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 031497792F0DD7030018F3F1 /* YGRChapterViewController.m */; };
 		0314977E2F0DD7170018F3F1 /* YGRPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314977D2F0DD7170018F3F1 /* YGRPageViewController.m */; };
 		0314977F2F0DD7170018F3F1 /* YGRPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314977D2F0DD7170018F3F1 /* YGRPageViewController.m */; };
+		03766A0E2F0E0EA5004441D1 /* library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03766A0C2F0E0EA5004441D1 /* library@2x.png */; };
+		03766A0F2F0E0EA5004441D1 /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 03766A0D2F0E0EA5004441D1 /* library.png */; };
 		03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
 		03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
 		03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */; };
@@ -57,12 +59,6 @@
 		03DCE2D72F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CD2F0DC3D300E49AB9 /* YGRAPITestViewController.m */; };
 		03DCE2D82F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */; };
 		03DCE2D92F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */; };
-		03DCE2DA2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */; };
-		03DCE2DB2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */; };
-		03DCE2DC2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */; };
-		03DCE2DD2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */; };
-		03DCE2DE2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */; };
-		03DCE2DF2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */; };
 		03DCE2E62F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */; };
 		03DCE2E72F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */; };
 		03DCE2E82F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */; };
@@ -86,6 +82,8 @@
 		031497792F0DD7030018F3F1 /* YGRChapterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRChapterViewController.m; sourceTree = "<group>"; };
 		0314977C2F0DD7170018F3F1 /* YGRPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRPageViewController.h; sourceTree = "<group>"; };
 		0314977D2F0DD7170018F3F1 /* YGRPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRPageViewController.m; sourceTree = "<group>"; };
+		03766A0C2F0E0EA5004441D1 /* library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "library@2x.png"; sourceTree = "<group>"; };
+		03766A0D2F0E0EA5004441D1 /* library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = library.png; sourceTree = "<group>"; };
 		03DCE23C2F0DBFAE00E49AB9 /* Yomigaeru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomigaeru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -138,12 +136,6 @@
 		03DCE2CD2F0DC3D300E49AB9 /* YGRAPITestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRAPITestViewController.m; sourceTree = "<group>"; };
 		03DCE2CE2F0DC3D300E49AB9 /* YGRTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRTabBarController.h; sourceTree = "<group>"; };
 		03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRTabBarController.m; sourceTree = "<group>"; };
-		03DCE2D02F0DC3D300E49AB9 /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
-		03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRBrowseViewController.m; sourceTree = "<group>"; };
-		03DCE2D22F0DC3D300E49AB9 /* YGRUpdatesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRUpdatesViewController.h; sourceTree = "<group>"; };
-		03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRUpdatesViewController.m; sourceTree = "<group>"; };
-		03DCE2D42F0DC3D300E49AB9 /* YGRHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRHistoryViewController.h; sourceTree = "<group>"; };
-		03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRHistoryViewController.m; sourceTree = "<group>"; };
 		03DCE2E22F0DC41300E49AB9 /* YGRLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryViewController.h; sourceTree = "<group>"; };
 		03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryViewController.m; sourceTree = "<group>"; };
 		03DCE2E42F0DC41300E49AB9 /* YGRMangaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRMangaViewController.h; sourceTree = "<group>"; };
@@ -184,6 +176,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */ = {
+			isa = PBXGroup;
+			children = (
+				03766A0C2F0E0EA5004441D1 /* library@2x.png */,
+				03766A0D2F0E0EA5004441D1 /* library.png */,
+			);
+			name = "Tab Bar Icons";
+			sourceTree = "<group>";
+		};
 		03DCE2312F0DBFAE00E49AB9 = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +238,7 @@
 		03DCE2472F0DBFAE00E49AB9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */,
 				03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */,
 				03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */,
 				03DCE24C2F0DBFAE00E49AB9 /* main.m */,
@@ -271,12 +273,6 @@
 				03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */,
 				03DCE2E02F0DC3EA00E49AB9 /* Test */,
 				03DCE2E12F0DC40300E49AB9 /* Library */,
-				03DCE2D02F0DC3D300E49AB9 /* YGRBrowseViewController.h */,
-				03DCE2D12F0DC3D300E49AB9 /* YGRBrowseViewController.m */,
-				03DCE2D22F0DC3D300E49AB9 /* YGRUpdatesViewController.h */,
-				03DCE2D32F0DC3D300E49AB9 /* YGRUpdatesViewController.m */,
-				03DCE2D42F0DC3D300E49AB9 /* YGRHistoryViewController.h */,
-				03DCE2D52F0DC3D300E49AB9 /* YGRHistoryViewController.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -457,6 +453,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
+				03766A0E2F0E0EA5004441D1 /* library@2x.png in Resources */,
+				03766A0F2F0E0EA5004441D1 /* library.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,9 +544,6 @@
 				03DCE2CA2F0DC34000E49AB9 /* YGRSettingsManager.m in Sources */,
 				03DCE2D62F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */,
 				03DCE2D82F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */,
-				03DCE2DA2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */,
-				03DCE2DC2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */,
-				03DCE2DE2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */,
 				03DCE2E62F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */,
 				03DCE2E82F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */,
 				0314977A2F0DD7030018F3F1 /* YGRChapterViewController.m in Sources */,
@@ -577,9 +572,6 @@
 				03DCE2CB2F0DC34000E49AB9 /* YGRSettingsManager.m in Sources */,
 				03DCE2D72F0DC3D300E49AB9 /* YGRAPITestViewController.m in Sources */,
 				03DCE2D92F0DC3D300E49AB9 /* YGRTabBarController.m in Sources */,
-				03DCE2DB2F0DC3D300E49AB9 /* YGRBrowseViewController.m in Sources */,
-				03DCE2DD2F0DC3D300E49AB9 /* YGRUpdatesViewController.m in Sources */,
-				03DCE2DF2F0DC3D300E49AB9 /* YGRHistoryViewController.m in Sources */,
 				03DCE2E72F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */,
 				03DCE2E92F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */,
 				0314977B2F0DD7030018F3F1 /* YGRChapterViewController.m in Sources */,

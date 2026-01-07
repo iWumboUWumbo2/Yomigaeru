@@ -27,9 +27,9 @@
 - (void)setupTabs
 {
     YGRLibraryViewController *libraryViewController = [[YGRLibraryViewController alloc] initWithStyle:UITableViewStylePlain];    
-    
+    UIImage *libraryIcon = [UIImage imageNamed:@"library"];
     UINavigationController *libraryNavigationController = [[UINavigationController alloc] initWithRootViewController:libraryViewController];
-    libraryNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Library" image:nil tag:0];
+    libraryNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Library" image:libraryIcon tag:0];
     
     [self setViewControllers:@[ libraryNavigationController ]];
 }
