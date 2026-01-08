@@ -21,15 +21,17 @@
 @property (nonatomic, strong) NSMutableArray *mangas;
 @property (nonatomic, strong) NSMutableArray *mangaThumbnails;
 
+@property (nonatomic, strong) UIBarButtonItem *refreshButton;
+@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
+
 @end
 
 @implementation YGRLibraryViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)init
 {
-    self = [super initWithStyle:style];
-    if (self)
-    {
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
         // Custom initialization
         self.categoryService = [[YGRCategoryService alloc] init];
         self.mangaService = [[YGRMangaService alloc] init];
@@ -47,8 +49,19 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view
     // controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.navigationItem.title = @"Library";
+    
+    self.refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshLibrary)];
+    self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    self.navigationItem.leftBarButtonItem = self.refreshButton;
+    
+    self.title = @"Library";
+    
+    [self fetchLibrary];
+}
 
+- (void)fetchLibrary
+{
     __weak typeof(self) weakSelf = self;
 
     [self.categoryService fetchLibraryWithCompletion:^(NSArray *mangas, NSError *error) {
@@ -63,7 +76,13 @@
             NSLog(@"%@", error);
             return;
         }
-
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshSpinner stopAnimating];
+            self.navigationItem.leftBarButtonItem = self.refreshButton;
+            self.navigationItem.leftBarButtonItem.enabled = YES;
+        });
+        
         strongSelf.mangas = [NSMutableArray arrayWithArray:mangas];
 
         strongSelf.mangaThumbnails = [NSMutableArray arrayWithCapacity:strongSelf.mangas.count];
@@ -71,48 +90,61 @@
         {
             [strongSelf.mangaThumbnails addObject:[NSNull null]];
         }
-
-        for (NSUInteger i = 0; i < mangas.count; i++)
-        {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.tableView reloadData];
+        });
+        
+        for (NSUInteger i = 0; i < mangas.count; i++) {
             YGRManga *manga = [mangas objectAtIndex:i];
-
-            [strongSelf.mangaService
-                fetchThumbnailWithMangaId:manga.id_
-                               completion:^(UIImage *thumbnailImage, NSError *error) {
-                                   if (error)
-                                   {
-                                       NSLog(@"%@", error);
-                                       return;
-                                   }
-
-                                   if (!thumbnailImage)
-                                   {
-                                       NSLog(@"Failed to load image");
-                                       return;
-                                   }
-
-                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                       [strongSelf.mangaThumbnails
-                                           replaceObjectAtIndex:i
-                                                     withObject:thumbnailImage];
-
-                                       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i
-                                                                                   inSection:0];
-
-                                       if ([strongSelf.tableView.indexPathsForVisibleRows
-                                               containsObject:indexPath])
-                                       {
-                                           [strongSelf.tableView
-                                               reloadRowsAtIndexPaths:[NSArray
-                                                                          arrayWithObject:indexPath]
-                                                     withRowAnimation:UITableViewRowAnimationNone];
-                                       }
-                                   });
-                               }];
-        }
-
-        [strongSelf.tableView reloadData];
+            
+            [strongSelf.mangaService fetchThumbnailWithMangaId:manga.id_ completion:^(UIImage *thumbnailImage, NSError *error) {
+                if (error) {
+                    NSLog(@"%@", error);
+                    return;
+                }
+                
+                if (!thumbnailImage) {
+                    NSLog(@"Failed to load image");
+                    return;
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [strongSelf.mangaThumbnails replaceObjectAtIndex:i withObject:thumbnailImage];
+                    
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+                    
+                    if ([strongSelf.tableView.indexPathsForVisibleRows containsObject:indexPath])
+                    {
+                        [strongSelf.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    }
+                });
+            }];
+        }        
     }];
+}
+
+- (void)refreshLibrary
+{
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    
+    [self.refreshSpinner startAnimating];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+    
+    [self fetchLibrary];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if ([self.refreshSpinner isAnimating]) {
+        [self.refreshSpinner stopAnimating];
+        
+        // Restore refresh button
+        self.navigationItem.leftBarButtonItem = self.refreshButton;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+    }
 }
 
 - (void)viewDidUnload
@@ -165,8 +197,10 @@
     cell.textLabel.text = manga.title;
 
     id thumbnail = [self.mangaThumbnails objectAtIndex:indexPath.row];
-    if ([thumbnail isKindOfClass:[UIImage class]])
-    {
+    
+    if ([thumbnail isKindOfClass:[UIImage class]]) {
+        cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        cell.imageView.clipsToBounds = YES;
         cell.imageView.image = thumbnail;
     }
 
@@ -238,10 +272,9 @@ toIndexPath:(NSIndexPath *)toIndexPath
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    YGRMangaViewController *mangaViewController =
-        [[YGRMangaViewController alloc] initWithStyle:UITableViewStylePlain];
-
+    // Navigation logic may go here. Create and push another view controller.    
+    YGRMangaViewController *mangaViewController = [[YGRMangaViewController alloc] init];
+    
     YGRManga *selectedManga = [self.mangas objectAtIndex:indexPath.row];
     mangaViewController.manga = selectedManga;
 

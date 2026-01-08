@@ -27,7 +27,7 @@
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:sharedInstance
-                                                 selector:@selector(handleBaseURLChange)
+                                                 selector:@selector(ensureClientsAreUpToDate)
                                                      name:@"YGRBaseURLDidChangeNotification"
                                                    object:nil];
     });
@@ -59,9 +59,13 @@
 - (void)ensureClientsAreUpToDate
 {
     NSURL *baseURL = [YGRSettingsManager sharedInstance].apiBaseURL;
-
-    if (![self.currentBaseURL isEqual:baseURL])
-    {
+    
+    if (!baseURL) {
+        NSLog(@"[YGRNetworkManager] Warning: apiBaseURL is nil, cannot initialize clients yet.");
+        return;
+    }
+    
+    if (![self.currentBaseURL isEqual:baseURL]) {
         self.currentBaseURL = baseURL;
 
         // JSON client

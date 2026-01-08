@@ -10,4 +10,6 @@
 
 @interface YGRLibraryViewController : UITableViewController
 
+- (id)init;
+
 @end

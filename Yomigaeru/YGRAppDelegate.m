@@ -10,40 +10,23 @@
 
 #import "YGRSettingsManager.h"
 #import "YGRTabBarController.h"
-#import "YGRViewController.h"
+
+#import "YGRServerBaseURLViewController.h"
 
 @implementation YGRAppDelegate
-
-//- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary
-//*)launchOptions
-//{
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    // Override point for customization after application launch.
-//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-//        self.viewController = [[YGRViewController alloc]
-//        initWithNibName:@"YGRViewController_iPhone" bundle:nil];
-//    } else {
-//        self.viewController = [[YGRViewController alloc] initWithNibName:@"YGRViewController_iPad"
-//        bundle:nil];
-//    }
-//    self.window.rootViewController = self.viewController;
-//    [self.window makeKeyAndVisible];
-//    return YES;
-//}
 
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
     // Override point for customization after application launch.
-
-    [[YGRSettingsManager sharedInstance]
-        setServerBaseURL:[NSURL URLWithString:@"http://10.0.0.169:4567/"]];
-
+    YGRSettingsManager *settings = [YGRSettingsManager sharedInstance];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification" object:nil];
+    
     //    self.window.rootViewController = [[YGRAPITestViewController alloc] init];
     self.window.rootViewController = [[YGRTabBarController alloc] init];
     [self.window makeKeyAndVisible];
-
     return YES;
 }
 

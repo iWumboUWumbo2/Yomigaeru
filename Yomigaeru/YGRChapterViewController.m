@@ -31,11 +31,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationItem.title =
-        [NSString stringWithFormat:@"Chapter %lu", (unsigned long) self.chapter.chapterNumber];
-
-    // Do any additional setup after loading the view.
+    
+    self.title = [NSString stringWithFormat:@"Chapter %lu", (unsigned long)self.chapter.chapterNumber];
+    
+	// Do any additional setup after loading the view.
     self.dataSource = self;
 
     YGRPageViewController *pageViewController =

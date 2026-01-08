@@ -21,11 +21,10 @@
 
 @implementation YGRMangaViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)init
 {
-    self = [super initWithStyle:style];
-    if (self)
-    {
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
         // Custom initialization
         self.mangaService = [[YGRMangaService alloc] init];
         self.chapters = nil;
@@ -36,8 +35,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationItem.title = self.manga.title;
+    
+    self.title = self.manga.title;
 
     __weak typeof(self) weakSelf = self;
     [self.mangaService fetchChaptersWithMangaId:self.manga.id_
