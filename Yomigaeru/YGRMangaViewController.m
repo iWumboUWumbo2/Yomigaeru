@@ -24,7 +24,8 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
         self.mangaService = [[YGRMangaService alloc] init];
         self.chapters = nil;
@@ -35,7 +36,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.title = self.manga.title;
 
     __weak typeof(self) weakSelf = self;

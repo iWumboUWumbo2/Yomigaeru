@@ -8,13 +8,13 @@
 
 #import "YGRSettingsViewController.h"
 
-#import "YGRServerSettingsViewController.h"
 #import "YGRAboutViewController.h"
+#import "YGRServerSettingsViewController.h"
 
 @interface YGRSettingsViewController ()
 
-@property (nonatomic, strong) NSArray * settings;
-@property (nonatomic, strong) NSDictionary * settingsViewControllers;
+@property (nonatomic, strong) NSArray *settings;
+@property (nonatomic, strong) NSDictionary *settingsViewControllers;
 
 @end
 
@@ -23,12 +23,13 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
         self.settings = @[ @"Server", @"About" ];
         self.settingsViewControllers = @{
             @"Server" : [YGRServerSettingsViewController class],
-            @"About"  : [YGRAboutViewController class]
+            @"About" : [YGRAboutViewController class]
         };
     }
     return self;
@@ -67,18 +68,21 @@
     return self.settings.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:CellIdentifier];
     }
-    
+
     // Configure the cell...
     cell.textLabel.text = [self.settings objectAtIndex:indexPath.row];
-    
+
     return cell;
 }
 
@@ -87,7 +91,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    Class viewControllerClass = [self.settingsViewControllers objectForKey:[self.settings objectAtIndex:indexPath.row]];
+    Class viewControllerClass =
+        [self.settingsViewControllers objectForKey:[self.settings objectAtIndex:indexPath.row]];
     UIViewController *viewController = [[viewControllerClass alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
 }

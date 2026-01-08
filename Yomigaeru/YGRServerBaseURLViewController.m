@@ -19,7 +19,8 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;
@@ -46,19 +47,23 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     // Get the text field from the table view cell
-    YGRTextFieldCell *cell = (YGRTextFieldCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    YGRTextFieldCell *cell = (YGRTextFieldCell *) [self.tableView
+        cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     [cell.textField becomeFirstResponder];
 }
 
 - (void)saveSettingsForTextField:(UITextField *)textField
 {
     NSURL *url = [NSURL URLWithString:textField.text];
-    if (url && url.scheme && url.host) {
+    if (url && url.scheme && url.host)
+    {
         [[YGRSettingsManager sharedInstance] setServerBaseURL:url];
         NSLog(@"Saved URL: %@", url.absoluteString);
-    } else {
+    }
+    else
+    {
         NSLog(@"Invalid URL: %@", textField.text);
     }
 }
@@ -68,10 +73,10 @@
 {
     // Save settings
     [self saveSettingsForTextField:textField];
-    
+
     // Dismiss the keyboard
     [textField resignFirstResponder];
-    
+
     return YES;
 }
 
@@ -98,10 +103,15 @@
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     YGRTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
-    if (!cell) {
-        cell = [[YGRTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"TextFieldCell" placeholder:@"http://localhost:4567/"];
+    if (!cell)
+    {
+        cell = [[YGRTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                       reuseIdentifier:@"TextFieldCell"
+                                           placeholder:@"http://localhost:4567/"];
     }
     cell.textField.text = [[YGRSettingsManager sharedInstance] serverBaseURL].absoluteString;
     cell.textField.textColor = [UIColor darkGrayColor];

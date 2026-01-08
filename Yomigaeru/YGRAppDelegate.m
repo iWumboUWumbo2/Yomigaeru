@@ -19,11 +19,12 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
+
     // Override point for customization after application launch.
     YGRSettingsManager *settings = [YGRSettingsManager sharedInstance];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification"
+                                                        object:nil];
+
     //    self.window.rootViewController = [[YGRAPITestViewController alloc] init];
     self.window.rootViewController = [[YGRTabBarController alloc] init];
     [self.window makeKeyAndVisible];

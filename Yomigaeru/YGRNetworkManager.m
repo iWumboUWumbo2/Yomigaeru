@@ -59,13 +59,15 @@
 - (void)ensureClientsAreUpToDate
 {
     NSURL *baseURL = [YGRSettingsManager sharedInstance].apiBaseURL;
-    
-    if (!baseURL) {
+
+    if (!baseURL)
+    {
         NSLog(@"[YGRNetworkManager] Warning: apiBaseURL is nil, cannot initialize clients yet.");
         return;
     }
-    
-    if (![self.currentBaseURL isEqual:baseURL]) {
+
+    if (![self.currentBaseURL isEqual:baseURL])
+    {
         self.currentBaseURL = baseURL;
 
         // JSON client

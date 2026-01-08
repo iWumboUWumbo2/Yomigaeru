@@ -21,8 +21,8 @@
         _isDefault = [[dictionary objectForKey:@"default"] boolValue];
         _size = [[dictionary objectForKey:@"size"] integerValue];
         _includeInUpdate = [[dictionary objectForKey:@"includeInUpdate"] integerValue];
-        _includeInDownload = [[dictionary objectForKey:@"includeInDownload"] integerValue];        
-        _meta = [dictionary objectForKey:@"meta"] ?: [NSDictionary dictionary];        
+        _includeInDownload = [[dictionary objectForKey:@"includeInDownload"] integerValue];
+        _meta = [dictionary objectForKey:@"meta"] ?: [NSDictionary dictionary];
     }
     return self;
 }

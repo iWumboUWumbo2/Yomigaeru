@@ -10,22 +10,27 @@
 
 @implementation YGRTextFieldCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier placeholder:(NSString *)placeholder {
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
+              reuseIdentifier:(NSString *)reuseIdentifier
+                  placeholder:(NSString *)placeholder
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
+    if (self)
+    {
         _textField = [[UITextField alloc] initWithFrame:CGRectZero];
         _textField.placeholder = placeholder;
         _textField.clearButtonMode = UITextFieldViewModeAlways;
         _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth |
-        UIViewAutoresizingFlexibleTopMargin |
-        UIViewAutoresizingFlexibleBottomMargin;
+                                      UIViewAutoresizingFlexibleTopMargin |
+                                      UIViewAutoresizingFlexibleBottomMargin;
         [self.contentView addSubview:_textField];
     }
     return self;
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     CGFloat fieldHeight = 30.0;
     CGFloat fieldWidth = self.contentView.bounds.size.width * 0.9;

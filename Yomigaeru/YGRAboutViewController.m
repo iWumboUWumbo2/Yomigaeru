@@ -10,8 +10,8 @@
 
 @interface YGRAboutViewController ()
 
-@property (nonatomic, strong) NSArray * aboutStrings;
-@property (nonatomic, strong) NSDictionary * aboutDictionary;
+@property (nonatomic, strong) NSArray *aboutStrings;
+@property (nonatomic, strong) NSDictionary *aboutDictionary;
 
 @end
 
@@ -20,11 +20,10 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
+    if (self)
+    {
         self.aboutStrings = @[ @"Build" ];
-        self.aboutDictionary = @{
-            @"Build" : @"v0.0.1"
-        };
+        self.aboutDictionary = @{@"Build" : @"v0.0.1"};
     }
     return self;
 }
@@ -53,22 +52,25 @@
     return self.aboutStrings.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:CellIdentifier];
     }
-    
+
     NSString *rowTitle = [self.aboutStrings objectAtIndex:indexPath.row];
-    
+
     cell.textLabel.text = rowTitle;
     cell.detailTextLabel.text = [self.aboutDictionary objectForKey:rowTitle];
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     return cell;
 }
 
@@ -78,7 +80,8 @@
 {
     // Navigation logic may go here. Create and push another view controller.
     /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc]
+     initWithNibName:@"<#Nib name#>" bundle:nil];
      // ...
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];

@@ -25,21 +25,28 @@
     return sharedInstance;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
 
-    if (self) {
-        NSString *baseURLString = [[NSUserDefaults standardUserDefaults] objectForKey:kServerAddressKey];
-        
-        if (baseURLString.length > 0) {
+    if (self)
+    {
+        NSString *baseURLString =
+            [[NSUserDefaults standardUserDefaults] objectForKey:kServerAddressKey];
+
+        if (baseURLString.length > 0)
+        {
             _serverBaseURL = [NSURL URLWithString:baseURLString];
-        } else {
+        }
+        else
+        {
             // Default URL if nothing saved
             _serverBaseURL = [NSURL URLWithString:@"http://localhost:4567/"];
-            [[NSUserDefaults standardUserDefaults] setObject:_serverBaseURL.absoluteString forKey:kServerAddressKey];
+            [[NSUserDefaults standardUserDefaults] setObject:_serverBaseURL.absoluteString
+                                                      forKey:kServerAddressKey];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
-        
+
         _apiBaseURL = [NSURL URLWithString:@"api/v1/" relativeToURL:_serverBaseURL];
     }
     return self;
@@ -51,7 +58,7 @@
     {
         return;
     }
-    
+
     _serverBaseURL = serverBaseURL;
     _apiBaseURL = [NSURL URLWithString:@"api/v1/" relativeToURL:self.serverBaseURL];
 

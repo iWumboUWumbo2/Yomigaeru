@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) UITextField *textField;
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier placeholder:(NSString *)placeholder;
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
+              reuseIdentifier:(NSString *)reuseIdentifier
+                  placeholder:(NSString *)placeholder;
 
 @end
