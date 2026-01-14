@@ -15,6 +15,9 @@
 		0357B2012F0F67D500D5096E /* YGRTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B1FF2F0F67D500D5096E /* YGRTextFieldCell.m */; };
 		0357B2052F0F6A4B00D5096E /* YGRAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2042F0F6A4B00D5096E /* YGRAboutViewController.m */; };
 		0357B2062F0F6A4B00D5096E /* YGRAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2042F0F6A4B00D5096E /* YGRAboutViewController.m */; };
+		0357B2182F1711FA00D5096E /* YGRSourcesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2172F1711FA00D5096E /* YGRSourcesViewController.m */; };
+		0357B21B2F1712AC00D5096E /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */; };
+		0357B21E2F1732A600D5096E /* YGRExtensionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */; };
 		03766A0E2F0E0EA5004441D1 /* library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03766A0C2F0E0EA5004441D1 /* library@2x.png */; };
 		03766A0F2F0E0EA5004441D1 /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 03766A0D2F0E0EA5004441D1 /* library.png */; };
 		03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
@@ -97,6 +100,12 @@
 		0357B1FF2F0F67D500D5096E /* YGRTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRTextFieldCell.m; sourceTree = "<group>"; };
 		0357B2032F0F6A4B00D5096E /* YGRAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRAboutViewController.h; sourceTree = "<group>"; };
 		0357B2042F0F6A4B00D5096E /* YGRAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRAboutViewController.m; sourceTree = "<group>"; };
+		0357B2162F1711FA00D5096E /* YGRSourcesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSourcesViewController.h; sourceTree = "<group>"; };
+		0357B2172F1711FA00D5096E /* YGRSourcesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSourcesViewController.m; sourceTree = "<group>"; };
+		0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRBrowseViewController.m; sourceTree = "<group>"; };
+		0357B21C2F1732A600D5096E /* YGRExtensionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionsViewController.h; sourceTree = "<group>"; };
+		0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionsViewController.m; sourceTree = "<group>"; };
+		0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
 		03766A0C2F0E0EA5004441D1 /* library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "library@2x.png"; sourceTree = "<group>"; };
 		03766A0D2F0E0EA5004441D1 /* library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = library.png; sourceTree = "<group>"; };
 		03DCE23C2F0DBFAE00E49AB9 /* Yomigaeru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomigaeru.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +235,35 @@
 			name = About;
 			sourceTree = "<group>";
 		};
+		0357B2132F1711C200D5096E /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */,
+				0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */,
+				0357B2142F1711C800D5096E /* Sources */,
+				0357B2152F1711D200D5096E /* Extensions */,
+			);
+			name = Browse;
+			sourceTree = "<group>";
+		};
+		0357B2142F1711C800D5096E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				0357B2162F1711FA00D5096E /* YGRSourcesViewController.h */,
+				0357B2172F1711FA00D5096E /* YGRSourcesViewController.m */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		0357B2152F1711D200D5096E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0357B21C2F1732A600D5096E /* YGRExtensionsViewController.h */,
+				0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,6 +361,7 @@
 				03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */,
 				0357B1FD2F0F67B000D5096E /* Cells */,
 				03DCE2E12F0DC40300E49AB9 /* Library */,
+				0357B2132F1711C200D5096E /* Browse */,
 				03FFDB522F0F25F600813B1C /* Settings */,
 				03DCE2E02F0DC3EA00E49AB9 /* Test */,
 			);
@@ -617,6 +656,9 @@
 				03FFDB612F0F48E200813B1C /* YGRServerBaseURLViewController.m in Sources */,
 				0357B2002F0F67D500D5096E /* YGRTextFieldCell.m in Sources */,
 				0357B2052F0F6A4B00D5096E /* YGRAboutViewController.m in Sources */,
+				0357B2182F1711FA00D5096E /* YGRSourcesViewController.m in Sources */,
+				0357B21B2F1712AC00D5096E /* YGRBrowseViewController.m in Sources */,
+				0357B21E2F1732A600D5096E /* YGRExtensionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
