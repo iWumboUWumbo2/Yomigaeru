@@ -62,6 +62,8 @@
     self.gridView.delegate = self;
     self.gridView.backgroundColor = [UIColor whiteColor];
     self.gridView.separatorStyle = AQGridViewCellSeparatorStyleNone;
+    self.gridView.bounces = YES;
+    self.gridView.alwaysBounceVertical = YES;
     
     [self fetchLibrary];
 }

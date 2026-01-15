@@ -38,8 +38,8 @@
     // Gradient at bottom
     _gradientLayer = [CAGradientLayer layer];
     _gradientLayer.colors = @[
-    (id)[UIColor clearColor].CGColor,
-    (id)[UIColor colorWithWhite:0 alpha:0.7].CGColor
+        (id)[UIColor clearColor].CGColor,
+        (id)[UIColor blackColor].CGColor
     ];
     _gradientLayer.locations = @[@0.0, @1.0];
     [_imageView.layer addSublayer:_gradientLayer];
