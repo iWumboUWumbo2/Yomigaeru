@@ -122,12 +122,18 @@
 
 - (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView
 {
-    return self.mangas.count;
+    return !self.mangas ? 0 : self.mangas.count;
 }
 
 - (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView
 {
-    return CGSizeMake(120.0, 150.0);
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    int columnCount = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 4 : 2;
+    CGFloat cellWidth = screenWidth / columnCount;
+    
+    return CGSizeMake(cellWidth, cellWidth * 1.25);
 }
 
 - (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index
@@ -137,12 +143,9 @@
     YGRLibraryCell *cell = (YGRLibraryCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
-        CGRect cellFrame;
-        cellFrame.size = [self portraitGridCellSizeForGridView:self.gridView];
-        cellFrame.origin.x = 120.0f;
-        cellFrame.origin.y = 150.0f;
+        CGSize cellSize = [self portraitGridCellSizeForGridView:self.gridView];
         
-        cell = [[YGRLibraryCell alloc] initWithFrame:cellFrame
+        cell = [[YGRLibraryCell alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)
                                      reuseIdentifier:CellIdentifier];
         cell.selectionStyle = AQGridViewCellSelectionStyleBlueGray;
     }
