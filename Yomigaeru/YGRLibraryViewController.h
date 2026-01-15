@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YGRLibraryViewController : UITableViewController
+#import <AQGridView/AQGridViewController.h>
+
+@interface YGRLibraryViewController : AQGridViewController
 
 - (id)init;
 

@@ -39,14 +39,16 @@
                                                                              tag:0];
 
     YGRBrowseViewController *browseViewController = [[YGRBrowseViewController alloc] init];
+    UIImage *browseIcon = [UIImage imageNamed:@"browse"];
     UINavigationController *browseNavigationController = [[UINavigationController alloc] initWithRootViewController:browseViewController];
-    browseNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Browse" image:nil tag:1];
+    browseNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Browse" image:browseIcon tag:1];
     
     YGRSettingsViewController *settingsViewController = [[YGRSettingsViewController alloc] init];
+    UIImage *settingsIcon = [UIImage imageNamed:@"settings"];
     UINavigationController *settingsNavigationController =
         [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     settingsNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
-                                                                            image:nil
+                                                                            image:settingsIcon
                                                                               tag:2];
     
     [self setViewControllers:@[ libraryNavigationController, browseNavigationController, settingsNavigationController ]];

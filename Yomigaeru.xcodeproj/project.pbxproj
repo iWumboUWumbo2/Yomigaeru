@@ -18,8 +18,15 @@
 		0357B2182F1711FA00D5096E /* YGRSourcesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2172F1711FA00D5096E /* YGRSourcesViewController.m */; };
 		0357B21B2F1712AC00D5096E /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */; };
 		0357B21E2F1732A600D5096E /* YGRExtensionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */; };
-		03766A0E2F0E0EA5004441D1 /* library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03766A0C2F0E0EA5004441D1 /* library@2x.png */; };
-		03766A0F2F0E0EA5004441D1 /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 03766A0D2F0E0EA5004441D1 /* library.png */; };
+		0357B2222F17640400D5096E /* YGRExtensionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */; };
+		03AFE1882F188EE500CC1CBB /* YGRLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */; };
+		03B5C1FE2F185B3500B8898A /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B5C1FD2F185B3500B8898A /* placeholder.png */; };
+		03CCDAFB2F18A47C009C6C2A /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDAF92F18A47C009C6C2A /* library.png */; };
+		03CCDAFC2F18A47C009C6C2A /* library@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDAFA2F18A47C009C6C2A /* library@2x.png */; };
+		03CCDAFF2F18A4D5009C6C2A /* browse.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDAFD2F18A4D5009C6C2A /* browse.png */; };
+		03CCDB002F18A4D5009C6C2A /* browse@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDAFE2F18A4D5009C6C2A /* browse@2x.png */; };
+		03CCDB032F18A525009C6C2A /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDB012F18A525009C6C2A /* settings.png */; };
+		03CCDB042F18A525009C6C2A /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDB022F18A525009C6C2A /* settings@2x.png */; };
 		03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
 		03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
 		03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */; };
@@ -106,8 +113,17 @@
 		0357B21C2F1732A600D5096E /* YGRExtensionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionsViewController.h; sourceTree = "<group>"; };
 		0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionsViewController.m; sourceTree = "<group>"; };
 		0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
-		03766A0C2F0E0EA5004441D1 /* library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "library@2x.png"; sourceTree = "<group>"; };
-		03766A0D2F0E0EA5004441D1 /* library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = library.png; sourceTree = "<group>"; };
+		0357B2202F17640300D5096E /* YGRExtensionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionInfoViewController.h; sourceTree = "<group>"; };
+		0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionInfoViewController.m; sourceTree = "<group>"; };
+		03AFE1862F188EE500CC1CBB /* YGRLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryCell.h; sourceTree = "<group>"; };
+		03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryCell.m; sourceTree = "<group>"; };
+		03B5C1FD2F185B3500B8898A /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		03CCDAF92F18A47C009C6C2A /* library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = library.png; sourceTree = "<group>"; };
+		03CCDAFA2F18A47C009C6C2A /* library@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "library@2x.png"; sourceTree = "<group>"; };
+		03CCDAFD2F18A4D5009C6C2A /* browse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = browse.png; sourceTree = "<group>"; };
+		03CCDAFE2F18A4D5009C6C2A /* browse@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "browse@2x.png"; sourceTree = "<group>"; };
+		03CCDB012F18A525009C6C2A /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		03CCDB022F18A525009C6C2A /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
 		03DCE23C2F0DBFAE00E49AB9 /* Yomigaeru.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yomigaeru.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -222,6 +238,8 @@
 			children = (
 				0357B1FE2F0F67D500D5096E /* YGRTextFieldCell.h */,
 				0357B1FF2F0F67D500D5096E /* YGRTextFieldCell.m */,
+				03AFE1862F188EE500CC1CBB /* YGRLibraryCell.h */,
+				03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -260,6 +278,8 @@
 			children = (
 				0357B21C2F1732A600D5096E /* YGRExtensionsViewController.h */,
 				0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */,
+				0357B2202F17640300D5096E /* YGRExtensionInfoViewController.h */,
+				0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -267,8 +287,12 @@
 		03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */ = {
 			isa = PBXGroup;
 			children = (
-				03766A0C2F0E0EA5004441D1 /* library@2x.png */,
-				03766A0D2F0E0EA5004441D1 /* library.png */,
+				03CCDB012F18A525009C6C2A /* settings.png */,
+				03CCDB022F18A525009C6C2A /* settings@2x.png */,
+				03CCDAFD2F18A4D5009C6C2A /* browse.png */,
+				03CCDAFE2F18A4D5009C6C2A /* browse@2x.png */,
+				03CCDAF92F18A47C009C6C2A /* library.png */,
+				03CCDAFA2F18A47C009C6C2A /* library@2x.png */,
 			);
 			name = "Tab Bar Icons";
 			sourceTree = "<group>";
@@ -326,6 +350,7 @@
 		03DCE2472F0DBFAE00E49AB9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				03B5C1FD2F185B3500B8898A /* placeholder.png */,
 				03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */,
 				03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */,
 				03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */,
@@ -491,6 +516,7 @@
 				03DCE2382F0DBFAE00E49AB9 /* Sources */,
 				03DCE2392F0DBFAE00E49AB9 /* Frameworks */,
 				03DCE23A2F0DBFAE00E49AB9 /* Resources */,
+				67DE0149527FE620184CDB1D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -555,10 +581,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
-				03766A0E2F0E0EA5004441D1 /* library@2x.png in Resources */,
-				03766A0F2F0E0EA5004441D1 /* library.png in Resources */,
 				03FFDB4B2F0E182B00813B1C /* Icon@2x.png in Resources */,
 				03FFDB4D2F0E187E00813B1C /* Icon2x.png in Resources */,
+				03B5C1FE2F185B3500B8898A /* placeholder.png in Resources */,
+				03CCDAFB2F18A47C009C6C2A /* library.png in Resources */,
+				03CCDAFC2F18A47C009C6C2A /* library@2x.png in Resources */,
+				03CCDAFF2F18A4D5009C6C2A /* browse.png in Resources */,
+				03CCDB002F18A4D5009C6C2A /* browse@2x.png in Resources */,
+				03CCDB032F18A525009C6C2A /* settings.png in Resources */,
+				03CCDB042F18A525009C6C2A /* settings@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +653,32 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		67DE0149527FE620184CDB1D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Yomigaeru/Pods-Yomigaeru-resources.sh",
+				"${PODS_ROOT}/AQGridView/Resources/AQGridSelection.png",
+				"${PODS_ROOT}/AQGridView/Resources/AQGridSelectionGray.png",
+				"${PODS_ROOT}/AQGridView/Resources/AQGridSelectionGrayBlue.png",
+				"${PODS_ROOT}/AQGridView/Resources/AQGridSelectionGreen.png",
+				"${PODS_ROOT}/AQGridView/Resources/AQGridSelectionRed.png",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AQGridSelection.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AQGridSelectionGray.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AQGridSelectionGrayBlue.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AQGridSelectionGreen.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AQGridSelectionRed.png",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Yomigaeru/Pods-Yomigaeru-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -659,6 +716,8 @@
 				0357B2182F1711FA00D5096E /* YGRSourcesViewController.m in Sources */,
 				0357B21B2F1712AC00D5096E /* YGRBrowseViewController.m in Sources */,
 				0357B21E2F1732A600D5096E /* YGRExtensionsViewController.m in Sources */,
+				0357B2222F17640400D5096E /* YGRExtensionInfoViewController.m in Sources */,
+				03AFE1882F188EE500CC1CBB /* YGRLibraryCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

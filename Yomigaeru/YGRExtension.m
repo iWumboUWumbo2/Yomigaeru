@@ -7,6 +7,7 @@
 //
 
 #import "YGRExtension.h"
+#import "YGRSettingsManager.h"
 
 @implementation YGRExtension
 
@@ -17,7 +18,7 @@
     {
         _repo = [NSURL URLWithString:[dictionary objectForKey:@"repo"]];
         _apkName = [dictionary objectForKey:@"apkName"];
-        _iconUrl = [NSURL URLWithString:[dictionary objectForKey:@"iconUrl"]];
+        _iconUrl = [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
         _name = [dictionary objectForKey:@"name"];
         _pkgName = [dictionary objectForKey:@"pkgName"];
         _versionName = [dictionary objectForKey:@"versionName"];

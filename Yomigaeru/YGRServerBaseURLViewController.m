@@ -114,7 +114,10 @@
                                            placeholder:@"http://localhost:4567/"];
     }
     cell.textField.text = [[YGRSettingsManager sharedInstance] serverBaseURL].absoluteString;
-    cell.textField.textColor = [UIColor darkGrayColor];
+    cell.textField.textColor = [UIColor colorWithRed:0.22
+                                               green:0.33
+                                                blue:0.53
+                                               alpha:1.0];
     cell.textField.delegate = self;
     cell.textField.returnKeyType = UIReturnKeyDone;
     return cell;

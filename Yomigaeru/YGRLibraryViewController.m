@@ -3,23 +3,24 @@
 //  Yomigaeru
 //
 //  Created by John Connery on 2025/10/23.
-//  Copyright (c) 2025年 Wumbo World. All rights reserved.
+//  Updated for AQGridView ARC 2026/01/14
 //
 
 #import "YGRLibraryViewController.h"
 #import "YGRMangaViewController.h"
 
 #import "YGRCategoryService.h"
-#import "YGRManga.h"
 #import "YGRMangaService.h"
+#import "YGRManga.h"
+#import "YGRLibraryCell.h"
 
-@interface YGRLibraryViewController ()
+@interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate>
 
 @property (nonatomic, strong) YGRCategoryService *categoryService;
 @property (nonatomic, strong) YGRMangaService *mangaService;
 
 @property (nonatomic, strong) NSMutableArray *mangas;
-@property (nonatomic, strong) NSMutableArray *mangaThumbnails;
+@property (nonatomic, strong) NSCache *thumbnailCache;
 
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
@@ -28,149 +29,52 @@
 
 @implementation YGRLibraryViewController
 
+#pragma mark - Init
+
 - (id)init
 {
-    self = [super initWithStyle:UITableViewStylePlain];
-    if (self)
-    {
-        // Custom initialization
+    self = [super init];
+    if (self) {
         self.categoryService = [[YGRCategoryService alloc] init];
         self.mangaService = [[YGRMangaService alloc] init];
-
-        self.mangas = nil;
-        self.mangaThumbnails = nil;
+        self.mangas = [NSMutableArray array];
+        self.thumbnailCache = [[NSCache alloc] init];
     }
     return self;
 }
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view
-    // controller.
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-    self.refreshButton =
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                      target:self
-                                                      action:@selector(refreshLibrary)];
-    self.refreshSpinner = [[UIActivityIndicatorView alloc]
-        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-
-    self.navigationItem.leftBarButtonItem = self.refreshButton;
-
+    
     self.title = @"Library";
-
+    
+    // Refresh button & spinner
+    self.refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                       target:self
+                                                                       action:@selector(refreshLibrary)];
+    self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.leftBarButtonItem = self.refreshButton;
+    
+    self.gridView.dataSource = self;
+    self.gridView.delegate = self;
+    self.gridView.backgroundColor = [UIColor whiteColor];
+    self.gridView.separatorStyle = AQGridViewCellSeparatorStyleNone;
+    
     [self fetchLibrary];
 }
 
-- (void)fetchLibrary
-{
-    __weak typeof(self) weakSelf = self;
-
-    [self.categoryService fetchLibraryWithCompletion:^(NSArray *mangas, NSError *error) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf)
-        {
-            return;
-        }
-
-        if (error)
-        {
-            NSLog(@"%@", error);
-            return;
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.refreshSpinner stopAnimating];
-            self.navigationItem.leftBarButtonItem = self.refreshButton;
-            self.navigationItem.leftBarButtonItem.enabled = YES;
-        });
-
-        strongSelf.mangas = [NSMutableArray arrayWithArray:mangas];
-
-        strongSelf.mangaThumbnails = [NSMutableArray arrayWithCapacity:strongSelf.mangas.count];
-        for (NSUInteger i = 0; i < mangas.count; i++)
-        {
-            [strongSelf.mangaThumbnails addObject:[NSNull null]];
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [strongSelf.tableView reloadData];
-        });
-
-        for (NSUInteger i = 0; i < mangas.count; i++)
-        {
-            YGRManga *manga = [mangas objectAtIndex:i];
-
-            [strongSelf.mangaService
-                fetchThumbnailWithMangaId:manga.id_
-                               completion:^(UIImage *thumbnailImage, NSError *error) {
-                                   if (error)
-                                   {
-                                       NSLog(@"%@", error);
-                                       return;
-                                   }
-
-                                   if (!thumbnailImage)
-                                   {
-                                       NSLog(@"Failed to load image");
-                                       return;
-                                   }
-
-                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                       [strongSelf.mangaThumbnails
-                                           replaceObjectAtIndex:i
-                                                     withObject:thumbnailImage];
-
-                                       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i
-                                                                                   inSection:0];
-
-                                       if ([strongSelf.tableView.indexPathsForVisibleRows
-                                               containsObject:indexPath])
-                                       {
-                                           [strongSelf.tableView
-                                               reloadRowsAtIndexPaths:[NSArray
-                                                                          arrayWithObject:indexPath]
-                                                     withRowAnimation:UITableViewRowAnimationNone];
-                                       }
-                                   });
-                               }];
-        }
-    }];
-}
-
-- (void)refreshLibrary
-{
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-
-    [self.refreshSpinner startAnimating];
-    self.navigationItem.leftBarButtonItem =
-        [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
-
-    [self fetchLibrary];
-}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    if ([self.refreshSpinner isAnimating])
-    {
+    if ([self.refreshSpinner isAnimating]) {
         [self.refreshSpinner stopAnimating];
-
-        // Restore refresh button
         self.navigationItem.leftBarButtonItem = self.refreshButton;
         self.navigationItem.leftBarButtonItem.enabled = YES;
     }
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -178,128 +82,111 @@
     return YES;
 }
 
-#pragma mark - Table view data source
+#pragma mark - Library Loading
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)fetchLibrary
 {
-    // Return the number of sections.
-    return 1;
+    __weak typeof(self) weakSelf = self;
+    
+    [self.categoryService fetchLibraryWithCompletion:^(NSArray *mangas, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.refreshSpinner stopAnimating];
+            strongSelf.navigationItem.leftBarButtonItem = strongSelf.refreshButton;
+            strongSelf.navigationItem.leftBarButtonItem.enabled = YES;
+        });
+        
+        if (error) {
+            NSLog(@"Error fetching library: %@", error);
+            return;
+        }
+        
+        strongSelf.mangas = [NSMutableArray arrayWithArray:mangas];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.gridView reloadData];
+        });
+    }];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)refreshLibrary
 {
-    // Return the number of rows in the section.
-    return self.mangas == nil ? 0 : self.mangas.count;
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    [self.refreshSpinner startAnimating];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+    [self fetchLibrary];
 }
 
-/*
-- (CGFloat) tableView:(UITableView *) tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath
+#pragma mark - AQGridView DataSource
+
+- (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView
 {
-    return 240;
+    return self.mangas.count;
 }
-*/
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    return CGSizeMake(120.0, 150.0);
+}
 
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:CellIdentifier];
+- (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index
+{
+    static NSString *CellIdentifier = @"LibraryCell";
+    
+    YGRLibraryCell *cell = (YGRLibraryCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!cell) {
+        CGRect cellFrame;
+        cellFrame.size = [self portraitGridCellSizeForGridView:self.gridView];
+        cellFrame.origin.x = 120.0f;
+        cellFrame.origin.y = 150.0f;
+        
+        cell = [[YGRLibraryCell alloc] initWithFrame:cellFrame
+                                     reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = AQGridViewCellSelectionStyleBlueGray;
     }
-
-    // Configure the cell...
-    YGRManga *manga = [self.mangas objectAtIndex:indexPath.row];
-    cell.textLabel.text = manga.title;
-
-    id thumbnail = [self.mangaThumbnails objectAtIndex:indexPath.row];
-
-    if ([thumbnail isKindOfClass:[UIImage class]])
-    {
-        cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-        cell.imageView.clipsToBounds = YES;
-        cell.imageView.image = thumbnail;
+    
+    YGRManga *manga = [self.mangas objectAtIndex:index];
+    cell.title = manga.title;
+    
+    UIImage *cachedThumbnail = [self.thumbnailCache objectForKey:manga.id_];
+    if (cachedThumbnail) {
+        cell.image = cachedThumbnail;
+    } else {
+        cell.image = [UIImage imageNamed:@"placeholder"];
+        
+        __weak typeof(cell) weakCell = cell;
+        __weak typeof(self) weakSelf = self;
+        [self.mangaService fetchThumbnailWithMangaId:manga.id_ completion:^(UIImage *thumbnailImage, NSError *error) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf || error || !thumbnailImage) return;
+            
+            [strongSelf.thumbnailCache setObject:thumbnailImage forKey:manga.id_];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Ensure the cell still represents the same manga
+                if ([weakCell.title isEqualToString:manga.title]) {
+                    weakCell.image = thumbnailImage;
+                }
+            });
+        }];
     }
-
+    
     return cell;
 }
 
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - AQGridView Delegate
+
+- (void)gridView:(AQGridView *)gridView didSelectItemAtIndex:(NSUInteger)index
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-     forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        YGRManga *selectedManga = [self.mangas objectAtIndex:indexPath.row];
-
-        __weak typeof(self) weakSelf = self;
-
-        [[self mangaService]
-            deleteFromLibraryWithMangaId:selectedManga.id_
-                              completion:^(BOOL success, NSError *error) {
-                                  __strong typeof(weakSelf) strongSelf = weakSelf;
-
-                                  if (error)
-                                  {
-                                      NSLog(@"%@", error);
-                                      return;
-                                  }
-
-                                  if (success)
-                                  {
-                                      [strongSelf.mangas removeObjectAtIndex:indexPath.row];
-                                      // Delete the row from the data source
-                                      [tableView
-                                          deleteRowsAtIndexPaths:@[ indexPath ]
-                                                withRowAnimation:UITableViewRowAnimationFade];
-                                  }
-                              }];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert)
-    {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new
-        // row to the table view
-    }
-}
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
-toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return NO;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    YGRMangaViewController *mangaViewController = [[YGRMangaViewController alloc] init];
-
-    YGRManga *selectedManga = [self.mangas objectAtIndex:indexPath.row];
-    mangaViewController.manga = selectedManga;
-
-    // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:mangaViewController animated:YES];
+    [gridView deselectItemAtIndex:index animated:YES];
+    
+    YGRManga *selectedManga = [self.mangas objectAtIndex:index];
+    YGRMangaViewController *mangaVC = [[YGRMangaViewController alloc] init];
+    mangaVC.manga = selectedManga;
+    
+    [self.navigationController pushViewController:mangaVC animated:YES];
 }
 
 @end

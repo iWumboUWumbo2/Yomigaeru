@@ -9,7 +9,7 @@ target 'Yomigaeru' do
 
   # Pods for Yomigaeru
   pod 'AFNetworking', '~> 1.0'
-  # pod 'SDWebImage', '3.1.0'
+  pod 'AQGridView'
 end
 
 target 'YomigaeruTests' do

@@ -8,7 +8,17 @@
 
 #import "YGRSourcesViewController.h"
 
+#import "YGRSourceService.h"
+#import "YGRSource.h"
+
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @interface YGRSourcesViewController ()
+
+@property (nonatomic, strong) YGRSourceService *sourceService;
+
+@property (nonatomic, strong) NSMutableArray *languages;
+@property (nonatomic, strong) NSMutableDictionary *sourcesByLanguage;
 
 @end
 
@@ -19,6 +29,9 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         // Custom initialization
+        self.sourceService = [[YGRSourceService alloc] init];
+        self.languages = [NSMutableArray array];
+        self.sourcesByLanguage = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -33,6 +46,36 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    [self fetchSources];
+}
+
+- (void)fetchSources
+{
+    __weak typeof(self) weakSelf = self;
+    [self.sourceService fetchAllSourcesWithCompletion:^(NSArray *sources, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        if (error) {
+            NSLog(@"%@", error);
+            return;
+        }
+        
+        for (YGRSource *source in sources) {
+            NSMutableArray *arrayForLang = [strongSelf.sourcesByLanguage objectForKey:source.lang];
+            if (!arrayForLang) {
+                arrayForLang = [NSMutableArray array];
+                [strongSelf.sourcesByLanguage setObject:arrayForLang forKey:source.lang];
+                
+                [strongSelf.languages addObject:source.lang];
+            }
+            [arrayForLang addObject:source];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.tableView reloadData];
+            [strongSelf.tableView layoutIfNeeded];
+        });
+    }];
 }
 
 - (void)viewDidUnload
@@ -52,13 +95,31 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return !self.languages ? 1 : self.languages.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 0;
+    NSString *sectionLanguage = [self.languages objectAtIndex:section];
+    
+    NSMutableArray *arrayForLang = [self.sourcesByLanguage objectForKey:sectionLanguage];
+    if (!arrayForLang) {
+        return 0;
+    }
+    
+    return arrayForLang.count;
+}
+
+- (YGRSource *)sourceForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *sectionLanguage = [self.languages objectAtIndex:indexPath.section];
+    NSMutableArray *arrayForLang = [self.sourcesByLanguage objectForKey:sectionLanguage];
+    if (!arrayForLang) {
+        return nil;
+    }
+    
+    return [arrayForLang objectAtIndex:indexPath.row];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -66,9 +127,32 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:CellIdentifier];
+    }
+    
     // Configure the cell...
+    YGRSource *source = [self sourceForRowAtIndexPath:indexPath];
+    if (!source) {
+        return cell;
+    }
+    cell.textLabel.text = source.displayName;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [cell.imageView setImageWithURL:source.iconUrl placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section < 0 || section >= self.languages.count)
+    {
+        return @"Error";
+    }
+    
+    return [self.languages objectAtIndex:section];
 }
 
 /*

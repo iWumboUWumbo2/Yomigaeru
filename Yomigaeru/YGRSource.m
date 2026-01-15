@@ -19,8 +19,7 @@
         _id_ = [dictionary objectForKey:@"id"];
         _name = [dictionary objectForKey:@"name"];
         _lang = [dictionary objectForKey:@"lang"];
-        _iconUrl =
-            [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
+        _iconUrl = [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
         _supportsLatest = [[dictionary objectForKey:@"supportsLatest"] boolValue];
         _isConfigurable = [[dictionary objectForKey:@"isConfigurable"] boolValue];
         _isNsfw = [[dictionary objectForKey:@"isNsfw"] boolValue];

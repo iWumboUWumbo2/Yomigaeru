@@ -94,6 +94,7 @@
     }
 
     // Configure the cell...
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
     cell.textLabel.text = selectedChapter.name;
 

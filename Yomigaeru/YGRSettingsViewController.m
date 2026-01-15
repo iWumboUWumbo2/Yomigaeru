@@ -81,6 +81,7 @@
     }
 
     // Configure the cell...
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = [self.settings objectAtIndex:indexPath.row];
 
     return cell;
