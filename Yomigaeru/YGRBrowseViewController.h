@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YGRChildRefreshDelegate.h"
 
-@interface YGRBrowseViewController : UIViewController
+@interface YGRBrowseViewController : UIViewController <YGRChildRefreshDelegate>
 
 - (id)init;
 

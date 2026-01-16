@@ -29,7 +29,6 @@
     // Image view
     _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
-    _imageView.layer.cornerRadius = 5.0f;
     _imageView.layer.masksToBounds = YES;
     _imageView.clipsToBounds = YES;
     _imageView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];

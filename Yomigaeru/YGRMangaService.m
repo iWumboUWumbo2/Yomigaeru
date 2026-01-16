@@ -49,7 +49,6 @@
         }];
 }
 
-// TODO
 - (void)fetchThumbnailWithMangaId:(NSString *)mangaId
                        completion:(void (^)(UIImage *thumbnailImage, NSError *error))completion
 {

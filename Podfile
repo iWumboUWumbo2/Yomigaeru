@@ -10,6 +10,7 @@ target 'Yomigaeru' do
   # Pods for Yomigaeru
   pod 'AFNetworking', '~> 1.0'
   pod 'AQGridView'
+  pod 'MGSwipeTableCell', '~> 1.4.0'
 end
 
 target 'YomigaeruTests' do

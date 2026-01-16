@@ -10,13 +10,13 @@
 
 @interface YGRChapter : NSObject
 
-@property (nonatomic, strong) NSString *id_;
+@property (nonatomic, copy) NSString *id_;
 @property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) long long uploadDate;
 @property (nonatomic, assign) double chapterNumber;
-@property (nonatomic, strong) NSString *scanlator;
-@property (nonatomic, strong) NSString *mangaId;
+@property (nonatomic, copy) NSString *scanlator;
+@property (nonatomic, copy) NSString *mangaId;
 @property (nonatomic, assign) BOOL read;
 @property (nonatomic, assign) BOOL bookmarked;
 @property (nonatomic, assign) NSInteger lastPageRead;

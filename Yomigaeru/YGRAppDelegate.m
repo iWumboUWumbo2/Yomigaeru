@@ -22,6 +22,7 @@
 
     // Override point for customization after application launch.
     YGRSettingsManager *settings = [YGRSettingsManager sharedInstance];
+    (void)settings;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification"
                                                         object:nil];
 

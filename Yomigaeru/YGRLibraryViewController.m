@@ -14,7 +14,7 @@
 #import "YGRManga.h"
 #import "YGRLibraryCell.h"
 
-@interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate>
+@interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) YGRCategoryService *categoryService;
 @property (nonatomic, strong) YGRMangaService *mangaService;
@@ -24,6 +24,9 @@
 
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
+
+@property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, assign) NSUInteger selectedIndex;
 
 @end
 
@@ -39,6 +42,7 @@
         self.mangaService = [[YGRMangaService alloc] init];
         self.mangas = [NSMutableArray array];
         self.thumbnailCache = [[NSCache alloc] init];
+        self.selectedIndex = NSNotFound;
     }
     return self;
 }
@@ -58,6 +62,8 @@
     self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.leftBarButtonItem = self.refreshButton;
     
+    self.actionSheet = [[UIActionSheet alloc] initWithTitle:@"Edit" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
+    
     self.gridView.dataSource = self;
     self.gridView.delegate = self;
     self.gridView.backgroundColor = [UIColor whiteColor];
@@ -65,18 +71,17 @@
     self.gridView.bounces = YES;
     self.gridView.alwaysBounceVertical = YES;
     
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    longPress.minimumPressDuration = 0.5f;
+    [self.gridView addGestureRecognizer:longPress];
+    
     [self fetchLibrary];
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if ([self.refreshSpinner isAnimating]) {
-        [self.refreshSpinner stopAnimating];
-        self.navigationItem.leftBarButtonItem = self.refreshButton;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-    }
+    [self disableSpinner];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -85,6 +90,80 @@
 }
 
 #pragma mark - Library Loading
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
+{
+    if (gesture.state != UIGestureRecognizerStateBegan)
+    {
+        return;
+    }
+    
+    CGPoint point = [gesture locationInView:self.gridView];
+    NSInteger index = [self.gridView indexForItemAtPoint:point];
+    
+    if (index == NSNotFound)
+    {
+        return;
+    }
+    
+    self.selectedIndex = index;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        // In this case the device is an iPad.
+        [self.actionSheet showFromRect:[self.gridView rectForItemAtIndex:index] inView:self.view animated:YES];
+    }
+    else{
+        // In this case the device is an iPhone/iPod Touch.
+        [self.actionSheet showFromTabBar:self.tabBarController.tabBar];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    YGRManga *selectedManga = [self.mangas objectAtIndex:self.selectedIndex];
+    
+    if (buttonIndex == actionSheet.destructiveButtonIndex)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        [self.mangaService deleteFromLibraryWithMangaId:selectedManga.id_ completion:^(BOOL success, NSError *error) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            
+            if (error)
+            {
+                NSLog(@"%@", error);
+                return;
+            }
+            
+            if (!success)
+            {
+                NSLog(@"Failed to delete manga at index (%d)", strongSelf.selectedIndex);
+            }
+            
+            [strongSelf.mangas removeObjectAtIndex:strongSelf.selectedIndex];
+            [strongSelf.gridView deleteItemsAtIndices:[NSIndexSet indexSetWithIndex:strongSelf.selectedIndex] withAnimation:AQGridViewItemAnimationNone];
+        }];
+    }
+}
+
+- (void)enableSpinner
+{
+    if (![ self.refreshSpinner isAnimating])
+    {
+        self.navigationItem.leftBarButtonItem.enabled = NO;
+        [self.refreshSpinner startAnimating];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+    }
+}
+
+- (void)disableSpinner
+{
+    if ([self.refreshSpinner isAnimating]) {
+        [self.refreshSpinner stopAnimating];
+        self.navigationItem.leftBarButtonItem = self.refreshButton;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+    }
+}
 
 - (void)fetchLibrary
 {
@@ -95,9 +174,7 @@
         if (!strongSelf) return;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [strongSelf.refreshSpinner stopAnimating];
-            strongSelf.navigationItem.leftBarButtonItem = strongSelf.refreshButton;
-            strongSelf.navigationItem.leftBarButtonItem.enabled = YES;
+            [strongSelf disableSpinner];
         });
         
         if (error) {
@@ -114,9 +191,7 @@
 
 - (void)refreshLibrary
 {
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    [self.refreshSpinner startAnimating];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+    [self enableSpinner];
     [self fetchLibrary];
 }
 

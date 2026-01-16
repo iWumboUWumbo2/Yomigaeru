@@ -1,20 +1,24 @@
 PODS:
   - AFNetworking (1.3.4)
   - AQGridView (1.3)
+  - MGSwipeTableCell (1.4.3)
 
 DEPENDENCIES:
   - AFNetworking (~> 1.0)
   - AQGridView
+  - MGSwipeTableCell (~> 1.4.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - AQGridView
+    - MGSwipeTableCell
 
 SPEC CHECKSUMS:
   AFNetworking: 61d8c1d58a2a6385abb0650d01642f3a230a9cdb
   AQGridView: 66d04aaa0b3179a9e9827c9e49ab4ffb276511c3
+  MGSwipeTableCell: cb9805df3cc5cad75ad43a5c1eb424be0316f0bf
 
-PODFILE CHECKSUM: 8fc14c6707853d65a1dfb94b92aca02d4799cb5f
+PODFILE CHECKSUM: fbbe515c54f47c93d1c4d718e00c824b194cdd18
 
 COCOAPODS: 1.16.2

@@ -115,6 +115,8 @@
 		0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
 		0357B2202F17640300D5096E /* YGRExtensionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionInfoViewController.h; sourceTree = "<group>"; };
 		0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionInfoViewController.m; sourceTree = "<group>"; };
+		038216C02F19ABDF00D5D620 /* YGRRefreshable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRRefreshable.h; sourceTree = "<group>"; };
+		038216C32F19B22700D5D620 /* YGRChildRefreshDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRChildRefreshDelegate.h; sourceTree = "<group>"; };
 		03AFE1862F188EE500CC1CBB /* YGRLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryCell.h; sourceTree = "<group>"; };
 		03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryCell.m; sourceTree = "<group>"; };
 		03B5C1FD2F185B3500B8898A /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 		0357B2132F1711C200D5096E /* Browse */ = {
 			isa = PBXGroup;
 			children = (
+				038216C22F19B13D00D5D620 /* Protocols */,
 				0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */,
 				0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */,
 				0357B2142F1711C800D5096E /* Sources */,
@@ -295,6 +298,15 @@
 				03CCDAFA2F18A47C009C6C2A /* library@2x.png */,
 			);
 			name = "Tab Bar Icons";
+			sourceTree = "<group>";
+		};
+		038216C22F19B13D00D5D620 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				038216C02F19ABDF00D5D620 /* YGRRefreshable.h */,
+				038216C32F19B22700D5D620 /* YGRChildRefreshDelegate.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		03DCE2312F0DBFAE00E49AB9 = {

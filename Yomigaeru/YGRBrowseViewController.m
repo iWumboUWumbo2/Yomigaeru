@@ -16,9 +16,12 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UISegmentedControl *viewControllerSegmentedControl;
 
+@property (nonatomic, strong) UIBarButtonItem *refreshButton;
+@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
+
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) NSArray *viewControllerTitles;
-@property (nonatomic, strong) UIViewController *currentViewController;
+@property (nonatomic, strong) UIViewController <YGRRefreshable> *currentViewController;
 
 @end
 
@@ -43,7 +46,7 @@
     [viewController didMoveToParentViewController:self];
 }
 
-- (void)cycleToNewViewController:(UIViewController *)newViewController
+- (void)cycleToNewViewController:(UIViewController <YGRRefreshable> *)newViewController
 {
     if (!self.currentViewController)
     {
@@ -99,8 +102,9 @@
         return;
     }
     
-    UIViewController *newViewController = [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
+    UIViewController <YGRRefreshable> *newViewController = [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
     [self cycleToNewViewController:newViewController];
+    [self disableSpinner];
 }
 
 - (void)configureContentView
@@ -118,10 +122,43 @@
 - (void)configureViewControllers
 {
     YGRSourcesViewController *sourcesViewController = [[YGRSourcesViewController alloc] init];
+    sourcesViewController.refreshDelegate = self;
+    
     YGRExtensionsViewController *extensionsViewController = [[YGRExtensionsViewController alloc] init];
+    extensionsViewController.refreshDelegate = self;
     
     self.viewControllers = @[ sourcesViewController, extensionsViewController ];
     self.viewControllerTitles = @[ @"Sources", @"Extensions" ];
+}
+
+- (void)enableSpinner
+{
+    if (![ self.refreshSpinner isAnimating])
+    {
+        self.navigationItem.leftBarButtonItem.enabled = NO;
+        [self.refreshSpinner startAnimating];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+    }
+}
+
+- (void)disableSpinner
+{
+    if ([self.refreshSpinner isAnimating]) {
+        [self.refreshSpinner stopAnimating];
+        self.navigationItem.leftBarButtonItem = self.refreshButton;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+    }
+}
+
+- (void)refreshLibrary
+{
+    [self enableSpinner];
+    [self.currentViewController refresh];
+}
+
+- (void)childDidFinishRefreshing
+{
+    [self disableSpinner];
 }
 
 - (void)viewDidLoad
@@ -132,12 +169,25 @@
     self.title = @"Browse";
     self.view.backgroundColor = [UIColor whiteColor];
     
+    // Refresh button & spinner
+    self.refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                       target:self
+                                                                       action:@selector(refreshLibrary)];
+    self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.leftBarButtonItem = self.refreshButton;
+    
     [self configureViewControllers];
     [self configureViewControllerSegmentedControl];
     [self configureContentView];
     
     self.currentViewController = [self.viewControllers objectAtIndex:0];
     [self displayViewController:self.currentViewController];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self disableSpinner];
 }
 
 - (void)viewDidUnload

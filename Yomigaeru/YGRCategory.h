@@ -10,9 +10,9 @@
 
 @interface YGRCategory : NSObject
 
-@property (nonatomic, strong) NSString *id_;
+@property (nonatomic, copy) NSString *id_;
 @property (nonatomic, assign) NSInteger order;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) BOOL isDefault;
 @property (nonatomic, assign) NSInteger size;
 @property (nonatomic, assign) NSInteger includeInUpdate;

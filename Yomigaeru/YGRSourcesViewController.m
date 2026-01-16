@@ -51,9 +51,14 @@
 
 - (void)fetchSources
 {
+    [self.languages removeAllObjects];
+    [self.sourcesByLanguage removeAllObjects];
+    
     __weak typeof(self) weakSelf = self;
     [self.sourceService fetchAllSourcesWithCompletion:^(NSArray *sources, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf.refreshDelegate childDidFinishRefreshing];
         
         if (error) {
             NSLog(@"%@", error);
@@ -76,6 +81,11 @@
             [strongSelf.tableView layoutIfNeeded];
         });
     }];
+}
+
+- (void)refresh
+{
+    [self fetchSources];
 }
 
 - (void)viewDidUnload

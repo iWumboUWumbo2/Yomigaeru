@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YGRRefreshable.h"
+#import "YGRChildRefreshDelegate.h"
 
-@interface YGRSourcesViewController : UITableViewController
+@interface YGRSourcesViewController : UITableViewController <YGRRefreshable>
+
+@property (nonatomic, weak) id<YGRChildRefreshDelegate> refreshDelegate;
 
 - (id)init;
 

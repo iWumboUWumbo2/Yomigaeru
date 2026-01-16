@@ -16,16 +16,16 @@
 
 @interface YGRManga : NSObject
 
-@property (nonatomic, strong) NSString *id_;
-@property (nonatomic, strong) NSString *sourceId;
+@property (nonatomic, copy) NSString *id_;
+@property (nonatomic, copy) NSString *sourceId;
 @property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) NSString *title;
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) NSURL *thumbnailUrl;
 @property (nonatomic, assign) NSInteger thumbnailUrlLastFetched;
 @property (nonatomic, assign) BOOL initialized;
-@property (nonatomic, strong) NSString *artist;
-@property (nonatomic, strong) NSString *author;
-@property (nonatomic, strong) NSString *description_;
+@property (nonatomic, copy) NSString *artist;
+@property (nonatomic, copy) NSString *author;
+@property (nonatomic, copy) NSString *description_;
 @property (nonatomic, strong) NSArray *genres;
 @property (nonatomic, assign) YGRMangaStatus status;
 @property (nonatomic, assign) BOOL inLibrary;

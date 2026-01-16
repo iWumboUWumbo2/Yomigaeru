@@ -10,7 +10,7 @@
 
 @interface YGRPageViewController : UIViewController
 
-@property (nonatomic, strong) NSString *mangaId;
+@property (nonatomic, copy) NSString *mangaId;
 @property (nonatomic, assign) NSUInteger chapterIndex;
 @property (nonatomic, assign) NSUInteger pageIndex;
 

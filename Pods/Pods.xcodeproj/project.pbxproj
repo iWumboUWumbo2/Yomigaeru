@@ -7,147 +7,168 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		191949890BE965240A82FA6852E6DC84 /* AFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FAEE1FCE7A2EB870E6FFACF990D9DAA /* AFJSONRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		1B40FEFD38FF73F58242553DE312DEDF /* AQGridViewAnimatorItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AF867DB5B8A1781E394FDBF91F703A0D /* AQGridViewAnimatorItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		280443FBF75F0954E0D75943D64D8736 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2EA95BDBD9BC0B902C1CC2B1F5CD82 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		283A0B4DCBF33D49E07642C03BF309DC /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 77EAE3A447705391DF3430A243C642D4 /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		367577BA3FBD3A47677327CB730415F6 /* AQGridViewCell+AQGridViewCellPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = C1292EF2235DAC10FFF88499677D3BC3 /* AQGridViewCell+AQGridViewCellPrivate.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		3A71A86E8EE4B1CC8C7BB365037B56C8 /* AFPropertyListRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4916635F72126FE1FBCF6F244D7F93E8 /* AFPropertyListRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		3F90517B4D9E28EB4CAD7865CE887E4A /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 09FA699CBC6F4C44CB8CE6F4A3D1EAA8 /* AFImageRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		42232DB4FAC211DBF8F9E19A2ABD4F62 /* AQGridViewUpdateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDED7A2439BDD2E58757876A6FA3923 /* AQGridViewUpdateInfo.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		47AB0BB50AEC911359FE9A3DE92FD7C2 /* AQGridViewUpdateInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CAB1DC2AF947D8AACF10E982F1E5895F /* AQGridViewUpdateInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		49BB89FD19B951F53A0B0444B80D6C0D /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FF7FC90E484C9F398EDE9E17459C6A /* AFHTTPClient.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		4A8A02A4CF958533D86C2427154CAF24 /* AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = F404449010680CE066E7EE270857873F /* AQGridView.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		4EF85C9E323FA4FD0FB9CE896978B9BA /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D0B487E4BAC2C9B226FE91D626B65DF /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		50E7F993E2A9DBEBC2505F355A9CC84D /* AQGridViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 20465DE23F533125D99F80D4D0E5AD57 /* AQGridViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		54BDCE9C71EC4866F3A05B491CB5CB79 /* AQGridView.h in Headers */ = {isa = PBXBuildFile; fileRef = C39033FACBB1196337A5DD8773F02EBC /* AQGridView.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		550A1A9534CFF13B9986E0A79FCE0C17 /* AQGridViewData.h in Headers */ = {isa = PBXBuildFile; fileRef = 29FAB2938BB98833D52FF504B269DF8C /* AQGridViewData.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		5A4551C918C06D3132BA5428577B1B91 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = E63DB6040C8D420C72463ED40ACBE92C /* AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		5D1F730E192261A79393854FF378F85E /* AQGridViewAnimatorItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 778CBA30A469CC323EA4659DAAC508F3 /* AQGridViewAnimatorItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		5DA8C9B0790166A06BDCCA2AE5264309 /* AQGridView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CB139A0818874976CB37C7E94E204C5D /* AQGridView-dummy.m */; };
-		73FDA3C6155C8FB4E54F0D0538BB72C1 /* AQGridView+CellLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 2283E00469AC48E95C1F9B9C270A89ED /* AQGridView+CellLayout.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		191949890BE965240A82FA6852E6DC84 /* AFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = CBA770B2240AEBD1E1F69FA69F4C1638 /* AFJSONRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		1B40FEFD38FF73F58242553DE312DEDF /* AQGridViewAnimatorItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 82AB5EFF83C861428AF3B900FC211451 /* AQGridViewAnimatorItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		1F25F27E2DC89172457E3AC42C6374F6 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 944A81D8E963E49E8584DCB7207ACC44 /* MGSwipeTableCell.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		280443FBF75F0954E0D75943D64D8736 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 29276DEE6DA215A095E435355A132755 /* AFHTTPClient.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		283A0B4DCBF33D49E07642C03BF309DC /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EEE910185E3E345104B541C4D2E4AA2 /* AFXMLRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		34612F21C54DD5C773C694A43134C9E0 /* MGSwipeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A3616EBD41E261B1CD850FB93864C70 /* MGSwipeButton.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		367577BA3FBD3A47677327CB730415F6 /* AQGridViewCell+AQGridViewCellPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22991C2B6B99A192F810924BFB70E127 /* AQGridViewCell+AQGridViewCellPrivate.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		3A71A86E8EE4B1CC8C7BB365037B56C8 /* AFPropertyListRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = E15B26C2C0A07B2CC31631791D4F517E /* AFPropertyListRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		3F90517B4D9E28EB4CAD7865CE887E4A /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D4727F1EF1679FD26F35D2FCAAAF6DB /* AFImageRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		42232DB4FAC211DBF8F9E19A2ABD4F62 /* AQGridViewUpdateInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 92AF6DD05E09F803569A7C53F006C7CD /* AQGridViewUpdateInfo.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		47AB0BB50AEC911359FE9A3DE92FD7C2 /* AQGridViewUpdateInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 08FC784480180ACEEB84A59C295F772B /* AQGridViewUpdateInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		49BB89FD19B951F53A0B0444B80D6C0D /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A5769D80627BCE78C80891FEE911C60 /* AFHTTPClient.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		4A8A02A4CF958533D86C2427154CAF24 /* AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = D16B3A7A6A4DF2B40D628E57BB20B667 /* AQGridView.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		4EF85C9E323FA4FD0FB9CE896978B9BA /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 286274EFEA170561F52A1E55861F5CD7 /* AFHTTPRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		50E7F993E2A9DBEBC2505F355A9CC84D /* AQGridViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 372930C17EC62BDF024FF01853906813 /* AQGridViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		54BDCE9C71EC4866F3A05B491CB5CB79 /* AQGridView.h in Headers */ = {isa = PBXBuildFile; fileRef = 747D1C9ABF624268962FE644B858FE73 /* AQGridView.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		550A1A9534CFF13B9986E0A79FCE0C17 /* AQGridViewData.h in Headers */ = {isa = PBXBuildFile; fileRef = 04EE0AE9019202CB2C7C73406EDEB549 /* AQGridViewData.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5A4551C918C06D3132BA5428577B1B91 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 75EE7CA9530D03579C39CA1D1503921D /* AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5D1F730E192261A79393854FF378F85E /* AQGridViewAnimatorItem.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8B3EF6BC215F5EA9E62D562C9C8DC1 /* AQGridViewAnimatorItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5DA8C9B0790166A06BDCCA2AE5264309 /* AQGridView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F399761DDF67B5616A97CCED658685 /* AQGridView-dummy.m */; };
+		65489316B9B38F201D8C906AF3289D85 /* MGSwipeTableCell-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BB750D11D5542910304FC58482D344 /* MGSwipeTableCell-dummy.m */; };
+		73FDA3C6155C8FB4E54F0D0538BB72C1 /* AQGridView+CellLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 842D83DDA50E323FA507DF3E5F0FAF5A /* AQGridView+CellLayout.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7468252EF60F03BE0AACE2ACD8017030 /* Pods-YomigaeruTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B29DABC700796849CEAAFB1B6B5DF4 /* Pods-YomigaeruTests-dummy.m */; };
-		793D7E7116D5274291B6CE208F78C41E /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C543094FA3F4EB6CC0ACDF9DE8853F6 /* AFNetworkActivityIndicatorManager.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		7ED6647058DB397F6F1D18239D085296 /* NSIndexSet+AQIsSetContiguous.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A8DA9053E4140EF5AF466C9820931F /* NSIndexSet+AQIsSetContiguous.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		7F324AC150D6CEBE6A338C078B1739B2 /* AQGridViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = 453C7DDD379F35B503E94E41057E8997 /* AQGridViewData.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		86417306CEB8A2964CF6752B07EA8D4A /* AQGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C73748926A2CC9472088C9D10950D3 /* AQGridViewCell.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		86AC01F9BFDC53A827C654F293FDE9C4 /* AQGridViewUpdateItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 13FEA4587AE208923835A7B202D91FA0 /* AQGridViewUpdateItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		892A135DFF292361DACD47088C4996B1 /* AQGridViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 488EF60426C2BEB05BD27DF7881EDAD2 /* AQGridViewCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		8BDAA72D006601CDB05D6C856366D229 /* NSIndexSet+AQIndexesOutsideSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C571A6ECE7A6881EE572E2B530068B5C /* NSIndexSet+AQIndexesOutsideSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		92A9162C06894928059CED94FF3938A4 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D9E49597402F3B3036FF2A6353D217 /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		980DCCC6A4A8711ECBDB960A1B1A5A0B /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5379BDC0176E642C27BB36E92B211480 /* AFNetworkActivityIndicatorManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		980F4FCCEA29418D519CA1BD0F4433DA /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3E974CE1F1FE946D77B56F48E78B3D /* AFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		A6E696E62C5DB48885F987098732CBA9 /* AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 79613DD74A71B56651DACDEF0943BCB2 /* AFNetworking-dummy.m */; };
-		A884BF877ABF8D913565BB9DEC8EA721 /* UIColor+AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = D213FFFBA07D217F46C2671358B76643 /* UIColor+AQGridView.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		AC21A955535A844BA8FF9557934D1FAF /* AQGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FF7308C370DC65F5B6DC158149B84 /* AQGridViewController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		BBEF741620365AEA6901594F1BE1521B /* NSIndexSet+AQIsSetContiguous.h in Headers */ = {isa = PBXBuildFile; fileRef = B1636C3E08AD9AFE6E71C7979E75B749 /* NSIndexSet+AQIsSetContiguous.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		CF94280D2FAC01748C59D3DB57A8E492 /* NSIndexSet+AQIndexesOutsideSet.h in Headers */ = {isa = PBXBuildFile; fileRef = F1EB4C384483A5E51487A0412E10F9AD /* NSIndexSet+AQIndexesOutsideSet.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D383697BE6CB385CFD586DB22C3A039F /* AQGridView+CellLocationDelegation.h in Headers */ = {isa = PBXBuildFile; fileRef = 66922963120101489A358FAF07557FAE /* AQGridView+CellLocationDelegation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D5F5172A45A795094BBDDC73D5EDDA04 /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69618490190E62349ECFCBC47E0F70B5 /* AFURLConnectionOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		D7433399C7AC096090E540CE0B2A5C1D /* Pods-Yomigaeru-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAA04C43267B0E0010ECCC99E0DC2F6 /* Pods-Yomigaeru-dummy.m */; };
-		DC1A1560DC1B039004809A067D75E126 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = F60D70F9A4EA3EA3F73EF5EE0325AF85 /* AFHTTPRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		E2F8A907F899CBD65435ECC2924DE5E5 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 957341614FF8265D10680875AF892A54 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		E358E5134CA0EA4D073CBE7A0058E72E /* UIColor+AQGridView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7434E7314675A2C05D70AE6C00C4743D /* UIColor+AQGridView.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		EA3A76B97419A5416F6C01EA09E5D227 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8634E036E2E1A8B332E9058D7BE19 /* AFPropertyListRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		F652AD0B54832F57F09BE5DBB389C708 /* AQGridViewUpdateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B372792DF6AB6F7E9845445C66CC192C /* AQGridViewUpdateItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		F657A20C939EC45F53D0BE1132CC82C0 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B93716F8280743DA5FFBCD668C9CA9F9 /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		FB1F1AF974F3D824BA7746CE4DF84D12 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F27616BEA3C17BBC4557F59F8DD4414 /* UIImageView+AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		FE14560B713FD4F1FB6A1F0007EE48AA /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 06BFCBE9B3DB28AFB2D957D6620B69BD /* AFXMLRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		793D7E7116D5274291B6CE208F78C41E /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D560B2136E159098872F62849E3E6CD /* AFNetworkActivityIndicatorManager.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		79928838B79818154536DB60050F916F /* MGSwipeTableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FB524A89CE852EA7B3D20219C2B5F21C /* MGSwipeTableCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		7ED6647058DB397F6F1D18239D085296 /* NSIndexSet+AQIsSetContiguous.m in Sources */ = {isa = PBXBuildFile; fileRef = 0005CB9B18AAB24B8E40FA7C8165D362 /* NSIndexSet+AQIsSetContiguous.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		7F324AC150D6CEBE6A338C078B1739B2 /* AQGridViewData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2628AC776D9DEFA3A4946EB90109920E /* AQGridViewData.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		86417306CEB8A2964CF6752B07EA8D4A /* AQGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D91EC94A6AC228EA51FEDC70320BF5 /* AQGridViewCell.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		86AC01F9BFDC53A827C654F293FDE9C4 /* AQGridViewUpdateItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A720A753E2A77C5AE3A74D679F5643C /* AQGridViewUpdateItem.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		892A135DFF292361DACD47088C4996B1 /* AQGridViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = F9FACC86AE166D8E6C8648FCC8CB0352 /* AQGridViewCell.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8BDAA72D006601CDB05D6C856366D229 /* NSIndexSet+AQIndexesOutsideSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE9C39FABC67693AD8EEB174DE6A66E /* NSIndexSet+AQIndexesOutsideSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		92A9162C06894928059CED94FF3938A4 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F7655DD18FCEE3676310207D5A9C2 /* AFImageRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		980DCCC6A4A8711ECBDB960A1B1A5A0B /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CA25E01F8B2F3061DB96F86325CFC490 /* AFNetworkActivityIndicatorManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		980F4FCCEA29418D519CA1BD0F4433DA /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C8BFBCBD84D040732FB942BC3C26E5 /* AFJSONRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A6E696E62C5DB48885F987098732CBA9 /* AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F6BD56FC733D057A62080EEE28775291 /* AFNetworking-dummy.m */; };
+		A884BF877ABF8D913565BB9DEC8EA721 /* UIColor+AQGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = F52FFFB956F3A6CD9160D0857BCD6DA0 /* UIColor+AQGridView.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		AC21A955535A844BA8FF9557934D1FAF /* AQGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CBC95E3B127E0EF22FEBFAF102EEE93 /* AQGridViewController.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		BBEF741620365AEA6901594F1BE1521B /* NSIndexSet+AQIsSetContiguous.h in Headers */ = {isa = PBXBuildFile; fileRef = E11E565A018695139F6DD62C0675BFFB /* NSIndexSet+AQIsSetContiguous.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C2D4A074D06C1E7968CAE76CD9A77FE3 /* Pods-Yomigaeru-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DAA04C43267B0E0010ECCC99E0DC2F6 /* Pods-Yomigaeru-dummy.m */; };
+		CF94280D2FAC01748C59D3DB57A8E492 /* NSIndexSet+AQIndexesOutsideSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E348E7EF2F6A60E7597A4A19C5CAB98 /* NSIndexSet+AQIndexesOutsideSet.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D383697BE6CB385CFD586DB22C3A039F /* AQGridView+CellLocationDelegation.h in Headers */ = {isa = PBXBuildFile; fileRef = 12F73BF6ACEF0499E8482A4221087259 /* AQGridView+CellLocationDelegation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D5F5172A45A795094BBDDC73D5EDDA04 /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5EBC649617A4CC6CC8112B196E7C7B5B /* AFURLConnectionOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DC1A1560DC1B039004809A067D75E126 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 25EF19AB321EE83478175D2DCEBCF10E /* AFHTTPRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DD6A05705035DCFEA93109014D10B487 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C13DE7CFFD860B404B64F62C947E16BE /* MGSwipeButton.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		E2F8A907F899CBD65435ECC2924DE5E5 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = B645FB0BFA8740F17E043DF0CCBE2066 /* UIImageView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		E358E5134CA0EA4D073CBE7A0058E72E /* UIColor+AQGridView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4918A8CB7A903E97FCA25618296ABFC5 /* UIColor+AQGridView.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		EA3A76B97419A5416F6C01EA09E5D227 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB890BE87659A107FDAEFD464536A5E /* AFPropertyListRequestOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		F652AD0B54832F57F09BE5DBB389C708 /* AQGridViewUpdateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 241550CEC0B516BE73D5E588BAA6FE4B /* AQGridViewUpdateItem.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		F657A20C939EC45F53D0BE1132CC82C0 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 31124E2404A27CDB0352FF87816839EE /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		FB1F1AF974F3D824BA7746CE4DF84D12 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 70165F28895E6A2E89E16B7434550289 /* UIImageView+AFNetworking.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		FE14560B713FD4F1FB6A1F0007EE48AA /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A7355211574DF540FC3053DF1B6795E /* AFXMLRequestOperation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		16A861E3BEFCCD020E7EF4EAE37501C7 /* PBXContainerItemProxy */ = {
+		29761C4179E20A52B61890E7F1F46ABC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = AC70D24D2E39B82F7F1A5B9BE09ED743;
-			remoteInfo = AQGridView;
+			remoteGlobalIDString = 1EEB7FC8FC3DC62BFD58C64EF0EDFF4B;
+			remoteInfo = MGSwipeTableCell;
 		};
-		27E1C0E229CD6BE1EE0ACB9DA3697C39 /* PBXContainerItemProxy */ = {
+		441B71255730AC97BA84B978E5F428FD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 0130B3724283586C0E9D2A112D4F2AA1;
 			remoteInfo = AFNetworking;
 		};
+		B24E9327B6A4E40A16F889C57F4A334B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC70D24D2E39B82F7F1A5B9BE09ED743;
+			remoteInfo = AQGridView;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0005CB9B18AAB24B8E40FA7C8165D362 /* NSIndexSet+AQIsSetContiguous.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+AQIsSetContiguous.m"; path = "Classes/NSIndexSet+AQIsSetContiguous.m"; sourceTree = "<group>"; };
+		04EE0AE9019202CB2C7C73406EDEB549 /* AQGridViewData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewData.h; path = Classes/AQGridViewData.h; sourceTree = "<group>"; };
 		0668888FBD1D718C85D5DD35658DBB28 /* Pods-YomigaeruTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YomigaeruTests.debug.xcconfig"; sourceTree = "<group>"; };
-		06BFCBE9B3DB28AFB2D957D6620B69BD /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFXMLRequestOperation.h; path = AFNetworking/AFXMLRequestOperation.h; sourceTree = "<group>"; };
-		09FA699CBC6F4C44CB8CE6F4A3D1EAA8 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFImageRequestOperation.h; path = AFNetworking/AFImageRequestOperation.h; sourceTree = "<group>"; };
-		0C543094FA3F4EB6CC0ACDF9DE8853F6 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = AFNetworking/AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
-		0E3FF7308C370DC65F5B6DC158149B84 /* AQGridViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewController.m; path = Classes/AQGridViewController.m; sourceTree = "<group>"; };
-		0FAEE1FCE7A2EB870E6FFACF990D9DAA /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFJSONRequestOperation.h; path = AFNetworking/AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		069C37CABA307BFD64D80192A711E503 /* AQGridView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AQGridView-prefix.pch"; sourceTree = "<group>"; };
+		08FC784480180ACEEB84A59C295F772B /* AQGridViewUpdateInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewUpdateInfo.h; path = Classes/AQGridViewUpdateInfo.h; sourceTree = "<group>"; };
+		0F3ADF830435FEDE11D407C19747608B /* MGSwipeTableCell.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MGSwipeTableCell.debug.xcconfig; sourceTree = "<group>"; };
 		11B29DABC700796849CEAAFB1B6B5DF4 /* Pods-YomigaeruTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-YomigaeruTests-dummy.m"; sourceTree = "<group>"; };
-		13FEA4587AE208923835A7B202D91FA0 /* AQGridViewUpdateItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewUpdateItem.h; path = Classes/AQGridViewUpdateItem.h; sourceTree = "<group>"; };
-		1474532BD35C28A56DA95C8C24137428 /* AQGridView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AQGridView-prefix.pch"; sourceTree = "<group>"; };
-		14A8DA9053E4140EF5AF466C9820931F /* NSIndexSet+AQIsSetContiguous.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+AQIsSetContiguous.m"; path = "Classes/NSIndexSet+AQIsSetContiguous.m"; sourceTree = "<group>"; };
-		20465DE23F533125D99F80D4D0E5AD57 /* AQGridViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewController.h; path = Classes/AQGridViewController.h; sourceTree = "<group>"; };
-		2074FCBF463FFD92D3EC4F6B89271400 /* AQGridSelectionGrayBlue.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionGrayBlue.png; path = Resources/AQGridSelectionGrayBlue.png; sourceTree = "<group>"; };
-		2283E00469AC48E95C1F9B9C270A89ED /* AQGridView+CellLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AQGridView+CellLayout.h"; path = "Classes/AQGridView+CellLayout.h"; sourceTree = "<group>"; };
-		29FAB2938BB98833D52FF504B269DF8C /* AQGridViewData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewData.h; path = Classes/AQGridViewData.h; sourceTree = "<group>"; };
-		32E1A5221863750BCD5839B9D9356402 /* AFNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.debug.xcconfig; sourceTree = "<group>"; };
-		453C7DDD379F35B503E94E41057E8997 /* AQGridViewData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewData.m; path = Classes/AQGridViewData.m; sourceTree = "<group>"; };
-		488EF60426C2BEB05BD27DF7881EDAD2 /* AQGridViewCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewCell.h; path = Classes/AQGridViewCell.h; sourceTree = "<group>"; };
-		4916635F72126FE1FBCF6F244D7F93E8 /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFPropertyListRequestOperation.h; path = AFNetworking/AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
-		49D9E49597402F3B3036FF2A6353D217 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFImageRequestOperation.m; path = AFNetworking/AFImageRequestOperation.m; sourceTree = "<group>"; };
+		12F73BF6ACEF0499E8482A4221087259 /* AQGridView+CellLocationDelegation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AQGridView+CellLocationDelegation.h"; path = "Classes/AQGridView+CellLocationDelegation.h"; sourceTree = "<group>"; };
+		19E835DE8769D86C997B9647484CC325 /* AFNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.debug.xcconfig; sourceTree = "<group>"; };
+		22991C2B6B99A192F810924BFB70E127 /* AQGridViewCell+AQGridViewCellPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AQGridViewCell+AQGridViewCellPrivate.h"; path = "Classes/AQGridViewCell+AQGridViewCellPrivate.h"; sourceTree = "<group>"; };
+		241550CEC0B516BE73D5E588BAA6FE4B /* AQGridViewUpdateItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewUpdateItem.m; path = Classes/AQGridViewUpdateItem.m; sourceTree = "<group>"; };
+		25EF19AB321EE83478175D2DCEBCF10E /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		25F18D1B6B5143BEF52BDC9EFD5CBE0A /* libMGSwipeTableCell.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMGSwipeTableCell.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2628AC776D9DEFA3A4946EB90109920E /* AQGridViewData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewData.m; path = Classes/AQGridViewData.m; sourceTree = "<group>"; };
+		26C8BFBCBD84D040732FB942BC3C26E5 /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFJSONRequestOperation.m; path = AFNetworking/AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		286274EFEA170561F52A1E55861F5CD7 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		29276DEE6DA215A095E435355A132755 /* AFHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = AFNetworking/AFHTTPClient.m; sourceTree = "<group>"; };
+		2A5F7655DD18FCEE3676310207D5A9C2 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFImageRequestOperation.m; path = AFNetworking/AFImageRequestOperation.m; sourceTree = "<group>"; };
+		2A720A753E2A77C5AE3A74D679F5643C /* AQGridViewUpdateItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewUpdateItem.h; path = Classes/AQGridViewUpdateItem.h; sourceTree = "<group>"; };
+		31124E2404A27CDB0352FF87816839EE /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		337A54C3BF000B4FF9A2AA4503C7E168 /* AQGridSelection.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelection.png; path = Resources/AQGridSelection.png; sourceTree = "<group>"; };
+		35D91EC94A6AC228EA51FEDC70320BF5 /* AQGridViewCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewCell.m; path = Classes/AQGridViewCell.m; sourceTree = "<group>"; };
+		372930C17EC62BDF024FF01853906813 /* AQGridViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewController.h; path = Classes/AQGridViewController.h; sourceTree = "<group>"; };
+		3D560B2136E159098872F62849E3E6CD /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = AFNetworking/AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		42F399761DDF67B5616A97CCED658685 /* AQGridView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AQGridView-dummy.m"; sourceTree = "<group>"; };
+		4918A8CB7A903E97FCA25618296ABFC5 /* UIColor+AQGridView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIColor+AQGridView.h"; path = "Classes/UIColor+AQGridView.h"; sourceTree = "<group>"; };
 		4C05AEAD7A8E57FC3B1DF8058C9802C6 /* Pods-YomigaeruTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-YomigaeruTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		50FF7FC90E484C9F398EDE9E17459C6A /* AFHTTPClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = AFNetworking/AFHTTPClient.h; sourceTree = "<group>"; };
 		526766E01ECF3453CB536B883D94A6BE /* Pods-Yomigaeru-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Yomigaeru-acknowledgements.markdown"; sourceTree = "<group>"; };
-		52C73748926A2CC9472088C9D10950D3 /* AQGridViewCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewCell.m; path = Classes/AQGridViewCell.m; sourceTree = "<group>"; };
-		5379BDC0176E642C27BB36E92B211480 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = AFNetworking/AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
-		561D301BC891DCFC8557DB9694089B81 /* Pods-YomigaeruTests */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-YomigaeruTests"; path = "libPods-YomigaeruTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AE8634E036E2E1A8B332E9058D7BE19 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFPropertyListRequestOperation.m; path = AFNetworking/AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
-		5DDED7A2439BDD2E58757876A6FA3923 /* AQGridViewUpdateInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewUpdateInfo.m; path = Classes/AQGridViewUpdateInfo.m; sourceTree = "<group>"; };
-		5F3E974CE1F1FE946D77B56F48E78B3D /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFJSONRequestOperation.m; path = AFNetworking/AFJSONRequestOperation.m; sourceTree = "<group>"; };
-		5FDF3FB1DD494D6B2BE6CABCD1A84E9F /* AQGridSelection.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelection.png; path = Resources/AQGridSelection.png; sourceTree = "<group>"; };
-		62ECD8BFE26932832188ECF7E528849D /* AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFNetworking-prefix.pch"; sourceTree = "<group>"; };
-		66922963120101489A358FAF07557FAE /* AQGridView+CellLocationDelegation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AQGridView+CellLocationDelegation.h"; path = "Classes/AQGridView+CellLocationDelegation.h"; sourceTree = "<group>"; };
-		69618490190E62349ECFCBC47E0F70B5 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
-		6D0B487E4BAC2C9B226FE91D626B65DF /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		561D301BC891DCFC8557DB9694089B81 /* libPods-YomigaeruTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YomigaeruTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A3616EBD41E261B1CD850FB93864C70 /* MGSwipeButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MGSwipeButton.h; path = MGSwipeTableCell/MGSwipeButton.h; sourceTree = "<group>"; };
+		5EBC649617A4CC6CC8112B196E7C7B5B /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		65BB750D11D5542910304FC58482D344 /* MGSwipeTableCell-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MGSwipeTableCell-dummy.m"; sourceTree = "<group>"; };
+		69FD99A967E690C805FE720DBB8FE063 /* AQGridSelectionRed.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionRed.png; path = Resources/AQGridSelectionRed.png; sourceTree = "<group>"; };
+		6AD676E68FE859F6C9EA79274ABD957C /* AQGridSelectionGrayBlue.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionGrayBlue.png; path = Resources/AQGridSelectionGrayBlue.png; sourceTree = "<group>"; };
 		6DD720F95B850F2B10712F1723B506E2 /* Pods-Yomigaeru-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Yomigaeru-acknowledgements.plist"; sourceTree = "<group>"; };
-		6F27616BEA3C17BBC4557F59F8DD4414 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
-		7434E7314675A2C05D70AE6C00C4743D /* UIColor+AQGridView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIColor+AQGridView.h"; path = "Classes/UIColor+AQGridView.h"; sourceTree = "<group>"; };
-		778CBA30A469CC323EA4659DAAC508F3 /* AQGridViewAnimatorItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewAnimatorItem.h; path = Classes/AQGridViewAnimatorItem.h; sourceTree = "<group>"; };
-		77EAE3A447705391DF3430A243C642D4 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetworking/AFXMLRequestOperation.m; sourceTree = "<group>"; };
-		79613DD74A71B56651DACDEF0943BCB2 /* AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFNetworking-dummy.m"; sourceTree = "<group>"; };
-		86EC437292F1165E7E6462626A82D9B0 /* AQGridSelectionGreen.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionGreen.png; path = Resources/AQGridSelectionGreen.png; sourceTree = "<group>"; };
+		6FC0710FF3C4E8A23863E6904696F8B6 /* AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFNetworking-prefix.pch"; sourceTree = "<group>"; };
+		70165F28895E6A2E89E16B7434550289 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		747D1C9ABF624268962FE644B858FE73 /* AQGridView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridView.h; path = Classes/AQGridView.h; sourceTree = "<group>"; };
+		75EE7CA9530D03579C39CA1D1503921D /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
+		7A5769D80627BCE78C80891FEE911C60 /* AFHTTPClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPClient.h; path = AFNetworking/AFHTTPClient.h; sourceTree = "<group>"; };
+		7A7355211574DF540FC3053DF1B6795E /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFXMLRequestOperation.h; path = AFNetworking/AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		7EEE910185E3E345104B541C4D2E4AA2 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFXMLRequestOperation.m; path = AFNetworking/AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		82AB5EFF83C861428AF3B900FC211451 /* AQGridViewAnimatorItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewAnimatorItem.m; path = Classes/AQGridViewAnimatorItem.m; sourceTree = "<group>"; };
+		842D83DDA50E323FA507DF3E5F0FAF5A /* AQGridView+CellLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AQGridView+CellLayout.h"; path = "Classes/AQGridView+CellLayout.h"; sourceTree = "<group>"; };
 		890E8908D470C66F3678742E979BEEBF /* Pods-Yomigaeru.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yomigaeru.debug.xcconfig"; sourceTree = "<group>"; };
-		8AFD0254A2326819CB7ADDBB8FE6CF56 /* AQGridSelectionRed.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionRed.png; path = Resources/AQGridSelectionRed.png; sourceTree = "<group>"; };
+		8D4727F1EF1679FD26F35D2FCAAAF6DB /* AFImageRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFImageRequestOperation.h; path = AFNetworking/AFImageRequestOperation.h; sourceTree = "<group>"; };
 		8DAA04C43267B0E0010ECCC99E0DC2F6 /* Pods-Yomigaeru-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Yomigaeru-dummy.m"; sourceTree = "<group>"; };
+		8E06A014D906D91356DF7D16C87762E4 /* AQGridView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AQGridView.debug.xcconfig; sourceTree = "<group>"; };
 		8E613FB741384FE6D74F895EF0EB28C6 /* Pods-Yomigaeru-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Yomigaeru-resources.sh"; sourceTree = "<group>"; };
-		957341614FF8265D10680875AF892A54 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
-		98CC20061A0165AFE8A2ACE76FBA410E /* AQGridSelectionGray.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionGray.png; path = Resources/AQGridSelectionGray.png; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A024DD20937EC1635CDE8081A075B837 /* AQGridView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AQGridView.debug.xcconfig; sourceTree = "<group>"; };
+		92AF6DD05E09F803569A7C53F006C7CD /* AQGridViewUpdateInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewUpdateInfo.m; path = Classes/AQGridViewUpdateInfo.m; sourceTree = "<group>"; };
+		944A81D8E963E49E8584DCB7207ACC44 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MGSwipeTableCell.m; path = MGSwipeTableCell/MGSwipeTableCell.m; sourceTree = "<group>"; };
+		9CBC95E3B127E0EF22FEBFAF102EEE93 /* AQGridViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewController.m; path = Classes/AQGridViewController.m; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9E348E7EF2F6A60E7597A4A19C5CAB98 /* NSIndexSet+AQIndexesOutsideSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+AQIndexesOutsideSet.h"; path = "Classes/NSIndexSet+AQIndexesOutsideSet.h"; sourceTree = "<group>"; };
+		9FE9C39FABC67693AD8EEB174DE6A66E /* NSIndexSet+AQIndexesOutsideSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+AQIndexesOutsideSet.m"; path = "Classes/NSIndexSet+AQIndexesOutsideSet.m"; sourceTree = "<group>"; };
 		A272FA9C6631DF4D92F57CDC58648825 /* Pods-YomigaeruTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YomigaeruTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		A4FA15D44DF6BAC7550EDEED10862AA3 /* AFNetworking */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = AFNetworking; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		A74AD62EB90F3032D3FD6C5452815A17 /* Pods-Yomigaeru */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-Yomigaeru"; path = "libPods-Yomigaeru.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF867DB5B8A1781E394FDBF91F703A0D /* AQGridViewAnimatorItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewAnimatorItem.m; path = Classes/AQGridViewAnimatorItem.m; sourceTree = "<group>"; };
-		B1636C3E08AD9AFE6E71C7979E75B749 /* NSIndexSet+AQIsSetContiguous.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+AQIsSetContiguous.h"; path = "Classes/NSIndexSet+AQIsSetContiguous.h"; sourceTree = "<group>"; };
-		B29CC38585269AF4C9CDEDE4B224904D /* AQGridView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AQGridView.release.xcconfig; sourceTree = "<group>"; };
-		B372792DF6AB6F7E9845445C66CC192C /* AQGridViewUpdateItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridViewUpdateItem.m; path = Classes/AQGridViewUpdateItem.m; sourceTree = "<group>"; };
-		B93716F8280743DA5FFBCD668C9CA9F9 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
-		BE2EA95BDBD9BC0B902C1CC2B1F5CD82 /* AFHTTPClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPClient.m; path = AFNetworking/AFHTTPClient.m; sourceTree = "<group>"; };
-		C1292EF2235DAC10FFF88499677D3BC3 /* AQGridViewCell+AQGridViewCellPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "AQGridViewCell+AQGridViewCellPrivate.h"; path = "Classes/AQGridViewCell+AQGridViewCellPrivate.h"; sourceTree = "<group>"; };
-		C39033FACBB1196337A5DD8773F02EBC /* AQGridView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridView.h; path = Classes/AQGridView.h; sourceTree = "<group>"; };
-		C571A6ECE7A6881EE572E2B530068B5C /* NSIndexSet+AQIndexesOutsideSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+AQIndexesOutsideSet.m"; path = "Classes/NSIndexSet+AQIndexesOutsideSet.m"; sourceTree = "<group>"; };
-		CAB1DC2AF947D8AACF10E982F1E5895F /* AQGridViewUpdateInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewUpdateInfo.h; path = Classes/AQGridViewUpdateInfo.h; sourceTree = "<group>"; };
-		CB139A0818874976CB37C7E94E204C5D /* AQGridView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AQGridView-dummy.m"; sourceTree = "<group>"; };
-		CBCDA32B64CD3CA8F635B68B2AC9C3CC /* AFNetworking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.release.xcconfig; sourceTree = "<group>"; };
+		A4FA15D44DF6BAC7550EDEED10862AA3 /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A74AD62EB90F3032D3FD6C5452815A17 /* libPods-Yomigaeru.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Yomigaeru.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADC1A9AFBB46C7012E260FA491FF5A8D /* AQGridSelectionGray.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionGray.png; path = Resources/AQGridSelectionGray.png; sourceTree = "<group>"; };
+		B02ACC3D30D141C37F4A0330313D035E /* AQGridSelectionGreen.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = AQGridSelectionGreen.png; path = Resources/AQGridSelectionGreen.png; sourceTree = "<group>"; };
+		B645FB0BFA8740F17E043DF0CCBE2066 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		C13DE7CFFD860B404B64F62C947E16BE /* MGSwipeButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MGSwipeButton.m; path = MGSwipeTableCell/MGSwipeButton.m; sourceTree = "<group>"; };
+		C60B273795E9527C7ADA86E2477DF146 /* MGSwipeTableCell-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MGSwipeTableCell-prefix.pch"; sourceTree = "<group>"; };
+		CA25E01F8B2F3061DB96F86325CFC490 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = AFNetworking/AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		CBA770B2240AEBD1E1F69FA69F4C1638 /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFJSONRequestOperation.h; path = AFNetworking/AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		CE8B3EF6BC215F5EA9E62D562C9C8DC1 /* AQGridViewAnimatorItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewAnimatorItem.h; path = Classes/AQGridViewAnimatorItem.h; sourceTree = "<group>"; };
 		D0E3463CF0F44AE3E90DDF4120C98DE2 /* Pods-YomigaeruTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-YomigaeruTests.release.xcconfig"; sourceTree = "<group>"; };
-		D213FFFBA07D217F46C2671358B76643 /* UIColor+AQGridView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIColor+AQGridView.m"; path = "Classes/UIColor+AQGridView.m"; sourceTree = "<group>"; };
+		D16B3A7A6A4DF2B40D628E57BB20B667 /* AQGridView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridView.m; path = Classes/AQGridView.m; sourceTree = "<group>"; };
+		D5D3BD1743836B0629603AA1BC56054C /* MGSwipeTableCell.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MGSwipeTableCell.release.xcconfig; sourceTree = "<group>"; };
+		D611CD4C2EC439EEF9C4DC1961839AE0 /* AQGridView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AQGridView.release.xcconfig; sourceTree = "<group>"; };
 		D9675CFF1CFB5161F722A1335E0B1E77 /* Pods-Yomigaeru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Yomigaeru.release.xcconfig"; sourceTree = "<group>"; };
-		E63DB6040C8D420C72463ED40ACBE92C /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
-		F1EB4C384483A5E51487A0412E10F9AD /* NSIndexSet+AQIndexesOutsideSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+AQIndexesOutsideSet.h"; path = "Classes/NSIndexSet+AQIndexesOutsideSet.h"; sourceTree = "<group>"; };
-		F404449010680CE066E7EE270857873F /* AQGridView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AQGridView.m; path = Classes/AQGridView.m; sourceTree = "<group>"; };
-		F60D70F9A4EA3EA3F73EF5EE0325AF85 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
-		FAA30F20AFF7A0E691A86A810BF09779 /* AQGridView */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = AQGridView; path = libAQGridView.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E11E565A018695139F6DD62C0675BFFB /* NSIndexSet+AQIsSetContiguous.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+AQIsSetContiguous.h"; path = "Classes/NSIndexSet+AQIsSetContiguous.h"; sourceTree = "<group>"; };
+		E15B26C2C0A07B2CC31631791D4F517E /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFPropertyListRequestOperation.h; path = AFNetworking/AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		EEB890BE87659A107FDAEFD464536A5E /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFPropertyListRequestOperation.m; path = AFNetworking/AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		F52FFFB956F3A6CD9160D0857BCD6DA0 /* UIColor+AQGridView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIColor+AQGridView.m"; path = "Classes/UIColor+AQGridView.m"; sourceTree = "<group>"; };
+		F6BD56FC733D057A62080EEE28775291 /* AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFNetworking-dummy.m"; sourceTree = "<group>"; };
+		F9FACC86AE166D8E6C8648FCC8CB0352 /* AQGridViewCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AQGridViewCell.h; path = Classes/AQGridViewCell.h; sourceTree = "<group>"; };
+		FAA30F20AFF7A0E691A86A810BF09779 /* libAQGridView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAQGridView.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB524A89CE852EA7B3D20219C2B5F21C /* MGSwipeTableCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MGSwipeTableCell.h; path = MGSwipeTableCell/MGSwipeTableCell.h; sourceTree = "<group>"; };
+		FBE7EF3D43B9868DFFC8AB8402B770CA /* AFNetworking.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		97AC137DF2AB7345CB98DBECB70973C6 /* Frameworks */ = {
+		6DDF780A979ADA9FD57AE3BEEAF5C28A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -155,6 +176,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C6F4DB29800CABC9D0CB152F7D90B08E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDC702E5B04808AFAF5785AAD3150C89 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -178,18 +206,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		10DC8250EF9DA6791EAB55F0EE0DDC0E /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				CB139A0818874976CB37C7E94E204C5D /* AQGridView-dummy.m */,
-				1474532BD35C28A56DA95C8C24137428 /* AQGridView-prefix.pch */,
-				A024DD20937EC1635CDE8081A075B837 /* AQGridView.debug.xcconfig */,
-				B29CC38585269AF4C9CDEDE4B224904D /* AQGridView.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/AQGridView";
-			sourceTree = "<group>";
-		};
 		13CC6157A2EF29595CC0E912592BC11A /* Pods-Yomigaeru */ = {
 			isa = PBXGroup;
 			children = (
@@ -213,15 +229,91 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		40DC430CAE6F28BFC5A2E08920C8A027 /* Products */ = {
+		2465D52C6A6E5BC244E58040834993D6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4FA15D44DF6BAC7550EDEED10862AA3 /* AFNetworking */,
-				FAA30F20AFF7A0E691A86A810BF09779 /* AQGridView */,
-				A74AD62EB90F3032D3FD6C5452815A17 /* Pods-Yomigaeru */,
-				561D301BC891DCFC8557DB9694089B81 /* Pods-YomigaeruTests */,
+				A4FA15D44DF6BAC7550EDEED10862AA3 /* libAFNetworking.a */,
+				FAA30F20AFF7A0E691A86A810BF09779 /* libAQGridView.a */,
+				25F18D1B6B5143BEF52BDC9EFD5CBE0A /* libMGSwipeTableCell.a */,
+				A74AD62EB90F3032D3FD6C5452815A17 /* libPods-Yomigaeru.a */,
+				561D301BC891DCFC8557DB9694089B81 /* libPods-YomigaeruTests.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3101905828B34C40B1AA3D5678F5EFDB /* MGSwipeTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				5A3616EBD41E261B1CD850FB93864C70 /* MGSwipeButton.h */,
+				C13DE7CFFD860B404B64F62C947E16BE /* MGSwipeButton.m */,
+				FB524A89CE852EA7B3D20219C2B5F21C /* MGSwipeTableCell.h */,
+				944A81D8E963E49E8584DCB7207ACC44 /* MGSwipeTableCell.m */,
+				7AEF1CA27EE8458328EEAB59927DAE07 /* Support Files */,
+			);
+			path = MGSwipeTableCell;
+			sourceTree = "<group>";
+		};
+		38952E37D54BFDF4D2E2C91CC6C9873D /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				42F399761DDF67B5616A97CCED658685 /* AQGridView-dummy.m */,
+				069C37CABA307BFD64D80192A711E503 /* AQGridView-prefix.pch */,
+				8E06A014D906D91356DF7D16C87762E4 /* AQGridView.debug.xcconfig */,
+				D611CD4C2EC439EEF9C4DC1961839AE0 /* AQGridView.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/AQGridView";
+			sourceTree = "<group>";
+		};
+		3DB5711BABDDF8E1FE1F6510A2C46A8C /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				7A5769D80627BCE78C80891FEE911C60 /* AFHTTPClient.h */,
+				29276DEE6DA215A095E435355A132755 /* AFHTTPClient.m */,
+				25EF19AB321EE83478175D2DCEBCF10E /* AFHTTPRequestOperation.h */,
+				286274EFEA170561F52A1E55861F5CD7 /* AFHTTPRequestOperation.m */,
+				8D4727F1EF1679FD26F35D2FCAAAF6DB /* AFImageRequestOperation.h */,
+				2A5F7655DD18FCEE3676310207D5A9C2 /* AFImageRequestOperation.m */,
+				CBA770B2240AEBD1E1F69FA69F4C1638 /* AFJSONRequestOperation.h */,
+				26C8BFBCBD84D040732FB942BC3C26E5 /* AFJSONRequestOperation.m */,
+				CA25E01F8B2F3061DB96F86325CFC490 /* AFNetworkActivityIndicatorManager.h */,
+				3D560B2136E159098872F62849E3E6CD /* AFNetworkActivityIndicatorManager.m */,
+				75EE7CA9530D03579C39CA1D1503921D /* AFNetworking.h */,
+				E15B26C2C0A07B2CC31631791D4F517E /* AFPropertyListRequestOperation.h */,
+				EEB890BE87659A107FDAEFD464536A5E /* AFPropertyListRequestOperation.m */,
+				5EBC649617A4CC6CC8112B196E7C7B5B /* AFURLConnectionOperation.h */,
+				31124E2404A27CDB0352FF87816839EE /* AFURLConnectionOperation.m */,
+				7A7355211574DF540FC3053DF1B6795E /* AFXMLRequestOperation.h */,
+				7EEE910185E3E345104B541C4D2E4AA2 /* AFXMLRequestOperation.m */,
+				70165F28895E6A2E89E16B7434550289 /* UIImageView+AFNetworking.h */,
+				B645FB0BFA8740F17E043DF0CCBE2066 /* UIImageView+AFNetworking.m */,
+				61EFCC193D33508786F84A6FE67540C4 /* Support Files */,
+			);
+			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		61EFCC193D33508786F84A6FE67540C4 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F6BD56FC733D057A62080EEE28775291 /* AFNetworking-dummy.m */,
+				6FC0710FF3C4E8A23863E6904696F8B6 /* AFNetworking-prefix.pch */,
+				19E835DE8769D86C997B9647484CC325 /* AFNetworking.debug.xcconfig */,
+				FBE7EF3D43B9868DFFC8AB8402B770CA /* AFNetworking.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/AFNetworking";
+			sourceTree = "<group>";
+		};
+		7AEF1CA27EE8458328EEAB59927DAE07 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				65BB750D11D5542910304FC58482D344 /* MGSwipeTableCell-dummy.m */,
+				C60B273795E9527C7ADA86E2477DF146 /* MGSwipeTableCell-prefix.pch */,
+				0F3ADF830435FEDE11D407C19747608B /* MGSwipeTableCell.debug.xcconfig */,
+				D5D3BD1743836B0629603AA1BC56054C /* MGSwipeTableCell.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/MGSwipeTableCell";
 			sourceTree = "<group>";
 		};
 		8E3480C977BC262EE30A4C23175AF33D /* Pods-YomigaeruTests */ = {
@@ -237,41 +329,58 @@
 			path = "Target Support Files/Pods-YomigaeruTests";
 			sourceTree = "<group>";
 		};
-		AA7264F7693650E9C82AED3C9AFF75C8 /* Pods */ = {
+		994F4E5A9F6693CB582725E1A0FB2C56 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B91701E8C69EA61409DF8D46FDCE7588 /* AFNetworking */,
-				EAD81D199175B4D1D3036E2D0BC26390 /* AQGridView */,
+				3DB5711BABDDF8E1FE1F6510A2C46A8C /* AFNetworking */,
+				C6F416E55D5CA03874BF0D605A15CB55 /* AQGridView */,
+				3101905828B34C40B1AA3D5678F5EFDB /* MGSwipeTableCell */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		B91701E8C69EA61409DF8D46FDCE7588 /* AFNetworking */ = {
+		A769B76E2932E86366B18FCEADC27C25 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				50FF7FC90E484C9F398EDE9E17459C6A /* AFHTTPClient.h */,
-				BE2EA95BDBD9BC0B902C1CC2B1F5CD82 /* AFHTTPClient.m */,
-				F60D70F9A4EA3EA3F73EF5EE0325AF85 /* AFHTTPRequestOperation.h */,
-				6D0B487E4BAC2C9B226FE91D626B65DF /* AFHTTPRequestOperation.m */,
-				09FA699CBC6F4C44CB8CE6F4A3D1EAA8 /* AFImageRequestOperation.h */,
-				49D9E49597402F3B3036FF2A6353D217 /* AFImageRequestOperation.m */,
-				0FAEE1FCE7A2EB870E6FFACF990D9DAA /* AFJSONRequestOperation.h */,
-				5F3E974CE1F1FE946D77B56F48E78B3D /* AFJSONRequestOperation.m */,
-				5379BDC0176E642C27BB36E92B211480 /* AFNetworkActivityIndicatorManager.h */,
-				0C543094FA3F4EB6CC0ACDF9DE8853F6 /* AFNetworkActivityIndicatorManager.m */,
-				E63DB6040C8D420C72463ED40ACBE92C /* AFNetworking.h */,
-				4916635F72126FE1FBCF6F244D7F93E8 /* AFPropertyListRequestOperation.h */,
-				5AE8634E036E2E1A8B332E9058D7BE19 /* AFPropertyListRequestOperation.m */,
-				69618490190E62349ECFCBC47E0F70B5 /* AFURLConnectionOperation.h */,
-				B93716F8280743DA5FFBCD668C9CA9F9 /* AFURLConnectionOperation.m */,
-				06BFCBE9B3DB28AFB2D957D6620B69BD /* AFXMLRequestOperation.h */,
-				77EAE3A447705391DF3430A243C642D4 /* AFXMLRequestOperation.m */,
-				6F27616BEA3C17BBC4557F59F8DD4414 /* UIImageView+AFNetworking.h */,
-				957341614FF8265D10680875AF892A54 /* UIImageView+AFNetworking.m */,
-				F1809CD9202D229FFCDE340B7947E62F /* Support Files */,
+				337A54C3BF000B4FF9A2AA4503C7E168 /* AQGridSelection.png */,
+				ADC1A9AFBB46C7012E260FA491FF5A8D /* AQGridSelectionGray.png */,
+				6AD676E68FE859F6C9EA79274ABD957C /* AQGridSelectionGrayBlue.png */,
+				B02ACC3D30D141C37F4A0330313D035E /* AQGridSelectionGreen.png */,
+				69FD99A967E690C805FE720DBB8FE063 /* AQGridSelectionRed.png */,
 			);
-			name = AFNetworking;
-			path = AFNetworking;
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C6F416E55D5CA03874BF0D605A15CB55 /* AQGridView */ = {
+			isa = PBXGroup;
+			children = (
+				747D1C9ABF624268962FE644B858FE73 /* AQGridView.h */,
+				D16B3A7A6A4DF2B40D628E57BB20B667 /* AQGridView.m */,
+				842D83DDA50E323FA507DF3E5F0FAF5A /* AQGridView+CellLayout.h */,
+				12F73BF6ACEF0499E8482A4221087259 /* AQGridView+CellLocationDelegation.h */,
+				CE8B3EF6BC215F5EA9E62D562C9C8DC1 /* AQGridViewAnimatorItem.h */,
+				82AB5EFF83C861428AF3B900FC211451 /* AQGridViewAnimatorItem.m */,
+				F9FACC86AE166D8E6C8648FCC8CB0352 /* AQGridViewCell.h */,
+				35D91EC94A6AC228EA51FEDC70320BF5 /* AQGridViewCell.m */,
+				22991C2B6B99A192F810924BFB70E127 /* AQGridViewCell+AQGridViewCellPrivate.h */,
+				372930C17EC62BDF024FF01853906813 /* AQGridViewController.h */,
+				9CBC95E3B127E0EF22FEBFAF102EEE93 /* AQGridViewController.m */,
+				04EE0AE9019202CB2C7C73406EDEB549 /* AQGridViewData.h */,
+				2628AC776D9DEFA3A4946EB90109920E /* AQGridViewData.m */,
+				08FC784480180ACEEB84A59C295F772B /* AQGridViewUpdateInfo.h */,
+				92AF6DD05E09F803569A7C53F006C7CD /* AQGridViewUpdateInfo.m */,
+				2A720A753E2A77C5AE3A74D679F5643C /* AQGridViewUpdateItem.h */,
+				241550CEC0B516BE73D5E588BAA6FE4B /* AQGridViewUpdateItem.m */,
+				9E348E7EF2F6A60E7597A4A19C5CAB98 /* NSIndexSet+AQIndexesOutsideSet.h */,
+				9FE9C39FABC67693AD8EEB174DE6A66E /* NSIndexSet+AQIndexesOutsideSet.m */,
+				E11E565A018695139F6DD62C0675BFFB /* NSIndexSet+AQIsSetContiguous.h */,
+				0005CB9B18AAB24B8E40FA7C8165D362 /* NSIndexSet+AQIsSetContiguous.m */,
+				4918A8CB7A903E97FCA25618296ABFC5 /* UIColor+AQGridView.h */,
+				F52FFFB956F3A6CD9160D0857BCD6DA0 /* UIColor+AQGridView.m */,
+				A769B76E2932E86366B18FCEADC27C25 /* Resources */,
+				38952E37D54BFDF4D2E2C91CC6C9873D /* Support Files */,
+			);
+			path = AQGridView;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -279,8 +388,8 @@
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
-				AA7264F7693650E9C82AED3C9AFF75C8 /* Pods */,
-				40DC430CAE6F28BFC5A2E08920C8A027 /* Products */,
+				994F4E5A9F6693CB582725E1A0FB2C56 /* Pods */,
+				2465D52C6A6E5BC244E58040834993D6 /* Products */,
 				16B4176A874BEFB8451BC81DC1FCCC22 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -290,63 +399,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E250FAABBBA093B7CD42B1CBE9AFFDA8 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				5FDF3FB1DD494D6B2BE6CABCD1A84E9F /* AQGridSelection.png */,
-				98CC20061A0165AFE8A2ACE76FBA410E /* AQGridSelectionGray.png */,
-				2074FCBF463FFD92D3EC4F6B89271400 /* AQGridSelectionGrayBlue.png */,
-				86EC437292F1165E7E6462626A82D9B0 /* AQGridSelectionGreen.png */,
-				8AFD0254A2326819CB7ADDBB8FE6CF56 /* AQGridSelectionRed.png */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		EAD81D199175B4D1D3036E2D0BC26390 /* AQGridView */ = {
-			isa = PBXGroup;
-			children = (
-				C39033FACBB1196337A5DD8773F02EBC /* AQGridView.h */,
-				F404449010680CE066E7EE270857873F /* AQGridView.m */,
-				2283E00469AC48E95C1F9B9C270A89ED /* AQGridView+CellLayout.h */,
-				66922963120101489A358FAF07557FAE /* AQGridView+CellLocationDelegation.h */,
-				778CBA30A469CC323EA4659DAAC508F3 /* AQGridViewAnimatorItem.h */,
-				AF867DB5B8A1781E394FDBF91F703A0D /* AQGridViewAnimatorItem.m */,
-				488EF60426C2BEB05BD27DF7881EDAD2 /* AQGridViewCell.h */,
-				52C73748926A2CC9472088C9D10950D3 /* AQGridViewCell.m */,
-				C1292EF2235DAC10FFF88499677D3BC3 /* AQGridViewCell+AQGridViewCellPrivate.h */,
-				20465DE23F533125D99F80D4D0E5AD57 /* AQGridViewController.h */,
-				0E3FF7308C370DC65F5B6DC158149B84 /* AQGridViewController.m */,
-				29FAB2938BB98833D52FF504B269DF8C /* AQGridViewData.h */,
-				453C7DDD379F35B503E94E41057E8997 /* AQGridViewData.m */,
-				CAB1DC2AF947D8AACF10E982F1E5895F /* AQGridViewUpdateInfo.h */,
-				5DDED7A2439BDD2E58757876A6FA3923 /* AQGridViewUpdateInfo.m */,
-				13FEA4587AE208923835A7B202D91FA0 /* AQGridViewUpdateItem.h */,
-				B372792DF6AB6F7E9845445C66CC192C /* AQGridViewUpdateItem.m */,
-				F1EB4C384483A5E51487A0412E10F9AD /* NSIndexSet+AQIndexesOutsideSet.h */,
-				C571A6ECE7A6881EE572E2B530068B5C /* NSIndexSet+AQIndexesOutsideSet.m */,
-				B1636C3E08AD9AFE6E71C7979E75B749 /* NSIndexSet+AQIsSetContiguous.h */,
-				14A8DA9053E4140EF5AF466C9820931F /* NSIndexSet+AQIsSetContiguous.m */,
-				7434E7314675A2C05D70AE6C00C4743D /* UIColor+AQGridView.h */,
-				D213FFFBA07D217F46C2671358B76643 /* UIColor+AQGridView.m */,
-				E250FAABBBA093B7CD42B1CBE9AFFDA8 /* Resources */,
-				10DC8250EF9DA6791EAB55F0EE0DDC0E /* Support Files */,
-			);
-			name = AQGridView;
-			path = AQGridView;
-			sourceTree = "<group>";
-		};
-		F1809CD9202D229FFCDE340B7947E62F /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				79613DD74A71B56651DACDEF0943BCB2 /* AFNetworking-dummy.m */,
-				62ECD8BFE26932832188ECF7E528849D /* AFNetworking-prefix.pch */,
-				32E1A5221863750BCD5839B9D9356402 /* AFNetworking.debug.xcconfig */,
-				CBCDA32B64CD3CA8F635B68B2AC9C3CC /* AFNetworking.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/AFNetworking";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -372,10 +424,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7620E29C14806C14582F02CEB7062BAF /* Headers */ = {
+		25AE5809932672E09AF6F35E101A2A47 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34612F21C54DD5C773C694A43134C9E0 /* MGSwipeButton.h in Headers */,
+				79928838B79818154536DB60050F916F /* MGSwipeTableCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +457,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DC599357BB2F7E64206B1D238B0AEA43 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -420,26 +481,44 @@
 			);
 			name = AFNetworking;
 			productName = AFNetworking;
-			productReference = A4FA15D44DF6BAC7550EDEED10862AA3 /* AFNetworking */;
+			productReference = A4FA15D44DF6BAC7550EDEED10862AA3 /* libAFNetworking.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		1C555B2B77F5D5231894DD83094FDE48 /* Pods-Yomigaeru */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 443688B421FF59A9F59D62A5090589A5 /* Build configuration list for PBXNativeTarget "Pods-Yomigaeru" */;
+			buildConfigurationList = 6D6FDAD57409230071BA3B820E1768E3 /* Build configuration list for PBXNativeTarget "Pods-Yomigaeru" */;
 			buildPhases = (
-				7620E29C14806C14582F02CEB7062BAF /* Headers */,
-				E07340B1199CE1A1625B8ACB27ED3175 /* Sources */,
-				97AC137DF2AB7345CB98DBECB70973C6 /* Frameworks */,
+				DC599357BB2F7E64206B1D238B0AEA43 /* Headers */,
+				2BAA5A3F79B0AB0D0DBEA19C9DC323F7 /* Sources */,
+				6DDF780A979ADA9FD57AE3BEEAF5C28A /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5E38DB2045ACF6D64B1CC7C7E4C43512 /* PBXTargetDependency */,
-				179F8F9BEC97690BCB1364B64A2778C6 /* PBXTargetDependency */,
+				815086E5400FFAF609366F48532910E3 /* PBXTargetDependency */,
+				1DB9F4299BAFC553AA2A9E87DED3A23F /* PBXTargetDependency */,
+				4B4BBB3B16FF66E5AF758B710168541F /* PBXTargetDependency */,
 			);
 			name = "Pods-Yomigaeru";
 			productName = "Pods-Yomigaeru";
-			productReference = A74AD62EB90F3032D3FD6C5452815A17 /* Pods-Yomigaeru */;
+			productReference = A74AD62EB90F3032D3FD6C5452815A17 /* libPods-Yomigaeru.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		1EEB7FC8FC3DC62BFD58C64EF0EDFF4B /* MGSwipeTableCell */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3C68524644E109018405CFAE2F7F94A4 /* Build configuration list for PBXNativeTarget "MGSwipeTableCell" */;
+			buildPhases = (
+				25AE5809932672E09AF6F35E101A2A47 /* Headers */,
+				A691A58A1453E2C56F965ED36D9674A3 /* Sources */,
+				CDC702E5B04808AFAF5785AAD3150C89 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MGSwipeTableCell;
+			productName = MGSwipeTableCell;
+			productReference = 25F18D1B6B5143BEF52BDC9EFD5CBE0A /* libMGSwipeTableCell.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		3DFA86A1D2333EC4CC7A7BE5E9BB4FFA /* Pods-YomigaeruTests */ = {
@@ -456,7 +535,7 @@
 			);
 			name = "Pods-YomigaeruTests";
 			productName = "Pods-YomigaeruTests";
-			productReference = 561D301BC891DCFC8557DB9694089B81 /* Pods-YomigaeruTests */;
+			productReference = 561D301BC891DCFC8557DB9694089B81 /* libPods-YomigaeruTests.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		AC70D24D2E39B82F7F1A5B9BE09ED743 /* AQGridView */ = {
@@ -473,7 +552,7 @@
 			);
 			name = AQGridView;
 			productName = AQGridView;
-			productReference = FAA30F20AFF7A0E691A86A810BF09779 /* AQGridView */;
+			productReference = FAA30F20AFF7A0E691A86A810BF09779 /* libAQGridView.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -494,14 +573,13 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			minimizedProjectReferenceProxies = 0;
-			preferredProjectObjectVersion = 77;
-			productRefGroup = 40DC430CAE6F28BFC5A2E08920C8A027 /* Products */;
+			productRefGroup = 2465D52C6A6E5BC244E58040834993D6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				0130B3724283586C0E9D2A112D4F2AA1 /* AFNetworking */,
 				AC70D24D2E39B82F7F1A5B9BE09ED743 /* AQGridView */,
+				1EEB7FC8FC3DC62BFD58C64EF0EDFF4B /* MGSwipeTableCell */,
 				1C555B2B77F5D5231894DD83094FDE48 /* Pods-Yomigaeru */,
 				3DFA86A1D2333EC4CC7A7BE5E9BB4FFA /* Pods-YomigaeruTests */,
 			);
@@ -509,6 +587,14 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2BAA5A3F79B0AB0D0DBEA19C9DC323F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2D4A074D06C1E7968CAE76CD9A77FE3 /* Pods-Yomigaeru-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		583F6F8693974872974578E6497BFECF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -552,35 +638,43 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E07340B1199CE1A1625B8ACB27ED3175 /* Sources */ = {
+		A691A58A1453E2C56F965ED36D9674A3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7433399C7AC096090E540CE0B2A5C1D /* Pods-Yomigaeru-dummy.m in Sources */,
+				DD6A05705035DCFEA93109014D10B487 /* MGSwipeButton.m in Sources */,
+				1F25F27E2DC89172457E3AC42C6374F6 /* MGSwipeTableCell.m in Sources */,
+				65489316B9B38F201D8C906AF3289D85 /* MGSwipeTableCell-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		179F8F9BEC97690BCB1364B64A2778C6 /* PBXTargetDependency */ = {
+		1DB9F4299BAFC553AA2A9E87DED3A23F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AQGridView;
 			target = AC70D24D2E39B82F7F1A5B9BE09ED743 /* AQGridView */;
-			targetProxy = 16A861E3BEFCCD020E7EF4EAE37501C7 /* PBXContainerItemProxy */;
+			targetProxy = B24E9327B6A4E40A16F889C57F4A334B /* PBXContainerItemProxy */;
 		};
-		5E38DB2045ACF6D64B1CC7C7E4C43512 /* PBXTargetDependency */ = {
+		4B4BBB3B16FF66E5AF758B710168541F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MGSwipeTableCell;
+			target = 1EEB7FC8FC3DC62BFD58C64EF0EDFF4B /* MGSwipeTableCell */;
+			targetProxy = 29761C4179E20A52B61890E7F1F46ABC /* PBXContainerItemProxy */;
+		};
+		815086E5400FFAF609366F48532910E3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AFNetworking;
 			target = 0130B3724283586C0E9D2A112D4F2AA1 /* AFNetworking */;
-			targetProxy = 27E1C0E229CD6BE1EE0ACB9DA3697C39 /* PBXContainerItemProxy */;
+			targetProxy = 441B71255730AC97BA84B978E5F428FD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0C57B46FFC63F5A226B2C5335030C372 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A024DD20937EC1635CDE8081A075B837 /* AQGridView.debug.xcconfig */;
+			baseConfigurationReference = 8E06A014D906D91356DF7D16C87762E4 /* AQGridView.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -606,6 +700,58 @@
 			};
 			name = Debug;
 		};
+		1E3870889BE71B472A190E2EF8A7F0C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D9675CFF1CFB5161F722A1335E0B1E77 /* Pods-Yomigaeru.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2915EF8CEA0A07B42A93513D151AC034 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D5D3BD1743836B0629603AA1BC56054C /* MGSwipeTableCell.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/MGSwipeTableCell/MGSwipeTableCell-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = MGSwipeTableCell;
+				PRODUCT_NAME = MGSwipeTableCell;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		2AD1D0518FC4BDF3CC6AFE1009261F15 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D0E3463CF0F44AE3E90DDF4120C98DE2 /* Pods-YomigaeruTests.release.xcconfig */;
@@ -630,7 +776,7 @@
 			};
 			name = Release;
 		};
-		39B42F3243399779E6F6FACD77B07326 /* Debug */ = {
+		2E83A20B5B439AD4B2D607548AA900C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 890E8908D470C66F3678742E979BEEBF /* Pods-Yomigaeru.debug.xcconfig */;
 			buildSettings = {
@@ -655,7 +801,7 @@
 		};
 		5E0C1443045A1CDA762953F355388A64 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBCDA32B64CD3CA8F635B68B2AC9C3CC /* AFNetworking.release.xcconfig */;
+			baseConfigurationReference = FBE7EF3D43B9868DFFC8AB8402B770CA /* AFNetworking.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -681,33 +827,9 @@
 			};
 			name = Release;
 		};
-		7C35E39D9786BED57113D9954BCDEAD4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D9675CFF1CFB5161F722A1335E0B1E77 /* Pods-Yomigaeru.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		91D6F3C6C4FCA9C9899759C61B2D64A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32E1A5221863750BCD5839B9D9356402 /* AFNetworking.debug.xcconfig */;
+			baseConfigurationReference = 19E835DE8769D86C997B9647484CC325 /* AFNetworking.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -796,7 +918,7 @@
 		};
 		CCDA6A533F8BC62034E686B62E138F0F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B29CC38585269AF4C9CDEDE4B224904D /* AQGridView.release.xcconfig */;
+			baseConfigurationReference = D611CD4C2EC439EEF9C4DC1961839AE0 /* AQGridView.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -822,6 +944,33 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
+		};
+		E20D1BC6095132C0D99242A1C83A3333 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0F3ADF830435FEDE11D407C19747608B /* MGSwipeTableCell.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/MGSwipeTableCell/MGSwipeTableCell-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = MGSwipeTableCell;
+				PRODUCT_NAME = MGSwipeTableCell;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		EA3E7593E4657AE0E7963388E78837BE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -924,11 +1073,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		443688B421FF59A9F59D62A5090589A5 /* Build configuration list for PBXNativeTarget "Pods-Yomigaeru" */ = {
+		3C68524644E109018405CFAE2F7F94A4 /* Build configuration list for PBXNativeTarget "MGSwipeTableCell" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				39B42F3243399779E6F6FACD77B07326 /* Debug */,
-				7C35E39D9786BED57113D9954BCDEAD4 /* Release */,
+				E20D1BC6095132C0D99242A1C83A3333 /* Debug */,
+				2915EF8CEA0A07B42A93513D151AC034 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -938,6 +1087,15 @@
 			buildConfigurations = (
 				ED7E0787BD6FFB9B8B8CE08CA883BFDF /* Debug */,
 				9958B3EED236014F9261795E2A7BDFD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6D6FDAD57409230071BA3B820E1768E3 /* Build configuration list for PBXNativeTarget "Pods-Yomigaeru" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E83A20B5B439AD4B2D607548AA900C6 /* Debug */,
+				1E3870889BE71B472A190E2EF8A7F0C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
