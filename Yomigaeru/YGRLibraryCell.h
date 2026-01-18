@@ -14,4 +14,7 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, copy) NSString *title;
 
+- (void)hideBorder;
+- (void)showBorder;
+
 @end

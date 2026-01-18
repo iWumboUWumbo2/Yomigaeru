@@ -8,7 +8,6 @@
 
 #import "YGRMangaService.h"
 #import "YGRHttpStatus.h"
-#import "YGRImageUtility.h"
 #import "YGRNetworkManager.h"
 
 @implementation YGRMangaService
@@ -47,41 +46,6 @@
         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             completion(nil, error);
         }];
-}
-
-- (void)fetchThumbnailWithMangaId:(NSString *)mangaId
-                       completion:(void (^)(UIImage *thumbnailImage, NSError *error))completion
-{
-    AFHTTPClient *httpClient = [[YGRNetworkManager sharedManager] httpClientInstance];
-    NSString *path = [NSString stringWithFormat:@"manga/%@/thumbnail", mangaId];
-
-    NSURLRequest *request = [httpClient requestWithMethod:@"GET" path:path parameters:nil];
-
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-
-    [operation
-        setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *contentType =
-                [operation.response.allHeaderFields objectForKey:@"Content-Type"] ?: @"";
-
-            NSError *decodeError = nil;
-            UIImage *image = [YGRImageUtility imageFromData:(NSData *) responseObject
-                                                   mimeType:contentType
-                                                      error:&decodeError];
-
-            if (!image)
-            {
-                completion(nil, decodeError);
-                return;
-            }
-
-            completion(image, nil);
-        }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            completion(nil, error);
-        }];
-
-    [httpClient enqueueHTTPRequestOperation:operation];
 }
 
 - (void)addToLibraryWithMangaId:(NSString *)mangaId
@@ -142,60 +106,90 @@
         }];
 }
 
-- (void)fetchChapterWithMangaId:(NSString *)mangaId
-                   chapterIndex:(NSUInteger)chapterIndex
-                     completion:(void (^)(YGRChapter *chapter, NSError *error))completion
-{
-    AFHTTPClient *jsonClient = [[YGRNetworkManager sharedManager] jsonClientInstance];
-    NSString *path = [NSString stringWithFormat:@"manga/%@/chapter/%tu", mangaId, chapterIndex];
-
-    [jsonClient getPath:path
-        parameters:nil
-        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSDictionary *jsonDict = (NSDictionary *) responseObject;
-            YGRChapter *chapter = [[YGRChapter alloc] initWithDictionary:jsonDict];
-            completion(chapter, nil);
-        }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            completion(nil, error);
-        }];
-}
-
-- (void)fetchPageWithMangaId:(NSString *)mangaId
-                chapterIndex:(NSUInteger)chapterIndex
-                   pageIndex:(NSUInteger)pageIndex
-                  completion:(void (^)(UIImage *pageData, NSError *error))completion
+- (void)modifyChapterWithMangaId:(NSString *)mangaId
+                    chapterIndex:(NSUInteger)chapterIndex
+                      parameters:(NSDictionary *)parameters
+                      completion:(void (^)(BOOL success, NSError *error))completion
 {
     AFHTTPClient *httpClient = [[YGRNetworkManager sharedManager] httpClientInstance];
-    NSString *path = [NSString
-        stringWithFormat:@"manga/%@/chapter/%tu/page/%tu", mangaId, chapterIndex, pageIndex];
+    httpClient.parameterEncoding = AFFormURLParameterEncoding;
+    [httpClient setDefaultHeader:@"Content-Type"
+                           value:@"application/x-www-form-urlencoded"];
+    
+    NSString *path = [NSString stringWithFormat:@"manga/%@/chapter/%tu", mangaId, chapterIndex];
+    
+    [httpClient putPath:path
+               parameters:parameters
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) operation.response;
+                      BOOL success = httpResponse.statusCode == HttpStatusOK;
+                      completion(success, nil);
+                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      completion(NO, error);
+                  }];
+}
 
-    NSURLRequest *request = [httpClient requestWithMethod:@"GET" path:path parameters:nil];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+static inline NSString *NSStringFromBool(BOOL value) {
+    return value ? @"true" : @"false";
+}
 
-    [operation
-        setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *contentType =
-                [operation.response.allHeaderFields objectForKey:@"Content-Type"] ?: @"";
+- (void)markReadStatusChapterWithMangaId:(NSString *)mangaId
+                            chapterIndex:(NSUInteger)chapterIndex
+                              readStatus:(BOOL)readStatus
+                              completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [self modifyChapterWithMangaId:mangaId chapterIndex:chapterIndex parameters:@{@"read": NSStringFromBool(readStatus)} completion:^(BOOL success, NSError *error) {
+        completion(success, error);
+    }];
+}
 
-            NSError *decodeError = nil;
-            UIImage *image = [YGRImageUtility imageFromData:(NSData *) responseObject
-                                                   mimeType:contentType
-                                                      error:&decodeError];
+- (void)markBookmarkStatusChapterWithMangaId:(NSString *)mangaId
+                                chapterIndex:(NSUInteger)chapterIndex
+                              bookmarkStatus:(BOOL)bookmarkStatus
+                                  completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [self modifyChapterWithMangaId:mangaId chapterIndex:chapterIndex parameters:@{@"bookmarked": NSStringFromBool(bookmarkStatus)} completion:^(BOOL success, NSError *error) {
+        completion(success, error);
+    }];
+}
 
-            if (!image)
-            {
-                completion(nil, decodeError);
-                return;
-            }
+- (void)markPrevReadStatusChapterWithMangaId:(NSString *)mangaId
+                                chapterIndex:(NSUInteger)chapterIndex
+                          markPrevReadStatus:(BOOL)markPrevReadStatus
+                                  completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [self modifyChapterWithMangaId:mangaId chapterIndex:chapterIndex parameters:@{@"markPrevRead": NSStringFromBool(markPrevReadStatus)} completion:^(BOOL success, NSError *error) {
+        completion(success, error);
+    }];
+}
 
-            completion(image, nil);
+- (void)markLastPageReadForChapterWithMangaId:(NSString *)mangaId
+                                 chapterIndex:(NSUInteger)chapterIndex
+                                 lastPageRead:(NSUInteger)lastPageRead
+                                   completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [self modifyChapterWithMangaId:mangaId chapterIndex:chapterIndex parameters:@{@"lastPageRead": @(lastPageRead)} completion:^(BOOL success, NSError *error) {
+        completion(success, error);
+    }];
+}
+
+- (void)markMangaReadStatusWithMangaId:(NSString *)mangaId
+                            readStatus:(BOOL)readStatus
+                            completion:(void (^)(BOOL success, NSError *error))completion
+{
+    [self fetchFullMangaWithId:mangaId completion:^(YGRManga *manga, NSError *error) {
+        if (error)
+        {
+            completion(NO, error);
+            return;
         }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            completion(nil, error);
+        
+        NSString *readStatusString = NSStringFromBool(readStatus);
+        
+        [self modifyChapterWithMangaId:mangaId chapterIndex:manga.chapterCount parameters:@{@"read": readStatusString, @"markPrevRead": readStatusString} completion:^(BOOL success, NSError *error) {
+            completion(success, error);
         }];
-
-    [httpClient enqueueHTTPRequestOperation:operation];
+    }];
 }
 
 @end

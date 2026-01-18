@@ -32,6 +32,8 @@
     _imageView.layer.masksToBounds = YES;
     _imageView.clipsToBounds = YES;
     _imageView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+    _imageView.layer.borderWidth = 0.0f;
+    _imageView.layer.borderColor = [UIColor blueColor].CGColor;
     [self.contentView addSubview:_imageView];
     
     // Gradient at bottom
@@ -56,6 +58,7 @@
     return self;
 }
 
+
 #pragma mark - Reuse
 
 - (void)prepareForReuse
@@ -79,6 +82,16 @@
     _title = [title copy];
     self.titleLabel.text = title;
     [self setNeedsLayout];
+}
+
+- (void)hideBorder
+{
+    self.imageView.layer.borderWidth = 0.0f;
+}
+
+- (void)showBorder
+{
+    self.imageView.layer.borderWidth = 2.0f;
 }
 
 #pragma mark - Layout

@@ -13,6 +13,7 @@
 #import "YGRExtensionService.h"
 #import "YGRMangaService.h"
 #import "YGRSourceService.h"
+#import "YGRImageService.h"
 
 #define LOG(data)                                                                                  \
     do                                                                                             \
@@ -151,10 +152,10 @@
                                      LOG(manga);
                                  }];
 
-    [self.mangaService fetchThumbnailWithMangaId:mangaId
-                                      completion:^(UIImage *thumbnailImage, NSError *error) {
-                                          LOG_IMAGE(thumbnailImage);
-                                      }];
+//    [[YGRImageService sharedService] fetchThumbnailWithMangaId:mangaId
+//                                      completion:^(UIImage *thumbnailImage, NSError *error) {
+//                                          LOG_IMAGE(thumbnailImage);
+//                                      }];
 
     [self.mangaService addToLibraryWithMangaId:mangaId
                                     completion:^(BOOL success, NSError *error) {
@@ -166,18 +167,18 @@
                                              LOG_SUCCESS;
                                          }];
 
-    [self.mangaService fetchChapterWithMangaId:mangaId
-                                  chapterIndex:13
-                                    completion:^(YGRChapter *chapter, NSError *error) {
-                                        LOG(chapter);
-                                    }];
+//    [self.mangaService fetchChapterWithMangaId:mangaId
+//                                  chapterIndex:13
+//                                    completion:^(YGRChapter *chapter, NSError *error) {
+//                                        LOG(chapter);
+//                                    }];
 
     [self.mangaService fetchChaptersWithMangaId:mangaId
                                      completion:^(NSArray *chapters, NSError *error) {
                                          LOG(chapters);
                                      }];
 
-    [self.mangaService fetchPageWithMangaId:mangaId
+    [[YGRImageService sharedService] fetchPageWithMangaId:mangaId
                                chapterIndex:13
                                   pageIndex:1
                                  completion:^(UIImage *pageData, NSError *error) {

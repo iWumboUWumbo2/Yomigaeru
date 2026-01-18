@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YGRPageViewController : UIViewController
+@interface YGRPageViewController : UIViewController <UIScrollViewDelegate>
 
 @property (nonatomic, copy) NSString *mangaId;
-@property (nonatomic, assign) NSUInteger chapterIndex;
-@property (nonatomic, assign) NSUInteger pageIndex;
+
+@property (nonatomic, assign) NSInteger chapterIndex;
+@property (nonatomic, assign) NSInteger pageIndex;
 
 @end

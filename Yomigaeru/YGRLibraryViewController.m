@@ -11,6 +11,7 @@
 
 #import "YGRCategoryService.h"
 #import "YGRMangaService.h"
+#import "YGRImageService.h"
 #import "YGRManga.h"
 #import "YGRLibraryCell.h"
 
@@ -20,7 +21,6 @@
 @property (nonatomic, strong) YGRMangaService *mangaService;
 
 @property (nonatomic, strong) NSMutableArray *mangas;
-@property (nonatomic, strong) NSCache *thumbnailCache;
 
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
@@ -41,7 +41,6 @@
         self.categoryService = [[YGRCategoryService alloc] init];
         self.mangaService = [[YGRMangaService alloc] init];
         self.mangas = [NSMutableArray array];
-        self.thumbnailCache = [[NSCache alloc] init];
         self.selectedIndex = NSNotFound;
     }
     return self;
@@ -62,7 +61,7 @@
     self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.leftBarButtonItem = self.refreshButton;
     
-    self.actionSheet = [[UIActionSheet alloc] initWithTitle:@"Edit" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil];
+    self.actionSheet = [[UIActionSheet alloc] initWithTitle:@"Edit" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Mark Read", @"Mark Unread", nil];
     
     self.gridView.dataSource = self;
     self.gridView.delegate = self;
@@ -74,7 +73,11 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.gridView addGestureRecognizer:longPress];
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self fetchLibrary];
 }
 
@@ -122,10 +125,13 @@
 {
     YGRManga *selectedManga = [self.mangas objectAtIndex:self.selectedIndex];
     
+    NSInteger markReadButtonIndex = actionSheet.firstOtherButtonIndex;
+    NSInteger markUnreadButtonIndex = markReadButtonIndex + 1;
+    
+    __weak typeof(self) weakSelf = self;
+    
     if (buttonIndex == actionSheet.destructiveButtonIndex)
     {
-        __weak typeof(self) weakSelf = self;
-        
         [self.mangaService deleteFromLibraryWithMangaId:selectedManga.id_ completion:^(BOOL success, NSError *error) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             
@@ -138,10 +144,59 @@
             if (!success)
             {
                 NSLog(@"Failed to delete manga at index (%d)", strongSelf.selectedIndex);
+                return;
             }
             
-            [strongSelf.mangas removeObjectAtIndex:strongSelf.selectedIndex];
-            [strongSelf.gridView deleteItemsAtIndices:[NSIndexSet indexSetWithIndex:strongSelf.selectedIndex] withAnimation:AQGridViewItemAnimationNone];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf.mangas removeObjectAtIndex:strongSelf.selectedIndex];
+                [strongSelf.gridView deleteItemsAtIndices:[NSIndexSet indexSetWithIndex:strongSelf.selectedIndex] withAnimation:AQGridViewItemAnimationFade];
+            });
+        }];
+    }
+    
+    else if (buttonIndex == markReadButtonIndex)
+    {
+        [self.mangaService markMangaReadStatusWithMangaId:selectedManga.id_ readStatus:YES completion:^(BOOL success, NSError *error) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            
+            if (error)
+            {
+                NSLog(@"%@", error);
+                return;
+            }
+            
+            if (!success)
+            {
+                NSLog(@"Failed to mark manga at index (%d) as read", strongSelf.selectedIndex);
+                return;
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // TODO
+            });
+        }];
+    }
+    
+    else if (buttonIndex == markUnreadButtonIndex)
+    {
+        [self.mangaService markMangaReadStatusWithMangaId:selectedManga.id_ readStatus:NO completion:^(BOOL success, NSError *error) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            
+            if (error)
+            {
+                NSLog(@"%@", error);
+                return;
+            }
+            
+            if (!success)
+            {
+                NSLog(@"Failed to mark manga at index (%d) as unread", strongSelf.selectedIndex);
+                return;
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // TODO
+            });
         }];
     }
 }
@@ -230,28 +285,21 @@
     YGRManga *manga = [self.mangas objectAtIndex:index];
     cell.title = manga.title;
     
-    UIImage *cachedThumbnail = [self.thumbnailCache objectForKey:manga.id_];
-    if (cachedThumbnail) {
-        cell.image = cachedThumbnail;
-    } else {
-        cell.image = [UIImage imageNamed:@"placeholder"];
-        
-        __weak typeof(cell) weakCell = cell;
-        __weak typeof(self) weakSelf = self;
-        [self.mangaService fetchThumbnailWithMangaId:manga.id_ completion:^(UIImage *thumbnailImage, NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!strongSelf || error || !thumbnailImage) return;
-            
-            [strongSelf.thumbnailCache setObject:thumbnailImage forKey:manga.id_];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Ensure the cell still represents the same manga
-                if ([weakCell.title isEqualToString:manga.title]) {
-                    weakCell.image = thumbnailImage;
-                }
-            });
-        }];
-    }
+    cell.image = [UIImage imageNamed:@"placeholder"];
+    
+    __weak typeof(cell) weakCell = cell;
+    __weak typeof(self) weakSelf = self;
+    [[YGRImageService sharedService] fetchThumbnailWithMangaId:manga.id_ completion:^(UIImage *thumbnailImage, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf || error || !thumbnailImage) return;
+                
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Ensure the cell still represents the same manga
+            if ([weakCell.title isEqualToString:manga.title]) {
+                weakCell.image = thumbnailImage;
+            }
+        });
+    }];
     
     return cell;
 }

@@ -9,7 +9,7 @@
 #import "YGRSourcesViewController.h"
 
 #import "YGRSourceService.h"
-#import "YGRSource.h"
+#import "YGRSourceLibraryViewController.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
@@ -45,7 +45,11 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self fetchSources];
 }
 
@@ -215,6 +219,12 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+    
+    YGRSourceLibraryViewController *sourceLibraryViewController = [[YGRSourceLibraryViewController alloc] init];
+    
+    sourceLibraryViewController.source = [self sourceForRowAtIndexPath:indexPath];
+    
+    [self.navigationController pushViewController:sourceLibraryViewController animated:YES];
 }
 
 @end

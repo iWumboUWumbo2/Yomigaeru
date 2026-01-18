@@ -8,14 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "YGRChildRefreshDelegate.h"
 #import "YGRChapter.h"
 #import "YGRManga.h"
 
-@interface YGRChapterViewController : UIPageViewController
-
-- (id)init;
+@interface YGRChapterViewController : UIPageViewController <UIPageViewControllerDataSource>
 
 @property (nonatomic, strong) YGRManga *manga;
-@property (nonatomic, strong) YGRChapter *chapter;
+
+@property (nonatomic, strong) NSArray *chapters;
+@property (nonatomic, assign) NSInteger chaptersArrayIndex;
+
+@property (nonatomic, weak) id<YGRChildRefreshDelegate> refreshDelegate;
+
+- (id)init;
 
 @end

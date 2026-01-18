@@ -11,6 +11,7 @@
 #import "YGRSettingsManager.h"
 #import "YGRTabBarController.h"
 
+#import "YGRAPITestViewController.h"
 #import "YGRServerBaseURLViewController.h"
 
 @implementation YGRAppDelegate
@@ -26,7 +27,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification"
                                                         object:nil];
 
-    //    self.window.rootViewController = [[YGRAPITestViewController alloc] init];
+//    self.window.rootViewController = [[YGRAPITestViewController alloc] init];
     self.window.rootViewController = [[YGRTabBarController alloc] init];
     [self.window makeKeyAndVisible];
     return YES;

@@ -8,7 +8,6 @@
 
 #import "YGRExtensionService.h"
 #import "YGRExtension.h"
-#import "YGRImageUtility.h"
 #import "YGRNetworkManager.h"
 
 @implementation YGRExtensionService

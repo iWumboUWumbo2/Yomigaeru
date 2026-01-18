@@ -10,9 +10,13 @@
 
 #import "YGRPageViewController.h"
 
+#import "YGRMangaService.h"
+
 @interface YGRChapterViewController ()
 
-@property (nonatomic, strong) NSCache *pageControllerCache;
+@property (nonatomic, strong) YGRMangaService *mangaService;
+
+@property (nonatomic, strong) YGRChapter *chapter;
 
 @end
 
@@ -20,10 +24,12 @@
 
 - (id)init
 {
-    self = [super init];
+    self = [super initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl
+                    navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                  options:nil];
     if (self)
     {
-        self.pageControllerCache = [[NSCache alloc] init];
+        self.mangaService = [[YGRMangaService alloc] init];
     }
     return self;
 }
@@ -31,19 +37,73 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.title =
-        [NSString stringWithFormat:@"Chapter %lu", (unsigned long) self.chapter.chapterNumber];
+    
+    self.chapter = (YGRChapter *)self.chapters[self.chaptersArrayIndex];
+    self.title = [NSString stringWithFormat:@"Chapter %u", (NSUInteger) self.chapter.chapterNumber];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                      style:UIBarButtonItemStyleBordered
+                                     target:self
+                                     action:@selector(dismissSelf)];
 
     // Do any additional setup after loading the view.
     self.dataSource = self;
-
-    YGRPageViewController *pageViewController =
-        [self viewControllerForPage:(NSUInteger) self.chapter.lastPageRead];
+    
+    YGRPageViewController *pageViewController = [self viewControllerForPage:(NSUInteger)self.chapter.lastPageRead];
     [self setViewControllers:@[ pageViewController ]
                    direction:UIPageViewControllerNavigationDirectionForward
                     animated:NO
                   completion:nil];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
+    tap.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:tap];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    YGRPageViewController *currentPageViewController = (YGRPageViewController *)self.viewControllers.firstObject;
+    
+    [self.mangaService markLastPageReadForChapterWithMangaId:self.manga.id_
+                                                chapterIndex:self.chapter.index
+                                                lastPageRead:currentPageViewController.pageIndex
+                                                  completion:^(BOOL success, NSError *error) {
+                                                      if (error) {
+                                                          NSLog(@"%@", error);
+                                                          return;
+                                                      }
+                                                      
+                                                      if (!success) {
+                                                          NSLog(@"Failed to save last page read");
+                                                          return;
+                                                      }
+                                                      
+                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                          if ([self.refreshDelegate respondsToSelector:@selector(childDidFinishRefreshing)]) {
+                                                              [self.refreshDelegate childDidFinishRefreshing];
+                                                          }
+                                                      });
+                                                  }];
+}
+
+
+- (void)dismissSelf
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)toggleNavigationBar
+{
+    BOOL hidden = self.navigationController.navigationBarHidden;    
+    [self.navigationController setNavigationBarHidden:!hidden animated:YES];
 }
 
 - (void)viewDidUnload
@@ -57,28 +117,40 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (YGRPageViewController *)viewControllerForPage:(NSUInteger)pageIndex
+- (YGRPageViewController *)viewControllerForPage:(NSInteger)pageIndex
 {
-    if (pageIndex >= self.chapter.pageCount)
-    {
-        return nil;
-    }
-
-    // Use NSCache methods
-    YGRPageViewController *cachedPageViewController =
-        [self.pageControllerCache objectForKey:@(pageIndex)];
-    if (cachedPageViewController != nil)
-    {
-        return cachedPageViewController;
-    }
-
     YGRPageViewController *pageViewController = [[YGRPageViewController alloc] init];
     pageViewController.mangaId = self.manga.id_;
-    pageViewController.chapterIndex = (NSUInteger) self.chapter.chapterNumber;
+
+    // Go to previous chapter
+    if (pageIndex < 0)
+    {
+        // Check if there is a previous chapter
+        if (self.chaptersArrayIndex + 1 >= self.chapters.count) {
+            return nil;
+        }
+        
+        self.chaptersArrayIndex++;
+        self.chapter = (YGRChapter *)self.chapters[self.chaptersArrayIndex];
+        pageIndex = self.chapter.pageCount - 1;
+    }
+    
+    // Go to next chapter
+    else if (pageIndex >= self.chapter.pageCount)
+    {
+        // Check if there is a previous chapter
+        if (self.chaptersArrayIndex - 1 < 0) {
+            return nil;
+        }
+        
+        self.chaptersArrayIndex--;
+        self.chapter = (YGRChapter *)self.chapters[self.chaptersArrayIndex];
+        pageIndex = 0;
+    }
+
+    pageViewController.chapterIndex = self.chapter.index;
     pageViewController.pageIndex = pageIndex;
-
-    [self.pageControllerCache setObject:pageViewController forKey:@(pageIndex)];
-
+    
     return pageViewController;
 }
 
@@ -86,7 +158,7 @@
       viewControllerBeforeViewController:(UIViewController *)viewController
 {
     YGRPageViewController *currentPageViewController = (YGRPageViewController *) viewController;
-    return [self viewControllerForPage:currentPageViewController.pageIndex - 1];
+    return [self viewControllerForPage:(NSInteger)currentPageViewController.pageIndex - 1];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController

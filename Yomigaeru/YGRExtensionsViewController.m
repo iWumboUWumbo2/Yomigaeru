@@ -54,6 +54,11 @@ static NSString *const kExtensionInstalledKey = @"Installed";
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     [self fetchExtensions];
 }
 
@@ -179,10 +184,12 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 {
     if (error) {
         NSLog(@"%@", error);
+        return;
     }
     
     if (!success) {
         NSLog(@"Extension operation failed");
+        return;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -340,7 +347,7 @@ static NSString *const kExtensionInstalledKey = @"Installed";
     extensionInfoViewController.extension = [self extensionForRowAtIndexPath:indexPath];
     extensionInfoViewController.thumbnailImage = cell.imageView.image;
     
-    [self.parentViewController.navigationController pushViewController:extensionInfoViewController animated:YES];
+    [self.navigationController pushViewController:extensionInfoViewController animated:YES];
 }
 
 @end

@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YGRChildRefreshDelegate.h"
 
 #import "YGRManga.h"
 
-@interface YGRMangaViewController : UITableViewController
+@interface YGRMangaViewController : UITableViewController <YGRChildRefreshDelegate>
 
 @property (nonatomic, strong) YGRManga *manga;
 

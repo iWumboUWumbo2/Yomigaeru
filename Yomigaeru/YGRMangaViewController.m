@@ -38,21 +38,36 @@
     [super viewDidLoad];
 
     self.title = self.manga.title;
+}
 
+- (void)fetchChapters
+{
     __weak typeof(self) weakSelf = self;
     [self.mangaService fetchChaptersWithMangaId:self.manga.id_
                                      completion:^(NSArray *chapters, NSError *error) {
                                          __strong typeof(weakSelf) strongSelf = weakSelf;
-
+                                         
                                          if (error)
                                          {
                                              NSLog(@"%@", error);
                                              return;
                                          }
-
+                                         
                                          strongSelf.chapters = chapters;
-                                         [strongSelf.tableView reloadData];
+                                         
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             [strongSelf.tableView reloadData];
+                                         });
+                                         
                                      }];
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self fetchChapters];
 }
 
 - (void)viewDidUnload
@@ -152,12 +167,22 @@ toIndexPath:(NSIndexPath *)toIndexPath
     // Navigation logic may go here. Create and push another view controller.
     YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc] init];
 
-    YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
     chapterViewController.manga = self.manga;
-    chapterViewController.chapter = selectedChapter;
-
+    chapterViewController.chapters = self.chapters;
+    chapterViewController.chaptersArrayIndex = indexPath.row;
+    chapterViewController.refreshDelegate = self;
+    
     // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:chapterViewController animated:YES];
+    // Wrap in a navigation controller if you want a back button
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chapterViewController];
+    
+    // Present modally (fullscreen)
+    [self presentModalViewController:navController animated:YES];
+}
+
+- (void)childDidFinishRefreshing
+{
+    [self fetchChapters];
 }
 
 @end

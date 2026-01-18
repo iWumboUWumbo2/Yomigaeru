@@ -9,10 +9,9 @@
 #import "YGRPageViewController.h"
 
 #import "YGRMangaService.h"
+#import "YGRImageService.h"
 
 @interface YGRPageViewController ()
-
-@property (nonatomic, strong) YGRMangaService *mangaService;
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -21,22 +20,11 @@
 
 @implementation YGRPageViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
     // Do any additional setup after loading the view.
-    self.mangaService = [[YGRMangaService alloc] init];
-
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.delegate = self;
     self.scrollView.maximumZoomScale = 3.0;
@@ -49,9 +37,8 @@
 
     self.imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    
     [self.scrollView addSubview:self.imageView];
-
-    [self loadPageImage];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -88,35 +75,37 @@
 - (void)loadPageImage
 {
     __weak typeof(self) weakSelf = self;
-
-    [self.mangaService fetchPageWithMangaId:self.mangaId
+    
+    [[YGRImageService sharedService] fetchPageWithMangaId:self.mangaId
                                chapterIndex:self.chapterIndex
                                   pageIndex:self.pageIndex
                                  completion:^(UIImage *pageData, NSError *error) {
                                      __strong typeof(weakSelf) strongSelf = weakSelf;
-
+                                     
                                      if (error)
                                      {
                                          NSLog(@"%@", error);
                                          return;
                                      }
-
+                                     
                                      if (!pageData)
                                      {
                                          NSLog(@"Failed to load image");
                                          return;
                                      }
-
+                                     
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          [strongSelf setImage:pageData];
                                      });
                                  }];
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.scrollView.zoomScale = 1.0;
+    [self loadPageImage];
 }
 
 - (void)viewDidUnload
