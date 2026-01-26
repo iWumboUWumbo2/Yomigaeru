@@ -10,6 +10,7 @@
 
 #import "YGRChapter.h"
 #import "YGRChapterViewController.h"
+#import "YGRMangaInfoViewController.h"
 #import "YGRMangaService.h"
 
 @interface YGRMangaViewController ()
@@ -40,6 +41,13 @@
     [super viewDidLoad];
 
     self.title = self.manga.title;
+
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [infoButton addTarget:self
+                   action:@selector(showMangaInfo)
+         forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem =
+        [[UIBarButtonItem alloc] initWithCustomView:infoButton];
 
     self.loadingSpinner = [[UIActivityIndicatorView alloc]
         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -215,6 +223,15 @@ toIndexPath:(NSIndexPath *)toIndexPath
 - (void)childDidFinishRefreshing
 {
     [self fetchChapters];
+}
+
+#pragma mark - Manga Info
+
+- (void)showMangaInfo
+{
+    YGRMangaInfoViewController *infoVC = [[YGRMangaInfoViewController alloc] init];
+    infoVC.mangaId = self.manga.id_;
+    [self.navigationController pushViewController:infoVC animated:YES];
 }
 
 @end
