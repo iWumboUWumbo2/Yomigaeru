@@ -10,12 +10,13 @@
 #import "YGRMangaViewController.h"
 
 #import "YGRCategoryService.h"
-#import "YGRMangaService.h"
 #import "YGRImageService.h"
-#import "YGRManga.h"
 #import "YGRLibraryCell.h"
+#import "YGRManga.h"
+#import "YGRMangaService.h"
 
-@interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate, UIActionSheetDelegate>
+@interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate,
+                                        UIActionSheetDelegate>
 
 @property (nonatomic, strong) YGRCategoryService *categoryService;
 @property (nonatomic, strong) YGRMangaService *mangaService;
@@ -37,7 +38,8 @@
 - (id)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _categoryService = [[YGRCategoryService alloc] init];
         _mangaService = [[YGRMangaService alloc] init];
         _mangas = [NSMutableArray array];
@@ -51,26 +53,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.title = @"Library";
-    
+
     // Refresh button & spinner
-    self.refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                       target:self
-                                                                       action:@selector(refreshLibrary)];
-    self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.refreshButton =
+        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                      target:self
+                                                      action:@selector(refreshLibrary)];
+    self.refreshSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.leftBarButtonItem = self.refreshButton;
-    
-    self.actionSheet = [[UIActionSheet alloc] initWithTitle:@"Edit" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Mark Read", @"Mark Unread", nil];
-    
+
+    self.actionSheet = [[UIActionSheet alloc] initWithTitle:@"Edit"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                     destructiveButtonTitle:@"Delete"
+                                          otherButtonTitles:@"Mark Read", @"Mark Unread", nil];
+
     self.gridView.dataSource = self;
     self.gridView.delegate = self;
     self.gridView.backgroundColor = [UIColor whiteColor];
     self.gridView.separatorStyle = AQGridViewCellSeparatorStyleNone;
     self.gridView.bounces = YES;
     self.gridView.alwaysBounceVertical = YES;
-    
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+
+    UILongPressGestureRecognizer *longPress =
+        [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                      action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.gridView addGestureRecognizer:longPress];
 }
@@ -100,22 +110,26 @@
     {
         return;
     }
-    
+
     CGPoint point = [gesture locationInView:self.gridView];
     NSInteger index = [self.gridView indexForItemAtPoint:point];
-    
+
     if (index == NSNotFound)
     {
         return;
     }
-    
+
     self.selectedIndex = index;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
         // In this case the device is an iPad.
-        [self.actionSheet showFromRect:[self.gridView rectForItemAtIndex:index] inView:self.view animated:YES];
+        [self.actionSheet showFromRect:[self.gridView rectForItemAtIndex:index]
+                                inView:self.view
+                              animated:YES];
     }
-    else{
+    else
+    {
         // In this case the device is an iPhone/iPod Touch.
         [self.actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
@@ -124,96 +138,114 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     YGRManga *selectedManga = [self.mangas objectAtIndex:self.selectedIndex];
-    
+
     NSInteger markReadButtonIndex = actionSheet.firstOtherButtonIndex;
     NSInteger markUnreadButtonIndex = markReadButtonIndex + 1;
-    
+
     __weak typeof(self) weakSelf = self;
-    
+
     if (buttonIndex == actionSheet.destructiveButtonIndex)
     {
-        [self.mangaService deleteFromLibraryWithMangaId:selectedManga.id_ completion:^(BOOL success, NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            
-            if (error)
-            {
-                NSLog(@"%@", error);
-                return;
-            }
-            
-            if (!success)
-            {
-                NSLog(@"Failed to delete manga at index (%d)", strongSelf.selectedIndex);
-                return;
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [strongSelf.mangas removeObjectAtIndex:strongSelf.selectedIndex];
-                [strongSelf.gridView deleteItemsAtIndices:[NSIndexSet indexSetWithIndex:strongSelf.selectedIndex] withAnimation:AQGridViewItemAnimationFade];
-            });
-        }];
+        [self.mangaService
+            deleteFromLibraryWithMangaId:selectedManga.id_
+                              completion:^(BOOL success, NSError *error) {
+                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                  if (error)
+                                  {
+                                      NSLog(@"%@", error);
+                                      return;
+                                  }
+
+                                  if (!success)
+                                  {
+                                      NSLog(@"Failed to delete manga at index (%d)",
+                                            strongSelf.selectedIndex);
+                                      return;
+                                  }
+
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      [strongSelf.mangas
+                                          removeObjectAtIndex:strongSelf.selectedIndex];
+                                      [strongSelf.gridView
+                                          deleteItemsAtIndices:
+                                              [NSIndexSet
+                                                  indexSetWithIndex:strongSelf.selectedIndex]
+                                                 withAnimation:AQGridViewItemAnimationFade];
+                                  });
+                              }];
     }
-    
+
     else if (buttonIndex == markReadButtonIndex)
     {
-        [self.mangaService markMangaReadStatusWithMangaId:selectedManga.id_ readStatus:YES completion:^(BOOL success, NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            
-            if (error)
-            {
-                NSLog(@"%@", error);
-                return;
-            }
-            
-            if (!success)
-            {
-                NSLog(@"Failed to mark manga at index (%d) as read", strongSelf.selectedIndex);
-                return;
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // TODO
-            });
-        }];
+        [self.mangaService
+            markMangaReadStatusWithMangaId:selectedManga.id_
+                                readStatus:YES
+                                completion:^(BOOL success, NSError *error) {
+                                    __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                    if (error)
+                                    {
+                                        NSLog(@"%@", error);
+                                        return;
+                                    }
+
+                                    if (!success)
+                                    {
+                                        NSLog(@"Failed to mark manga at index (%d) as read",
+                                              strongSelf.selectedIndex);
+                                        return;
+                                    }
+
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                       // TODO
+                                                   });
+                                }];
     }
-    
+
     else if (buttonIndex == markUnreadButtonIndex)
     {
-        [self.mangaService markMangaReadStatusWithMangaId:selectedManga.id_ readStatus:NO completion:^(BOOL success, NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            
-            if (error)
-            {
-                NSLog(@"%@", error);
-                return;
-            }
-            
-            if (!success)
-            {
-                NSLog(@"Failed to mark manga at index (%d) as unread", strongSelf.selectedIndex);
-                return;
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // TODO
-            });
-        }];
+        [self.mangaService
+            markMangaReadStatusWithMangaId:selectedManga.id_
+                                readStatus:NO
+                                completion:^(BOOL success, NSError *error) {
+                                    __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                    if (error)
+                                    {
+                                        NSLog(@"%@", error);
+                                        return;
+                                    }
+
+                                    if (!success)
+                                    {
+                                        NSLog(@"Failed to mark manga at index (%d) as unread",
+                                              strongSelf.selectedIndex);
+                                        return;
+                                    }
+
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                       // TODO
+                                                   });
+                                }];
     }
 }
 
 - (void)enableSpinner
 {
-    if (![ self.refreshSpinner isAnimating])
+    if (![self.refreshSpinner isAnimating])
     {
         self.navigationItem.leftBarButtonItem.enabled = NO;
         [self.refreshSpinner startAnimating];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+        self.navigationItem.leftBarButtonItem =
+            [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
     }
 }
 
 - (void)disableSpinner
 {
-    if ([self.refreshSpinner isAnimating]) {
+    if ([self.refreshSpinner isAnimating])
+    {
         [self.refreshSpinner stopAnimating];
         self.navigationItem.leftBarButtonItem = self.refreshButton;
         self.navigationItem.leftBarButtonItem.enabled = YES;
@@ -223,20 +255,22 @@
 - (void)fetchLibrary
 {
     __weak typeof(self) weakSelf = self;
-    
+
     [self.categoryService fetchLibraryWithCompletion:^(NSArray *mangas, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf) return;
-        
+        if (!strongSelf)
+            return;
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf disableSpinner];
         });
-        
-        if (error) {
+
+        if (error)
+        {
             NSLog(@"Error fetching library: %@", error);
             return;
         }
-        
+
         strongSelf.mangas = [NSMutableArray arrayWithArray:mangas];
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.gridView reloadData];
@@ -261,46 +295,53 @@
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
-    
+
     int columnCount = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 4 : 2;
     CGFloat cellWidth = screenWidth / columnCount;
-    
+
     return CGSizeMake(cellWidth, cellWidth * 1.25);
 }
 
 - (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index
 {
     static NSString *CellIdentifier = @"LibraryCell";
-    
-    YGRLibraryCell *cell = (YGRLibraryCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
+
+    YGRLibraryCell *cell =
+        (YGRLibraryCell *) [gridView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    if (!cell)
+    {
         CGSize cellSize = [self portraitGridCellSizeForGridView:self.gridView];
-        
-        cell = [[YGRLibraryCell alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)
-                                     reuseIdentifier:CellIdentifier];
+
+        cell =
+            [[YGRLibraryCell alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)
+                                  reuseIdentifier:CellIdentifier];
         cell.selectionStyle = AQGridViewCellSelectionStyleBlueGray;
     }
-    
+
     YGRManga *manga = [self.mangas objectAtIndex:index];
     cell.title = manga.title;
-    
+
     cell.image = [UIImage imageNamed:@"placeholder"];
-    
+
     __weak typeof(cell) weakCell = cell;
     __weak typeof(self) weakSelf = self;
-    [[YGRImageService sharedService] fetchThumbnailWithMangaId:manga.id_ completion:^(UIImage *thumbnailImage, NSError *error) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf || error || !thumbnailImage) return;
-                
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Ensure the cell still represents the same manga
-            if ([weakCell.title isEqualToString:manga.title]) {
-                weakCell.image = thumbnailImage;
-            }
-        });
-    }];
-    
+    [[YGRImageService sharedService]
+        fetchThumbnailWithMangaId:manga.id_
+                       completion:^(UIImage *thumbnailImage, NSError *error) {
+                           __strong typeof(weakSelf) strongSelf = weakSelf;
+                           if (!strongSelf || error || !thumbnailImage)
+                               return;
+
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               // Ensure the cell still represents the same manga
+                               if ([weakCell.title isEqualToString:manga.title])
+                               {
+                                   weakCell.image = thumbnailImage;
+                               }
+                           });
+                       }];
+
     return cell;
 }
 
@@ -309,11 +350,11 @@
 - (void)gridView:(AQGridView *)gridView didSelectItemAtIndex:(NSUInteger)index
 {
     [gridView deselectItemAtIndex:index animated:YES];
-    
+
     YGRManga *selectedManga = [self.mangas objectAtIndex:index];
     YGRMangaViewController *mangaVC = [[YGRMangaViewController alloc] init];
     mangaVC.manga = selectedManga;
-    
+
     [self.navigationController pushViewController:mangaVC animated:YES];
 }
 

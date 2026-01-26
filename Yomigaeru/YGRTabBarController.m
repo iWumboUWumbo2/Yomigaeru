@@ -8,9 +8,9 @@
 
 #import "YGRTabBarController.h"
 
+#import "YGRBrowseViewController.h"
 #import "YGRLibraryViewController.h"
 #import "YGRSettingsViewController.h"
-#import "YGRBrowseViewController.h"
 
 @interface YGRTabBarController ()
 
@@ -30,9 +30,12 @@
 
     YGRBrowseViewController *browseViewController = [[YGRBrowseViewController alloc] init];
     UIImage *browseIcon = [UIImage imageNamed:@"browse"];
-    UINavigationController *browseNavigationController = [[UINavigationController alloc] initWithRootViewController:browseViewController];
-    browseNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Browse" image:browseIcon tag:1];
-    
+    UINavigationController *browseNavigationController =
+        [[UINavigationController alloc] initWithRootViewController:browseViewController];
+    browseNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Browse"
+                                                                          image:browseIcon
+                                                                            tag:1];
+
     YGRSettingsViewController *settingsViewController = [[YGRSettingsViewController alloc] init];
     UIImage *settingsIcon = [UIImage imageNamed:@"settings"];
     UINavigationController *settingsNavigationController =
@@ -40,8 +43,10 @@
     settingsNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings"
                                                                             image:settingsIcon
                                                                               tag:2];
-    
-    [self setViewControllers:@[ libraryNavigationController, browseNavigationController, settingsNavigationController ]];
+
+    [self setViewControllers:@[
+        libraryNavigationController, browseNavigationController, settingsNavigationController
+    ]];
 }
 
 - (void)viewDidLoad

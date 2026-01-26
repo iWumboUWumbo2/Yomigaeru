@@ -23,11 +23,11 @@
 
     // Override point for customization after application launch.
     YGRSettingsManager *settings = [YGRSettingsManager sharedInstance];
-    (void)settings;
+    (void) settings;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"YGRBaseURLDidChangeNotification"
                                                         object:nil];
 
-//    self.window.rootViewController = [[YGRAPITestViewController alloc] init];
+    //    self.window.rootViewController = [[YGRAPITestViewController alloc] init];
     self.window.rootViewController = [[YGRTabBarController alloc] init];
     [self.window makeKeyAndVisible];
     return YES;

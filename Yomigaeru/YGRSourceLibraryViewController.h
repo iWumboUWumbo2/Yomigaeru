@@ -6,11 +6,12 @@
 //  Copyright (c) 2026年 Wumbo World. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "YGRSource.h"
 #import <AQGridView/AQGridView.h>
+#import <UIKit/UIKit.h>
 
-@interface YGRSourceLibraryViewController : UIViewController <AQGridViewDataSource, AQGridViewDelegate, UISearchBarDelegate>
+@interface YGRSourceLibraryViewController
+    : UIViewController <AQGridViewDataSource, AQGridViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) YGRSource *source;
 

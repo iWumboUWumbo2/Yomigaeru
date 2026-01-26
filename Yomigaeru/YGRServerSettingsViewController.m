@@ -23,8 +23,7 @@
     {
         // Custom initialization
         _serverSettings = @[ @"Base URL" ];
-        _serverSettingsViewControllers =
-            @{@"Base URL" : [YGRServerBaseURLViewController class]};
+        _serverSettingsViewControllers = @{@"Base URL" : [YGRServerBaseURLViewController class]};
     }
     return self;
 }

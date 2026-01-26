@@ -21,11 +21,12 @@
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier];
-    if (!self) return nil;
-    
+    if (!self)
+        return nil;
+
     self.backgroundColor = [UIColor clearColor];
     self.contentView.backgroundColor = [UIColor clearColor];
-    
+
     // Image view
     _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -35,16 +36,13 @@
     _imageView.layer.borderWidth = 0.0f;
     _imageView.layer.borderColor = [UIColor blueColor].CGColor;
     [self.contentView addSubview:_imageView];
-    
+
     // Gradient at bottom
     _gradientLayer = [CAGradientLayer layer];
-    _gradientLayer.colors = @[
-        (id)[UIColor clearColor].CGColor,
-        (id)[UIColor blackColor].CGColor
-    ];
-    _gradientLayer.locations = @[@0.0, @1.0];
+    _gradientLayer.colors = @[ (id)[UIColor clearColor].CGColor, (id)[UIColor blackColor].CGColor ];
+    _gradientLayer.locations = @[ @0.0, @1.0 ];
     [_imageView.layer addSublayer:_gradientLayer];
-    
+
     // Title label on top of gradient
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _titleLabel.font = [UIFont systemFontOfSize:14.0f];
@@ -54,10 +52,9 @@
     _titleLabel.textAlignment = UITextAlignmentLeft; // left-aligned
     _titleLabel.backgroundColor = [UIColor clearColor];
     [_imageView addSubview:_titleLabel];
-    
+
     return self;
 }
-
 
 #pragma mark - Reuse
 
@@ -99,40 +96,37 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     CGRect bounds = self.contentView.bounds;
     CGFloat padding = 4.0;
-    
+
     // Image takes almost the full cell
     self.imageView.frame = CGRectInset(bounds, padding, padding);
-    
+
     // Maintain 2:3 aspect ratio
     CGFloat desiredRatio = 4.0 / 5.0;
     CGFloat imageWidth = CGRectGetWidth(self.imageView.frame);
     CGFloat imageHeight = imageWidth / desiredRatio;
-    
-    if (imageHeight > CGRectGetHeight(self.imageView.frame)) {
+
+    if (imageHeight > CGRectGetHeight(self.imageView.frame))
+    {
         imageHeight = CGRectGetHeight(self.imageView.frame);
         imageWidth = imageHeight * desiredRatio;
     }
-    
+
     CGFloat imageX = (CGRectGetWidth(bounds) - imageWidth) / 2.0;
     CGFloat imageY = padding;
     self.imageView.frame = CGRectMake(imageX, imageY, imageWidth, imageHeight);
-    
+
     // Gradient covers bottom ~35% of image
     CGFloat gradientHeight = imageHeight * 0.35;
-    self.gradientLayer.frame = CGRectMake(0,
-                                          imageHeight - gradientHeight,
-                                          imageWidth,
-                                          gradientHeight);
-    
+    self.gradientLayer.frame =
+        CGRectMake(0, imageHeight - gradientHeight, imageWidth, gradientHeight);
+
     // Title left-aligned with some inner padding
     CGFloat titlePadding = 6.0; // padding from left and right
-    self.titleLabel.frame = CGRectMake(titlePadding,
-                                       imageHeight - gradientHeight + titlePadding,
-                                       imageWidth - 2 * titlePadding,
-                                       gradientHeight);
+    self.titleLabel.frame = CGRectMake(titlePadding, imageHeight - gradientHeight + titlePadding,
+                                       imageWidth - 2 * titlePadding, gradientHeight);
 }
 
 @end

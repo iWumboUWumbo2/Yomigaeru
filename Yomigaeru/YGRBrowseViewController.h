@@ -6,8 +6,8 @@
 //  Copyright (c) 2026年 Wumbo World. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "YGRChildRefreshDelegate.h"
+#import <UIKit/UIKit.h>
 
 @interface YGRBrowseViewController : UIViewController <YGRChildRefreshDelegate>
 

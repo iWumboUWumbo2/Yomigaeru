@@ -8,15 +8,15 @@
 
 #import "YGRExtensionsViewController.h"
 
-#import "YGRExtensionService.h"
 #import "YGRExtension.h"
+#import "YGRExtensionService.h"
 
 #import "YGRExtensionInfoViewController.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
-#import <MGSwipeTableCell/MGSwipeTableCell.h>
 #import <MGSwipeTableCell/MGSwipeButton.h>
+#import <MGSwipeTableCell/MGSwipeTableCell.h>
 
 static NSString *const kExtensionUpdatesPendingKey = @"Updates pending";
 static NSString *const kExtensionInstalledKey = @"Installed";
@@ -35,7 +35,8 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 - (id)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
         _extensionService = [[YGRExtensionService alloc] init];
         _languages = [NSMutableArray array];
@@ -47,13 +48,12 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+
+    // Uncomment the following line to display an Edit button in the navigation bar for this view
+    // controller. self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -66,30 +66,39 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 {
     self.languages = [NSMutableArray array];
     self.extensionsByLanguage = [NSMutableDictionary dictionary];
-    
+
     __weak typeof(self) weakSelf = self;
     [self.extensionService fetchAllExtensionsWithCompletion:^(NSArray *extensions, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        
+
         [strongSelf.refreshDelegate childDidFinishRefreshing];
-        
-        if (error) {
+
+        if (error)
+        {
             NSLog(@"%@", error);
             return;
         }
-        
+
         // Temporary storage for updates and installed extensions
         NSMutableArray *updatesPending = [NSMutableArray array];
         NSMutableArray *installed = [NSMutableArray array];
-        
-        for (YGRExtension *extension in extensions) {
-            if (extension.hasUpdate) {
+
+        for (YGRExtension *extension in extensions)
+        {
+            if (extension.hasUpdate)
+            {
                 [updatesPending addObject:extension];
-            } else if (extension.installed) {
+            }
+            else if (extension.installed)
+            {
                 [installed addObject:extension];
-            } else {
-                NSMutableArray *arrayForLang = [strongSelf.extensionsByLanguage objectForKey:extension.lang];
-                if (!arrayForLang) {
+            }
+            else
+            {
+                NSMutableArray *arrayForLang =
+                    [strongSelf.extensionsByLanguage objectForKey:extension.lang];
+                if (!arrayForLang)
+                {
                     arrayForLang = [NSMutableArray array];
                     [strongSelf.extensionsByLanguage setObject:arrayForLang forKey:extension.lang];
                     [strongSelf.languages addObject:extension.lang];
@@ -97,20 +106,23 @@ static NSString *const kExtensionInstalledKey = @"Installed";
                 [arrayForLang addObject:extension];
             }
         }
-        
+
         // Add "Updates pending" first if not empty
-        if (updatesPending.count > 0) {
-            [strongSelf.extensionsByLanguage setObject:updatesPending forKey:kExtensionUpdatesPendingKey];
+        if (updatesPending.count > 0)
+        {
+            [strongSelf.extensionsByLanguage setObject:updatesPending
+                                                forKey:kExtensionUpdatesPendingKey];
             [strongSelf.languages insertObject:kExtensionUpdatesPendingKey atIndex:0];
         }
-        
+
         // Add "Installed" second if not empty
-        if (installed.count > 0) {
+        if (installed.count > 0)
+        {
             [strongSelf.extensionsByLanguage setObject:installed forKey:kExtensionInstalledKey];
             NSUInteger insertIndex = (updatesPending.count > 0) ? 1 : 0;
             [strongSelf.languages insertObject:kExtensionInstalledKey atIndex:insertIndex];
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.tableView reloadData];
             [strongSelf.tableView layoutIfNeeded];
@@ -147,12 +159,13 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 {
     // Return the number of rows in the section.
     NSString *sectionLanguage = [self.languages objectAtIndex:section];
-    
+
     NSMutableArray *arrayForLang = [self.extensionsByLanguage objectForKey:sectionLanguage];
-    if (!arrayForLang) {
+    if (!arrayForLang)
+    {
         return 0;
     }
-    
+
     return arrayForLang.count;
 }
 
@@ -160,10 +173,11 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 {
     NSString *sectionLanguage = [self.languages objectAtIndex:indexPath.section];
     NSMutableArray *arrayForLang = [self.extensionsByLanguage objectForKey:sectionLanguage];
-    if (!arrayForLang) {
+    if (!arrayForLang)
+    {
         return nil;
     }
-    
+
     return [arrayForLang objectAtIndex:indexPath.row];
 }
 
@@ -179,19 +193,20 @@ static NSString *const kExtensionInstalledKey = @"Installed";
                                  }];
 }
 
-- (void)handleExtensionResultWithSuccess:(BOOL)success
-                                   error:(NSError *)error
+- (void)handleExtensionResultWithSuccess:(BOOL)success error:(NSError *)error
 {
-    if (error) {
+    if (error)
+    {
         NSLog(@"%@", error);
         return;
     }
-    
-    if (!success) {
+
+    if (!success)
+    {
         NSLog(@"Extension operation failed");
         return;
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [self fetchExtensions];
         [self.tableView reloadData];
@@ -201,89 +216,109 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * const CellIdentifier = @"SwipeCell";
-    
-    MGSwipeTableCell *cell =
-    [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
+    static NSString *const CellIdentifier = @"SwipeCell";
+
+    MGSwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    if (!cell)
+    {
         cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:CellIdentifier];
     }
-    
+
     YGRExtension *extension = [self extensionForRowAtIndexPath:indexPath];
-    if (!extension) {
+    if (!extension)
+    {
         return cell;
     }
-    
+
     cell.textLabel.text = extension.name;
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+
     NSString *sectionLanguage = self.languages[indexPath.section];
     NSString *packageName = extension.pkgName; // capture immutable value
-    
+
     __weak typeof(self) weakSelf = self;
-    
+
     MGSwipeButton *swipeButton = nil;
-    
-    if ([sectionLanguage isEqualToString:kExtensionUpdatesPendingKey]) {
-        
-        swipeButton = [self swipeButtonWithTitle:@"Update"
-                                           color:[UIColor brownColor]
-                                          action:^{
-                                              __strong typeof(weakSelf) strongSelf = weakSelf;
-                                              if (!strongSelf) return;
-                                              
-                                              [strongSelf.extensionService updateExtensionWithPackageName:packageName
-                                                                                               completion:^(BOOL success, NSError *error) {
-                                                                                                   [strongSelf handleExtensionResultWithSuccess:success
-                                                                                                                                          error:error];
-                                                                                               }];
-                                          }];
-        
-    } else if ([sectionLanguage isEqualToString:kExtensionInstalledKey]) {
-        
-        swipeButton = [self swipeButtonWithTitle:@"Remove"
-                                           color:[UIColor redColor]
-                                          action:^{
-                                              __strong typeof(weakSelf) strongSelf = weakSelf;
-                                              if (!strongSelf) return;
-                                              
-                                              [strongSelf.extensionService uninstallExtensionWithPackageName:packageName
-                                                                                                  completion:^(BOOL success, NSError *error) {
-                                                                                                      [strongSelf handleExtensionResultWithSuccess:success
-                                                                                                                                             error:error];
-                                                                                                  }];
-                                          }];
-        
-    } else {
-        
-        swipeButton = [self swipeButtonWithTitle:@"Add"
-                                           color:[UIColor colorWithRed:0.22
-                                                                 green:0.33
-                                                                  blue:0.53
-                                                                 alpha:1.0]
-                                          action:^{
-                                              __strong typeof(weakSelf) strongSelf = weakSelf;
-                                              if (!strongSelf) return;
-                                              
-                                              [strongSelf.extensionService installExtensionWithPackageName:packageName
-                                                                                                completion:^(BOOL success, NSError *error) {
-                                                                                                    [strongSelf handleExtensionResultWithSuccess:success
-                                                                                                                                           error:error];
-                                                                                                }];
-                                          }];
+
+    if ([sectionLanguage isEqualToString:kExtensionUpdatesPendingKey])
+    {
+
+        swipeButton = [self
+            swipeButtonWithTitle:@"Update"
+                           color:[UIColor brownColor]
+                          action:^{
+                              __strong typeof(weakSelf) strongSelf = weakSelf;
+                              if (!strongSelf)
+                                  return;
+
+                              [strongSelf.extensionService
+                                  updateExtensionWithPackageName:packageName
+                                                      completion:^(BOOL success, NSError *error) {
+                                                          [strongSelf
+                                                              handleExtensionResultWithSuccess:
+                                                                  success
+                                                                                         error:
+                                                                                             error];
+                                                      }];
+                          }];
     }
-    
+    else if ([sectionLanguage isEqualToString:kExtensionInstalledKey])
+    {
+
+        swipeButton = [self
+            swipeButtonWithTitle:@"Remove"
+                           color:[UIColor redColor]
+                          action:^{
+                              __strong typeof(weakSelf) strongSelf = weakSelf;
+                              if (!strongSelf)
+                                  return;
+
+                              [strongSelf.extensionService
+                                  uninstallExtensionWithPackageName:packageName
+                                                         completion:^(BOOL success,
+                                                                      NSError *error) {
+                                                             [strongSelf
+                                                                 handleExtensionResultWithSuccess:
+                                                                     success
+                                                                                            error:
+                                                                                                error];
+                                                         }];
+                          }];
+    }
+    else
+    {
+
+        swipeButton = [self
+            swipeButtonWithTitle:@"Add"
+                           color:[UIColor colorWithRed:0.22 green:0.33 blue:0.53 alpha:1.0]
+                          action:^{
+                              __strong typeof(weakSelf) strongSelf = weakSelf;
+                              if (!strongSelf)
+                                  return;
+
+                              [strongSelf.extensionService
+                                  installExtensionWithPackageName:packageName
+                                                       completion:^(BOOL success, NSError *error) {
+                                                           [strongSelf
+                                                               handleExtensionResultWithSuccess:
+                                                                   success
+                                                                                          error:
+                                                                                              error];
+                                                       }];
+                          }];
+    }
+
     cell.rightButtons = @[ swipeButton ];
     cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
-    
+
     cell.rightExpansion.buttonIndex = 0;
     cell.rightExpansion.fillOnTrigger = YES;
-    
+
     [cell.imageView setImageWithURL:extension.iconUrl
                    placeholderImage:[UIImage imageNamed:@"placeholder"]];
-    
+
     return cell;
 }
 
@@ -293,7 +328,7 @@ static NSString *const kExtensionInstalledKey = @"Installed";
     {
         return @"Error";
     }
-    
+
     return [self.languages objectAtIndex:section];
 }
 
@@ -308,21 +343,26 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 
 /*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath
+*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+withRowAnimation:UITableViewRowAnimationFade];
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        // Create a new instance of the appropriate class, insert it into the array, and add a new
+row to the table view
+    }
 }
 */
 
 /*
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
+toIndexPath:(NSIndexPath *)toIndexPath
 {
 }
 */
@@ -342,11 +382,12 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 {
     // Navigation logic may go here. Create and push another view controller.
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    YGRExtensionInfoViewController *extensionInfoViewController = [[YGRExtensionInfoViewController alloc] init];
+
+    YGRExtensionInfoViewController *extensionInfoViewController =
+        [[YGRExtensionInfoViewController alloc] init];
     extensionInfoViewController.extension = [self extensionForRowAtIndexPath:indexPath];
     extensionInfoViewController.thumbnailImage = cell.imageView.image;
-    
+
     [self.navigationController pushViewController:extensionInfoViewController animated:YES];
 }
 

@@ -8,8 +8,8 @@
 
 #import "YGRBrowseViewController.h"
 
-#import "YGRSourcesViewController.h"
 #import "YGRExtensionsViewController.h"
+#import "YGRSourcesViewController.h"
 
 @interface YGRBrowseViewController ()
 
@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) NSArray *viewControllerTitles;
-@property (nonatomic, strong) UIViewController <YGRRefreshable> *currentViewController;
+@property (nonatomic, strong) UIViewController<YGRRefreshable> *currentViewController;
 
 @end
 
@@ -30,7 +30,8 @@
 - (id)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;
@@ -46,7 +47,7 @@
     [viewController didMoveToParentViewController:self];
 }
 
-- (void)cycleToNewViewController:(UIViewController <YGRRefreshable> *)newViewController
+- (void)cycleToNewViewController:(UIViewController<YGRRefreshable> *)newViewController
 {
     if (!self.currentViewController)
     {
@@ -54,68 +55,81 @@
         [self displayViewController:newViewController];
         return;
     }
-    
+
     if (self.currentViewController == newViewController)
     {
         return;
     }
-    
+
     // Prepare the two view controllers for the change.
     [self.currentViewController willMoveToParentViewController:nil];
     [self addChildViewController:newViewController];
-    
+
     // Get the start frame of the new view controller and the end frame
     // for the old view controller. Both rectangles are offscreen.
     newViewController.view.frame = self.currentViewController.view.frame;
     newViewController.view.autoresizingMask =
         UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self transitionFromViewController:self.currentViewController toViewController:newViewController duration:0 options:UIViewAnimationOptionTransitionNone animations:nil completion:^(BOOL finished) {
-        [self.currentViewController removeFromParentViewController];
-        [newViewController didMoveToParentViewController:self];
-        self.currentViewController = newViewController;
-    }];
+
+    [self transitionFromViewController:self.currentViewController
+                      toViewController:newViewController
+                              duration:0
+                               options:UIViewAnimationOptionTransitionNone
+                            animations:nil
+                            completion:^(BOOL finished) {
+                                [self.currentViewController removeFromParentViewController];
+                                [newViewController didMoveToParentViewController:self];
+                                self.currentViewController = newViewController;
+                            }];
 }
 
 - (void)configureViewControllerSegmentedControl
 {
-    self.viewControllerSegmentedControl = [[UISegmentedControl alloc] initWithItems:self.viewControllerTitles];
-    
+    self.viewControllerSegmentedControl =
+        [[UISegmentedControl alloc] initWithItems:self.viewControllerTitles];
+
     self.viewControllerSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-    [self.viewControllerSegmentedControl addTarget:self action:@selector(viewControllerDidChange:) forControlEvents:UIControlEventValueChanged];
+    [self.viewControllerSegmentedControl addTarget:self
+                                            action:@selector(viewControllerDidChange:)
+                                  forControlEvents:UIControlEventValueChanged];
     self.viewControllerSegmentedControl.selectedSegmentIndex = 0;
-    
+
     CGFloat padding = 8.0f;
-    CGFloat height  = 32.0f;
-    
-    self.viewControllerSegmentedControl.frame = CGRectMake(padding, padding, self.view.bounds.size.width - (padding * 2), height);
-    
+    CGFloat height = 32.0f;
+
+    self.viewControllerSegmentedControl.frame =
+        CGRectMake(padding, padding, self.view.bounds.size.width - (padding * 2), height);
+
     self.viewControllerSegmentedControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
+
     [self.view addSubview:self.viewControllerSegmentedControl];
 }
 
 - (void)viewControllerDidChange:(UISegmentedControl *)sender
 {
-    if (sender.selectedSegmentIndex < 0 || sender.selectedSegmentIndex >= self.viewControllers.count)
+    if (sender.selectedSegmentIndex < 0 ||
+        sender.selectedSegmentIndex >= self.viewControllers.count)
     {
         return;
     }
-    
-    UIViewController <YGRRefreshable> *newViewController = [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
+
+    UIViewController<YGRRefreshable> *newViewController =
+        [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
     [self cycleToNewViewController:newViewController];
     [self disableSpinner];
 }
 
 - (void)configureContentView
-{    
+{
     CGFloat top = CGRectGetMaxY(self.viewControllerSegmentedControl.frame) + 8.0f;
-    
-    CGRect contentViewFrame = CGRectMake(0, top, self.view.bounds.size.width, self.view.bounds.size.height - top);
+
+    CGRect contentViewFrame =
+        CGRectMake(0, top, self.view.bounds.size.width, self.view.bounds.size.height - top);
     self.contentView = [[UIView alloc] initWithFrame:contentViewFrame];
-    
-    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
+
+    self.contentView.autoresizingMask =
+        UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
     [self.view addSubview:self.contentView];
 }
 
@@ -123,27 +137,30 @@
 {
     YGRSourcesViewController *sourcesViewController = [[YGRSourcesViewController alloc] init];
     sourcesViewController.refreshDelegate = self;
-    
-    YGRExtensionsViewController *extensionsViewController = [[YGRExtensionsViewController alloc] init];
+
+    YGRExtensionsViewController *extensionsViewController =
+        [[YGRExtensionsViewController alloc] init];
     extensionsViewController.refreshDelegate = self;
-    
+
     self.viewControllers = @[ sourcesViewController, extensionsViewController ];
     self.viewControllerTitles = @[ @"Sources", @"Extensions" ];
 }
 
 - (void)enableSpinner
 {
-    if (![ self.refreshSpinner isAnimating])
+    if (![self.refreshSpinner isAnimating])
     {
         self.navigationItem.leftBarButtonItem.enabled = NO;
         [self.refreshSpinner startAnimating];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
+        self.navigationItem.leftBarButtonItem =
+            [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
     }
 }
 
 - (void)disableSpinner
 {
-    if ([self.refreshSpinner isAnimating]) {
+    if ([self.refreshSpinner isAnimating])
+    {
         [self.refreshSpinner stopAnimating];
         self.navigationItem.leftBarButtonItem = self.refreshButton;
         self.navigationItem.leftBarButtonItem.enabled = YES;
@@ -164,27 +181,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-	// Do any additional setup after loading the view.
+
+    // Do any additional setup after loading the view.
     self.title = @"Browse";
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
     // Refresh button & spinner
-    self.refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                       target:self
-                                                                       action:@selector(refreshLibrary)];
-    self.refreshSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.refreshButton =
+        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                      target:self
+                                                      action:@selector(refreshLibrary)];
+    self.refreshSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.leftBarButtonItem = self.refreshButton;
-    
+
     [self configureViewControllers];
     [self configureViewControllerSegmentedControl];
     [self configureContentView];
-    
+
     self.currentViewController = [self.viewControllers objectAtIndex:0];
     [self displayViewController:self.currentViewController];
-    
+
     // Prevent nav bar and tab bar from overlaying the view in iOS 7.0
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
+    {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
 }

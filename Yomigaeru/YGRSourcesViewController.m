@@ -8,8 +8,8 @@
 
 #import "YGRSourcesViewController.h"
 
-#import "YGRSourceService.h"
 #import "YGRSourceLibraryViewController.h"
+#import "YGRSourceService.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
@@ -27,7 +27,8 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
         _sourceService = [[YGRSourceService alloc] init];
         _languages = [NSMutableArray array];
@@ -39,12 +40,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    // Uncomment the following line to display an Edit button in the navigation bar for this view
+    // controller. self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -57,29 +58,32 @@
 {
     [self.languages removeAllObjects];
     [self.sourcesByLanguage removeAllObjects];
-    
+
     __weak typeof(self) weakSelf = self;
     [self.sourceService fetchAllSourcesWithCompletion:^(NSArray *sources, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        
+
         [strongSelf.refreshDelegate childDidFinishRefreshing];
-        
-        if (error) {
+
+        if (error)
+        {
             NSLog(@"%@", error);
             return;
         }
-        
-        for (YGRSource *source in sources) {
+
+        for (YGRSource *source in sources)
+        {
             NSMutableArray *arrayForLang = [strongSelf.sourcesByLanguage objectForKey:source.lang];
-            if (!arrayForLang) {
+            if (!arrayForLang)
+            {
                 arrayForLang = [NSMutableArray array];
                 [strongSelf.sourcesByLanguage setObject:arrayForLang forKey:source.lang];
-                
+
                 [strongSelf.languages addObject:source.lang];
             }
             [arrayForLang addObject:source];
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf.tableView reloadData];
             [strongSelf.tableView layoutIfNeeded];
@@ -116,12 +120,13 @@
 {
     // Return the number of rows in the section.
     NSString *sectionLanguage = [self.languages objectAtIndex:section];
-    
+
     NSMutableArray *arrayForLang = [self.sourcesByLanguage objectForKey:sectionLanguage];
-    if (!arrayForLang) {
+    if (!arrayForLang)
+    {
         return 0;
     }
-    
+
     return arrayForLang.count;
 }
 
@@ -129,33 +134,37 @@
 {
     NSString *sectionLanguage = [self.languages objectAtIndex:indexPath.section];
     NSMutableArray *arrayForLang = [self.sourcesByLanguage objectForKey:sectionLanguage];
-    if (!arrayForLang) {
+    if (!arrayForLang)
+    {
         return nil;
     }
-    
+
     return [arrayForLang objectAtIndex:indexPath.row];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:CellIdentifier];
     }
-    
+
     // Configure the cell...
     YGRSource *source = [self sourceForRowAtIndexPath:indexPath];
-    if (!source) {
+    if (!source)
+    {
         return cell;
     }
     cell.textLabel.text = source.displayName;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    [cell.imageView setImageWithURL:source.iconUrl placeholderImage:[UIImage imageNamed:@"placeholder"]];
-    
+    [cell.imageView setImageWithURL:source.iconUrl
+                   placeholderImage:[UIImage imageNamed:@"placeholder"]];
+
     return cell;
 }
 
@@ -165,7 +174,7 @@
     {
         return @"Error";
     }
-    
+
     return [self.languages objectAtIndex:section];
 }
 
@@ -180,21 +189,26 @@
 
 /*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath
+*)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+withRowAnimation:UITableViewRowAnimationFade];
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        // Create a new instance of the appropriate class, insert it into the array, and add a new
+row to the table view
+    }
 }
 */
 
 /*
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
+toIndexPath:(NSIndexPath *)toIndexPath
 {
 }
 */
@@ -214,16 +228,18 @@
 {
     // Navigation logic may go here. Create and push another view controller.
     /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc]
+     initWithNibName:@"<#Nib name#>" bundle:nil];
      // ...
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-    
-    YGRSourceLibraryViewController *sourceLibraryViewController = [[YGRSourceLibraryViewController alloc] init];
-    
+
+    YGRSourceLibraryViewController *sourceLibraryViewController =
+        [[YGRSourceLibraryViewController alloc] init];
+
     sourceLibraryViewController.source = [self sourceForRowAtIndexPath:indexPath];
-    
+
     [self.navigationController pushViewController:sourceLibraryViewController animated:YES];
 }
 

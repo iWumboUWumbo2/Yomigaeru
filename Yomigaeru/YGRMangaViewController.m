@@ -46,27 +46,25 @@
     [self.mangaService fetchChaptersWithMangaId:self.manga.id_
                                      completion:^(NSArray *chapters, NSError *error) {
                                          __strong typeof(weakSelf) strongSelf = weakSelf;
-                                         
+
                                          if (error)
                                          {
                                              NSLog(@"%@", error);
                                              return;
                                          }
-                                         
+
                                          strongSelf.chapters = chapters;
-                                         
+
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              [strongSelf.tableView reloadData];
                                          });
-                                         
                                      }];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     [self fetchChapters];
 }
 
@@ -165,24 +163,25 @@ toIndexPath:(NSIndexPath *)toIndexPath
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
-                                                                                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-                                                                                                        options:nil];
-    
+    YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc]
+        initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                        options:nil];
+
     chapterViewController.manga = self.manga;
-    
-        
-    YGRChapter *chapter = (YGRChapter *)self.chapters[indexPath.row];
+
+    YGRChapter *chapter = (YGRChapter *) self.chapters[indexPath.row];
     chapterViewController.chapterNumber = chapter.chapterNumber;
     chapterViewController.chapterIndex = chapter.index;
     chapterViewController.chapterCount = chapter.chapterCount;
-    
+
     chapterViewController.refreshDelegate = self;
-    
+
     // Pass the selected object to the new view controller.
     // Wrap in a navigation controller if you want a back button
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chapterViewController];
-    
+    UINavigationController *navController =
+        [[UINavigationController alloc] initWithRootViewController:chapterViewController];
+
     // Present modally (fullscreen)
     [self presentViewController:navController animated:YES completion:nil];
 }

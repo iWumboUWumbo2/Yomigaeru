@@ -17,7 +17,8 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;
@@ -26,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.title = @"Extensions";
 }
 
@@ -56,37 +57,41 @@
     return 4;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    switch (indexPath.row) {
-        case 0:
-            cell.imageView.image = self.thumbnailImage;
-            cell.textLabel.text = @"Name";
-            cell.detailTextLabel.text = self.extension.name;
-            break;
-        case 1:
-            cell.textLabel.text = @"Package Name";
-            cell.detailTextLabel.text = self.extension.pkgName;
-            break;
-        case 2:
-            cell.textLabel.text = @"Version";
-            cell.detailTextLabel.text = self.extension.versionName;
-            break;
-        case 3:
-            cell.textLabel.text = @"Language";
-            cell.detailTextLabel.text = self.extension.lang;
-            break;
+
+    switch (indexPath.row)
+    {
+    case 0:
+        cell.imageView.image = self.thumbnailImage;
+        cell.textLabel.text = @"Name";
+        cell.detailTextLabel.text = self.extension.name;
+        break;
+    case 1:
+        cell.textLabel.text = @"Package Name";
+        cell.detailTextLabel.text = self.extension.pkgName;
+        break;
+    case 2:
+        cell.textLabel.text = @"Version";
+        cell.detailTextLabel.text = self.extension.versionName;
+        break;
+    case 3:
+        cell.textLabel.text = @"Language";
+        cell.detailTextLabel.text = self.extension.lang;
+        break;
     }
-    
+
     return cell;
 }
 

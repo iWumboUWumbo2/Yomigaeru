@@ -8,8 +8,8 @@
 
 #import "YGRPageViewController.h"
 
-#import "YGRMangaService.h"
 #import "YGRImageService.h"
+#import "YGRMangaService.h"
 
 @interface YGRPageViewController ()
 
@@ -23,7 +23,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+
     // Do any additional setup after loading the view.
     self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.delegate = self;
@@ -37,7 +37,7 @@
 
     self.imageView = [[UIImageView alloc] initWithFrame:self.scrollView.bounds];
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    
+
     [self.scrollView addSubview:self.imageView];
 }
 
@@ -75,31 +75,30 @@
 - (void)loadPageImage
 {
     __weak typeof(self) weakSelf = self;
-    
-    [[YGRImageService sharedService] fetchPageWithMangaId:self.mangaId
-                               chapterIndex:self.chapterIndex
-                                  pageIndex:self.pageIndex
-                                 completion:^(UIImage *pageData, NSError *error) {
-                                     __strong typeof(weakSelf) strongSelf = weakSelf;
-                                     
-                                     if (error)
-                                     {
-                                         NSLog(@"%@", error);
-                                         return;
-                                     }
-                                     
-                                     if (!pageData)
-                                     {
-                                         NSLog(@"Failed to load image");
-                                         return;
-                                     }
-                                     
-                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                         [strongSelf setImage:pageData];
-                                     });
-                                 }];
-}
 
+    [[YGRImageService sharedService] fetchPageWithMangaId:self.mangaId
+                                             chapterIndex:self.chapterIndex
+                                                pageIndex:self.pageIndex
+                                               completion:^(UIImage *pageData, NSError *error) {
+                                                   __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                                   if (error)
+                                                   {
+                                                       NSLog(@"%@", error);
+                                                       return;
+                                                   }
+
+                                                   if (!pageData)
+                                                   {
+                                                       NSLog(@"Failed to load image");
+                                                       return;
+                                                   }
+
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                       [strongSelf setImage:pageData];
+                                                   });
+                                               }];
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
