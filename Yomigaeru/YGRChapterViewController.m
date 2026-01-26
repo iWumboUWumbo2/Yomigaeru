@@ -274,6 +274,15 @@
                                    }];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0)
+    {
+        NSLog(@"Dismissed");
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 #pragma mark - Navigation
 
 - (void)dismissSelf
@@ -393,7 +402,7 @@
                                  UIAlertView *alert =
                                      [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Failed to load chapter"
-                                                               delegate:nil
+                                                               delegate:self
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
                                  [alert show];

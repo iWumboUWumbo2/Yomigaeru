@@ -6,8 +6,6 @@ An iOS client for [Suwayomi](https://github.com/Suwayomi/Suwayomi-Server) target
 
 Yomigaeru (甦る - "to be revived") breathes new life into original iPads and other legacy iOS devices by providing a native manga reading experience through Suwayomi's server backend.
 
-**Work in Progress**: Currently, you can read your library. More functionality is coming soon. UI will be improved after core functionality is added.
-
 ## Features
 
 - Browse and read manga from Suwayomi sources
@@ -18,9 +16,10 @@ Yomigaeru (甦る - "to be revived") breathes new life into original iPads and o
 ## Requirements
 
 - iOS 5.0 or later
-- Xcode 4.4 or Xcode 5.0
+- Xcode 5.0
 - CocoaPods
 - A running [Suwayomi server](https://github.com/Suwayomi/Suwayomi-Server)
+    - Ensure that under the `Serve` tab under the `Conversions` tab in the `Suwayomi-Server Launcher`, `image/webp` is mapped to target `image/jpeg`. For low-spec devices, ensure compression is set as low as possible (ideally 0).
 
 ## Building
 

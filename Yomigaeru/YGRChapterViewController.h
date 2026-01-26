@@ -12,7 +12,7 @@
 #import "YGRManga.h"
 
 @interface YGRChapterViewController
-    : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+    : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) YGRManga *manga;
 @property (nonatomic, assign) double chapterNumber;

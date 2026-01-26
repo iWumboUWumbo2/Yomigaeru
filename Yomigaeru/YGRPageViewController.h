@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YGRPageViewController : UIViewController <UIScrollViewDelegate>
+@interface YGRPageViewController : UIViewController <UIScrollViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, copy) NSString *mangaId;
 

@@ -106,7 +106,7 @@
                               UIAlertView *alert =
                                   [[UIAlertView alloc] initWithTitle:@"Error"
                                                              message:@"Failed to load page image"
-                                                            delegate:nil
+                                                            delegate:self
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
                               [alert show];
@@ -118,6 +118,15 @@
                           [strongSelf setImage:pageData];
                       });
                   }];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0)
+    {
+        NSLog(@"Dismissed");
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

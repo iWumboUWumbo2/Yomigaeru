@@ -159,4 +159,10 @@
     [imageClient enqueueHTTPRequestOperation:operation];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [self.thumbnailCache removeAllObjects];
+    [self.pageCache removeAllObjects];
+}
+
 @end
