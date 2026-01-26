@@ -83,6 +83,7 @@
         self.imageClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
         [self.imageClient registerHTTPOperationClass:[AFImageRequestOperation class]];
         [self.imageClient setDefaultHeader:@"Accept" value:@"image/*"];
+        self.imageClient.operationQueue.maxConcurrentOperationCount = 2;
     }
 }
 

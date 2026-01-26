@@ -18,6 +18,7 @@
 - (void)fetchPageWithMangaId:(NSString *)mangaId
                 chapterIndex:(NSUInteger)chapterIndex
                    pageIndex:(NSUInteger)pageIndex
+                    priority:(NSOperationQueuePriority)priority
                   completion:(void (^)(UIImage *pageData, NSError *error))completion;
 
 @end

@@ -43,7 +43,7 @@
         _thumbnailCache.name = @"YGRThumbnailCache";
 
         _pageCache = [[NSCache alloc] init];
-        _pageCache.totalCostLimit = 50 * 1024 * 1024; // 50 MB
+        _pageCache.totalCostLimit = 25 * 1024 * 1024; // 25 MB
         _pageCache.name = @"YGRPageCache";
     }
     return self;
@@ -118,6 +118,7 @@
 - (void)fetchPageWithMangaId:(NSString *)mangaId
                 chapterIndex:(NSUInteger)chapterIndex
                    pageIndex:(NSUInteger)pageIndex
+                    priority:(NSOperationQueuePriority)priority
                   completion:(void (^)(UIImage *pageData, NSError *error))completion
 {
     if (!completion)
@@ -155,7 +156,8 @@
             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 completion(nil, error);
             }];
-
+    
+    operation.queuePriority = priority;
     [imageClient enqueueHTTPRequestOperation:operation];
 }
 

@@ -181,6 +181,7 @@
     [[YGRImageService sharedService] fetchPageWithMangaId:mangaId
                                              chapterIndex:13
                                                 pageIndex:1
+                                                 priority:NSOperationQueuePriorityHigh
                                                completion:^(UIImage *pageData, NSError *error) {
                                                    LOG_IMAGE(pageData);
                                                }];

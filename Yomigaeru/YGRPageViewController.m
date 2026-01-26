@@ -93,6 +93,7 @@
         fetchPageWithMangaId:self.mangaId
                 chapterIndex:self.chapterIndex
                    pageIndex:self.pageIndex
+                    priority:NSOperationQueuePriorityHigh
                   completion:^(UIImage *pageData, NSError *error) {
                       __strong typeof(weakSelf) strongSelf = weakSelf;
 

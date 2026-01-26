@@ -351,12 +351,33 @@
             fetchPageWithMangaId:self.manga.id_
                     chapterIndex:self.chapterIndex
                        pageIndex:pageIndex
+                        priority:NSOperationQueuePriorityLow
                       completion:^(UIImage *image, NSError *error) {
                           if (error)
                           {
                               NSLog(@"Prefetch failed for page %ld: %@", (long) pageIndex, error);
                           }
                       }];
+    }
+}
+
+- (void)prefetchAroundPage:(NSInteger)pageIndex
+{
+    if (!self.currentChapter) return;
+    
+    NSInteger pageCount = self.currentChapter.pageCount;
+    
+    NSInteger start = MAX(0, pageIndex - 1);
+    NSInteger end   = MIN(pageCount - 1, pageIndex + 2);
+    
+    for (NSInteger i = start; i <= end; i++)
+    {
+        [[YGRImageService sharedService]
+         fetchPageWithMangaId:self.manga.id_
+         chapterIndex:self.chapterIndex
+         pageIndex:i
+         priority:NSOperationQueuePriorityLow
+         completion:nil];
     }
 }
 
@@ -427,7 +448,7 @@
                                            completion:nil];
 
                              [self updateToolbarWithCurrentPage:startPage];
-                             [self prefetchImagesForChapter:chapter];
+//                             [self prefetchImagesForChapter:chapter];
                          });
                      }];
 }
@@ -442,6 +463,7 @@
         YGRPageViewController *currentViewController =
             (YGRPageViewController *) pageViewController.viewControllers.firstObject;
         [self updateToolbarWithCurrentPage:currentViewController.pageIndex];
+        [self prefetchAroundPage:currentViewController.pageIndex];
     }
 }
 
