@@ -64,7 +64,13 @@
     }
     else
     {
-        NSLog(@"Invalid URL: %@", textField.text);
+        UIAlertView *alert = [[UIAlertView alloc]
+            initWithTitle:@"Invalid URL"
+                  message:@"Please enter a valid URL with scheme and host"
+                 delegate:nil
+        cancelButtonTitle:@"OK"
+        otherButtonTitles:nil];
+        [alert show];
     }
 }
 

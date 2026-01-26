@@ -82,15 +82,17 @@
                                                completion:^(UIImage *pageData, NSError *error) {
                                                    __strong typeof(weakSelf) strongSelf = weakSelf;
 
-                                                   if (error)
+                                                   if (error || !pageData)
                                                    {
-                                                       NSLog(@"%@", error);
-                                                       return;
-                                                   }
-
-                                                   if (!pageData)
-                                                   {
-                                                       NSLog(@"Failed to load image");
+                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                           UIAlertView *alert = [[UIAlertView alloc]
+                                                               initWithTitle:@"Error"
+                                                                     message:@"Failed to load page image"
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil];
+                                                           [alert show];
+                                                       });
                                                        return;
                                                    }
 

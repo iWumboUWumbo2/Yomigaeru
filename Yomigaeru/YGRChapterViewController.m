@@ -235,10 +235,18 @@
                                        __strong typeof(weakSelf) self = weakSelf;
                                        if (!self)
                                            return;
-                                       if (error)
-                                           NSLog(@"%@", error);
-                                       if (!success)
-                                           NSLog(@"Failed to save last page read");
+                                       if (error || !success)
+                                       {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               UIAlertView *alert = [[UIAlertView alloc]
+                                                   initWithTitle:@"Error"
+                                                         message:@"Failed to save reading progress"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+                                               [alert show];
+                                           });
+                                       }
                                        if ([self.refreshDelegate respondsToSelector:@selector
                                                                  (childDidFinishRefreshing)])
                                        {
@@ -340,7 +348,15 @@
                              return;
                          if (error || !chapter || chapter.pageCount == 0)
                          {
-                             NSLog(@"%@", error);
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                                 UIAlertView *alert = [[UIAlertView alloc]
+                                     initWithTitle:@"Error"
+                                           message:@"Failed to load chapter"
+                                          delegate:nil
+                                 cancelButtonTitle:@"OK"
+                                 otherButtonTitles:nil];
+                                 [alert show];
+                             });
                              return;
                          }
 

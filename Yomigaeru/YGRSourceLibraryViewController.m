@@ -195,15 +195,17 @@
                          completion:^(BOOL success, NSError *error) {
                              __strong typeof(weakSelf) strongSelf = weakSelf;
 
-                             if (error)
+                             if (error || !success)
                              {
-                                 NSLog(@"%@", error);
-                                 return;
-                             }
-
-                             if (!success)
-                             {
-                                 NSLog(@"Failed to add manga to library");
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     UIAlertView *alert = [[UIAlertView alloc]
+                                         initWithTitle:@"Error"
+                                               message:@"Failed to add manga to library"
+                                              delegate:nil
+                                     cancelButtonTitle:@"OK"
+                                     otherButtonTitles:nil];
+                                     [alert show];
+                                 });
                                  return;
                              }
 
@@ -221,15 +223,17 @@
             deleteFromLibraryWithMangaId:selectedManga.id_
                               completion:^(BOOL success, NSError *error) {
                                   __strong typeof(weakSelf) strongSelf = weakSelf;
-                                  if (error)
+                                  if (error || !success)
                                   {
-                                      NSLog(@"%@", error);
-                                      return;
-                                  }
-
-                                  if (!success)
-                                  {
-                                      NSLog(@"Failed to delete manga from library");
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                          UIAlertView *alert = [[UIAlertView alloc]
+                                              initWithTitle:@"Error"
+                                                    message:@"Failed to remove manga from library"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                                          [alert show];
+                                      });
                                       return;
                                   }
 
@@ -255,7 +259,15 @@
 
                                if (error)
                                {
-                                   NSLog(@"%@", error);
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       UIAlertView *alert = [[UIAlertView alloc]
+                                           initWithTitle:@"Error"
+                                                 message:@"Failed to fetch popular manga"
+                                                delegate:nil
+                                       cancelButtonTitle:@"OK"
+                                       otherButtonTitles:nil];
+                                       [alert show];
+                                   });
                                    return;
                                }
 
@@ -283,7 +295,15 @@
 
                               if (error)
                               {
-                                  NSLog(@"%@", error);
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      UIAlertView *alert = [[UIAlertView alloc]
+                                          initWithTitle:@"Error"
+                                                message:@"Failed to fetch latest manga"
+                                               delegate:nil
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+                                      [alert show];
+                                  });
                                   return;
                               }
 
@@ -310,7 +330,15 @@
 
                        if (error)
                        {
-                           NSLog(@"%@", error);
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               UIAlertView *alert = [[UIAlertView alloc]
+                                   initWithTitle:@"Error"
+                                         message:@"Failed to search manga"
+                                        delegate:nil
+                               cancelButtonTitle:@"OK"
+                               otherButtonTitles:nil];
+                               [alert show];
+                           });
                            return;
                        }
 

@@ -49,7 +49,15 @@
 
                                          if (error)
                                          {
-                                             NSLog(@"%@", error);
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 UIAlertView *alert = [[UIAlertView alloc]
+                                                     initWithTitle:@"Error"
+                                                           message:@"Failed to load chapters"
+                                                          delegate:nil
+                                                 cancelButtonTitle:@"OK"
+                                                 otherButtonTitles:nil];
+                                                 [alert show];
+                                             });
                                              return;
                                          }
 

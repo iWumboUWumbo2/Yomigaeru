@@ -75,7 +75,15 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 
         if (error)
         {
-            NSLog(@"%@", error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc]
+                    initWithTitle:@"Error"
+                          message:@"Failed to fetch extensions"
+                         delegate:nil
+                cancelButtonTitle:@"OK"
+                otherButtonTitles:nil];
+                [alert show];
+            });
             return;
         }
 
@@ -195,15 +203,17 @@ static NSString *const kExtensionInstalledKey = @"Installed";
 
 - (void)handleExtensionResultWithSuccess:(BOOL)success error:(NSError *)error
 {
-    if (error)
+    if (error || !success)
     {
-        NSLog(@"%@", error);
-        return;
-    }
-
-    if (!success)
-    {
-        NSLog(@"Extension operation failed");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc]
+                initWithTitle:@"Error"
+                      message:@"Extension operation failed"
+                     delegate:nil
+            cancelButtonTitle:@"OK"
+            otherButtonTitles:nil];
+            [alert show];
+        });
         return;
     }
 
