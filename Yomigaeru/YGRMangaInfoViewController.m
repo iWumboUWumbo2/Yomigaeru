@@ -186,6 +186,7 @@
     self.descriptionLabel.textColor = [UIColor darkGrayColor];
     self.descriptionLabel.numberOfLines = 0;
     self.descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.descriptionLabel.textAlignment = NSTextAlignmentNatural; 
     [self.contentView addSubview:self.descriptionLabel];
 }
 
@@ -279,7 +280,7 @@
     }
 
     // Update artist
-    if (self.manga.artist.length > 0 && ![self.manga.artist isEqualToString:self.manga.author])
+    if (![self.manga.artist isKindOfClass:[NSNull class]] && self.manga.artist.length > 0 && ![self.manga.artist isEqualToString:self.manga.author])
     {
         self.artistLabel.text = [NSString stringWithFormat:@"Artist: %@", self.manga.artist];
         self.artistLabel.frame = CGRectMake(padding, yOffset, viewWidth - padding * 2, 20);
@@ -408,6 +409,7 @@
         genreLabel.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
         genreLabel.layer.cornerRadius = 4.0f;
         genreLabel.layer.masksToBounds = YES;
+        genreLabel.textAlignment = NSTextAlignmentCenter;
         [genreLabel sizeToFit];
 
         CGFloat labelWidth = genreLabel.frame.size.width + tagPadding;
