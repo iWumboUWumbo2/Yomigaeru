@@ -43,6 +43,7 @@
         _thumbnailCache.name = @"YGRThumbnailCache";
         
         _pageCache = [[NSCache alloc] init];
+        _pageCache.totalCostLimit = 50 * 1024 * 1024; // 50 MB
         _pageCache.name = @"YGRPageCache";
     }
     return self;
@@ -50,10 +51,25 @@
 
 #pragma mark - Thumbnails
 
+- (CGSize)thumbnailSize
+{
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    
+    int columnCount = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 4 : 2;
+    CGFloat cellWidth = screenWidth / columnCount;
+    
+    return CGSizeMake(cellWidth, cellWidth * 1.25);
+}
+
 - (void)fetchThumbnailWithMangaId:(NSString *)mangaId
                        completion:(void (^)(UIImage *thumbnailImage, NSError *error))completion
 {
     if (!completion) return;
+//    //
+//    completion([UIImage imageNamed:@"placeholder"], nil);
+//    return;
+//    //
     
     NSString *cacheKey = [NSString stringWithFormat:@"thumb:%@", mangaId];
     UIImage *cachedThumbnail = [self.thumbnailCache objectForKey:cacheKey];
@@ -81,6 +97,7 @@
         UIImage *image =
         [YGRImageUtility imageFromData:(NSData *)responseObject
                               mimeType:contentType
+                           targetWidth:[self thumbnailSize].width / 2
                                  error:&decodeError];
         
         if (!image)
@@ -100,102 +117,7 @@
     [httpClient enqueueHTTPRequestOperation:operation];
 }
 
-#pragma mark - Chapters
-
-- (void)fetchChapterWithMangaId:(NSString *)mangaId
-                   chapterIndex:(NSUInteger)chapterIndex
-                     completion:(void (^)(YGRChapter *chapter, NSError *error))completion
-{
-    if (!completion) return;
-    
-    AFHTTPClient *jsonClient = [[YGRNetworkManager sharedManager] jsonClientInstance];
-    NSString *path =
-    [NSString stringWithFormat:@"manga/%@/chapter/%tu", mangaId, chapterIndex];
-    
-    [jsonClient getPath:path
-             parameters:nil
-                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    
-                    NSDictionary *jsonDict = (NSDictionary *)responseObject;
-                    YGRChapter *chapter =
-                    [[YGRChapter alloc] initWithDictionary:jsonDict];
-                    
-                    completion(chapter, nil);
-                    
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    
-                    completion(nil, error);
-                }];
-}
-
-#pragma mark - Pages (Internal)
-
-- (void)fetchPageWithMangaId:(NSString *)mangaId
-                chapterIndex:(NSUInteger)chapterIndex
-                   pageIndex:(NSUInteger)pageIndex
-           didRefreshChapter:(BOOL)didRefreshChapter
-                  completion:(void (^)(UIImage *pageData, NSError *error))completion
-{
-    AFHTTPClient *httpClient = [[YGRNetworkManager sharedManager] httpClientInstance];
-    NSString *path =
-    [NSString stringWithFormat:@"manga/%@/chapter/%tu/page/%tu",
-     mangaId, chapterIndex, pageIndex];
-    
-    NSURLRequest *request =
-    [httpClient requestWithMethod:@"GET" path:path parameters:nil];
-    
-    AFHTTPRequestOperation *operation =
-    [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSString *contentType =
-        operation.response.allHeaderFields[@"Content-Type"] ?: @"";
-        
-        NSError *decodeError = nil;
-        UIImage *image =
-        [YGRImageUtility imageFromData:(NSData *)responseObject
-                              mimeType:contentType
-                                 error:&decodeError];
-        
-        if (!image)
-        {
-            completion(nil, decodeError);
-            return;
-        }
-        
-        completion(image, nil);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        if (didRefreshChapter)
-        {
-            completion(nil, error);
-            return;
-        }
-        
-        [self fetchChapterWithMangaId:mangaId
-                         chapterIndex:chapterIndex
-                           completion:^(YGRChapter *chapter, NSError *chapterError) {
-                               
-                               if (chapterError)
-                               {
-                                   completion(nil, error);
-                                   return;
-                               }
-                               
-                               [self fetchPageWithMangaId:mangaId
-                                             chapterIndex:chapterIndex
-                                                pageIndex:pageIndex
-                                        didRefreshChapter:YES
-                                               completion:completion];
-                           }];
-    }];
-    
-    [httpClient enqueueHTTPRequestOperation:operation];
-}
-
-#pragma mark - Pages (Public)
+#pragma mark - Pages
 
 - (void)fetchPageWithMangaId:(NSString *)mangaId
                 chapterIndex:(NSUInteger)chapterIndex
@@ -214,22 +136,41 @@
         completion(cachedPage, nil);
         return;
     }
-        
-    [self fetchPageWithMangaId:mangaId
-                  chapterIndex:chapterIndex
-                     pageIndex:pageIndex
-             didRefreshChapter:NO
-                    completion:^(UIImage *pageData, NSError *error) {
-                        
-                        if (error)
-                        {
-                            completion(nil, error);
-                            return;
-                        }
-                        
-                        [self.pageCache setObject:pageData forKey:cacheKey];
-                        completion(pageData, nil);
-                    }];
+    
+    AFHTTPClient *imageClient = [[YGRNetworkManager sharedManager] imageClientInstance];
+    
+    NSString *path =
+    [NSString stringWithFormat:@"manga/%@/chapter/%tu/page/%tu",
+     mangaId, chapterIndex, pageIndex];
+    
+    NSURLRequest *request = [imageClient requestWithMethod:@"GET" path:path parameters:nil];
+    
+    AFImageRequestOperation *operation =
+    [AFImageRequestOperation imageRequestOperationWithRequest:request
+                                         imageProcessingBlock:^UIImage *(UIImage *image) {
+                                             return image;
+                                         }
+                                                      success:^(NSURLRequest *request,
+                                                                NSHTTPURLResponse *response,
+                                                                UIImage *image) {
+                                                          
+                                                          NSUInteger cost =
+                                                          image.size.width * image.size.height * 4;
+                                                          
+                                                          [self.pageCache setObject:image
+                                                                             forKey:cacheKey
+                                                                               cost:cost];
+                                                          
+                                                          completion(image, nil);
+                                                      }
+                                                      failure:^(NSURLRequest *request,
+                                                                NSHTTPURLResponse *response,
+                                                                NSError *error) {
+                                                          completion(nil, error);
+                                                      }];
+    
+    [imageClient enqueueHTTPRequestOperation:operation];
 }
+
 
 @end

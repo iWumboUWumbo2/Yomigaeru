@@ -106,6 +106,32 @@
         }];
 }
 
+- (void)fetchChapterWithMangaId:(NSString *)mangaId
+                   chapterIndex:(NSUInteger)chapterIndex
+                     completion:(void (^)(YGRChapter *chapter, NSError *error))completion
+{
+    if (!completion) return;
+    
+    AFHTTPClient *jsonClient = [[YGRNetworkManager sharedManager] jsonClientInstance];
+    NSString *path =
+    [NSString stringWithFormat:@"manga/%@/chapter/%tu", mangaId, chapterIndex];
+    
+    [jsonClient getPath:path
+             parameters:nil
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    
+                    NSDictionary *jsonDict = (NSDictionary *)responseObject;
+                    YGRChapter *chapter =
+                    [[YGRChapter alloc] initWithDictionary:jsonDict];
+                    
+                    completion(chapter, nil);
+                    
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    
+                    completion(nil, error);
+                }];
+}
+
 - (void)modifyChapterWithMangaId:(NSString *)mangaId
                     chapterIndex:(NSUInteger)chapterIndex
                       parameters:(NSDictionary *)parameters

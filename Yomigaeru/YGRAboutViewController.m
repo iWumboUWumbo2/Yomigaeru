@@ -22,8 +22,8 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
-        self.aboutStrings = @[ @"Build" ];
-        self.aboutDictionary = @{@"Build" : @"v0.0.1"};
+        _aboutStrings = @[ @"Build" ];
+        _aboutDictionary = @{@"Build" : @"v0.0.1"};
     }
     return self;
 }

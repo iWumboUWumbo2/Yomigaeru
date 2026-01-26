@@ -19,6 +19,8 @@
 @interface YGRSourceLibraryViewController ()
 
 @property (nonatomic, strong) UISegmentedControl *mangaListSegmentedControl;
+@property (nonatomic, strong) UISearchBar *mangaSearchBar;
+
 @property (nonatomic, strong) AQGridView *libraryGridView;
 
 @property (nonatomic, strong) YGRSourceService *sourceService;
@@ -41,10 +43,10 @@
     self = [super init];
     if (self) {
         // Custom initialization
-        self.sourceService = [[YGRSourceService alloc] init];
-        self.mangaService = [[YGRMangaService alloc] init];
-        self.mangas = [NSMutableArray array];
-        self.currentPage = 1;
+        _sourceService = [[YGRSourceService alloc] init];
+        _mangaService = [[YGRMangaService alloc] init];
+        _mangas = [NSMutableArray array];
+        _currentPage = 1;
         
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenWidth = screenRect.size.width;
@@ -52,7 +54,7 @@
         int columnCount = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 4 : 2;
         CGFloat cellWidth = screenWidth / columnCount;
         
-        self.portraitCellSize = CGSizeMake(cellWidth, cellWidth * 1.25);
+        _portraitCellSize = CGSizeMake(cellWidth, cellWidth * 1.25);
 
     }
     return self;
@@ -75,15 +77,55 @@
     [self.view addSubview:self.mangaListSegmentedControl];
 }
 
+- (void)configureMangaSearchBar
+{
+    self.mangaSearchBar = [[UISearchBar alloc] initWithFrame:self.mangaListSegmentedControl.frame];
+    self.mangaSearchBar.barStyle = UIBarStyleBlackTranslucent;
+    self.mangaSearchBar.delegate = self;
+    self.mangaSearchBar.showsCancelButton = YES;
+    self.mangaSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+}
+
+- (void)showSearchBar
+{
+    [self.mangaListSegmentedControl removeFromSuperview];
+    [self.view addSubview:self.mangaSearchBar];
+    [self.mangaSearchBar becomeFirstResponder];
+}
+
+- (void)hideSearchBar
+{
+    [self.mangaSearchBar removeFromSuperview];
+    [self.view addSubview:self.mangaListSegmentedControl];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    self.currentPage = 1;
+    [self.mangas removeAllObjects];
+    
+    [self.libraryGridView setContentOffset:CGPointZero animated:NO];
+    [self fetchMangaWithSearchTerm:searchBar.text];
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
+{
+    [self hideSearchBar];
+    [self mangaListDidChange:self.mangaListSegmentedControl];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.title = self.source.displayName;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showSearchBar)];
     
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self configureViewControllerSegmentedControl];
+    [self configureMangaSearchBar];
     
     CGFloat top = CGRectGetMaxY(self.mangaListSegmentedControl.frame) + 8.0f;
     
@@ -102,6 +144,11 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.libraryGridView addGestureRecognizer:longPress];
+    
+    // Prevent nav bar and tab bar from overlaying the view in iOS 7.0
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -206,6 +253,29 @@
     __weak typeof(self) weakSelf = self;
     
     [self.sourceService fetchLatestMangaFromSourceId:self.source.id_ pageNum:self.currentPage completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        if (error)
+        {
+            NSLog(@"%@", error);
+            return;
+        }
+        
+        [strongSelf.mangas addObjectsFromArray:mangaList];
+        strongSelf.hasNextPage = hasNextPage;
+        strongSelf.isLoadingPage = NO;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.libraryGridView reloadData];
+        });
+    }];
+}
+
+- (void)fetchMangaWithSearchTerm:(NSString *)searchTerm
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [self.sourceService searchMangaInSourceId:self.source.id_ searchTerm:searchTerm pageNum:self.currentPage completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         if (error)

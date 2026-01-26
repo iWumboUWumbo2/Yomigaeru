@@ -17,7 +17,5 @@
                             completion:(void (^)(BOOL success, NSError *error))completion;
 - (void)uninstallExtensionWithPackageName:(NSString *)pkgName
                                completion:(void (^)(BOOL success, NSError *error))completion;
-- (void)fetchIconWithApkName:(NSString *)apkName
-                  completion:(void (^)(UIImage *iconData, NSError *error))completion;
 
 @end

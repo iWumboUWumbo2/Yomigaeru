@@ -66,26 +66,4 @@
     [self performExtensionAction:@"uninstall" packageName:pkgName completion:completion];
 }
 
-- (void)fetchIconWithApkName:(NSString *)apkName
-                  completion:(void (^)(UIImage *, NSError *))completion
-{
-    AFHTTPClient *httpClient = [[YGRNetworkManager sharedManager] httpClientInstance];
-    NSString *path = [NSString stringWithFormat:@"extension/icon/%@", apkName];
-
-    NSURLRequest *request = [httpClient requestWithMethod:@"GET" path:path parameters:nil];
-
-    AFImageRequestOperation *imageOperation =
-        [AFImageRequestOperation imageRequestOperationWithRequest:request
-            imageProcessingBlock:nil
-            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                completion(image, nil);
-            }
-            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                completion(nil, error);
-            }];
-
-    // Enqueue the operation
-    [httpClient enqueueHTTPRequestOperation:imageOperation];
-}
-
 @end

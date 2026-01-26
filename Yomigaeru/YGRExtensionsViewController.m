@@ -37,9 +37,9 @@ static NSString *const kExtensionInstalledKey = @"Installed";
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         // Custom initialization
-        self.extensionService = [[YGRExtensionService alloc] init];
-        self.languages = [NSMutableArray array];
-        self.extensionsByLanguage = [NSMutableDictionary dictionary];
+        _extensionService = [[YGRExtensionService alloc] init];
+        _languages = [NSMutableArray array];
+        _extensionsByLanguage = [NSMutableDictionary dictionary];
     }
     return self;
 }

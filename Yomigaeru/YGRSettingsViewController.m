@@ -26,8 +26,8 @@
     if (self)
     {
         // Custom initialization
-        self.settings = @[ @"Server", @"About" ];
-        self.settingsViewControllers = @{
+        _settings = @[ @"Server", @"About" ];
+        _settingsViewControllers = @{
             @"Server" : [YGRServerSettingsViewController class],
             @"About" : [YGRAboutViewController class]
         };

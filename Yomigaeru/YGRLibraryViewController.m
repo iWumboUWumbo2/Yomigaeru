@@ -38,10 +38,10 @@
 {
     self = [super init];
     if (self) {
-        self.categoryService = [[YGRCategoryService alloc] init];
-        self.mangaService = [[YGRMangaService alloc] init];
-        self.mangas = [NSMutableArray array];
-        self.selectedIndex = NSNotFound;
+        _categoryService = [[YGRCategoryService alloc] init];
+        _mangaService = [[YGRMangaService alloc] init];
+        _mangas = [NSMutableArray array];
+        _selectedIndex = NSNotFound;
     }
     return self;
 }

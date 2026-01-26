@@ -128,10 +128,10 @@
                                                       LOG_SUCCESS;
                                                   }];
 
-    [self.extensionService fetchIconWithApkName:@"tachiyomi-all.baobua-v1.4.1.apk"
-                                     completion:^(UIImage *iconData, NSError *error) {
-                                         LOG_IMAGE(iconData);
-                                     }];
+//    [self.extensionService fetchIconWithApkName:@"tachiyomi-all.baobua-v1.4.1.apk"
+//                                     completion:^(UIImage *iconData, NSError *error) {
+//                                         LOG_IMAGE(iconData);
+//                                     }];
 }
 
 - (void)testMangaService
@@ -224,45 +224,45 @@
 
 - (void)testWebP
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Create an image view that fills the screen
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-
-        NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"webp"];
-        if (!imagePath)
-        {
-            NSLog(@"Image not found in bundle!");
-            return;
-        }
-
-        // Load the image as NSData
-        NSData *imageData = [NSData dataWithContentsOfFile:imagePath];
-        if (!imageData)
-        {
-            NSLog(@"Failed to load image data!");
-            return;
-        }
-
-        // Create UIImage from NSData
-        NSError *error = nil;
-        UIImage *image = [YGRImageUtility imageWithWebPData:imageData
-                                                      scale:1.0
-                                                fittingSize:CGSizeZero
-                                                      error:&error];
-        if (!image)
-        {
-            NSLog(@"Failed to create UIImage from data!");
-            return;
-        }
-
-        imageView.image = image;
-
-        // Scale the image to fit while keeping aspect ratio
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-
-        // Add the image view to the main view
-        [self.view addSubview:imageView];
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        // Create an image view that fills the screen
+//        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+//
+//        NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"webp"];
+//        if (!imagePath)
+//        {
+//            NSLog(@"Image not found in bundle!");
+//            return;
+//        }
+//
+//        // Load the image as NSData
+//        NSData *imageData = [NSData dataWithContentsOfFile:imagePath];
+//        if (!imageData)
+//        {
+//            NSLog(@"Failed to load image data!");
+//            return;
+//        }
+//
+//        // Create UIImage from NSData
+//        NSError *error = nil;
+//        UIImage *image = [YGRImageUtility imageWithWebPData:imageData
+//                                                      scale:1.0
+//                                                fittingWidth:CGSizeZero
+//                                                      error:&error];
+//        if (!image)
+//        {
+//            NSLog(@"Failed to create UIImage from data!");
+//            return;
+//        }
+//
+//        imageView.image = image;
+//
+//        // Scale the image to fit while keeping aspect ratio
+//        imageView.contentMode = UIViewContentModeScaleAspectFit;
+//
+//        // Add the image view to the main view
+//        [self.view addSubview:imageView];
+//    });
 }
 
 - (UIButton *)createTestButtonWithTitle:(NSString *)title action:(SEL)action

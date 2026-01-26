@@ -19,6 +19,9 @@
 		0357B21B2F1712AC00D5096E /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */; };
 		0357B21E2F1732A600D5096E /* YGRExtensionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */; };
 		0357B2222F17640400D5096E /* YGRExtensionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */; };
+		038135C02F2734F5009D465F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038135BF2F2734F5009D465F /* Default-568h@2x.png */; };
+		038135C22F27376A009D465F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038135C12F27376A009D465F /* Default@2x.png */; };
+		038135C42F2737E5009D465F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 038135C32F2737E5009D465F /* Default.png */; };
 		03AFE1882F188EE500CC1CBB /* YGRLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */; };
 		03B5C1FE2F185B3500B8898A /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B5C1FD2F185B3500B8898A /* placeholder.png */; };
 		03CCDAFB2F18A47C009C6C2A /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDAF92F18A47C009C6C2A /* library.png */; };
@@ -117,6 +120,9 @@
 		0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
 		0357B2202F17640300D5096E /* YGRExtensionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionInfoViewController.h; sourceTree = "<group>"; };
 		0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionInfoViewController.m; sourceTree = "<group>"; };
+		038135BF2F2734F5009D465F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		038135C12F27376A009D465F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		038135C32F2737E5009D465F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		038216C02F19ABDF00D5D620 /* YGRRefreshable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRRefreshable.h; sourceTree = "<group>"; };
 		038216C32F19B22700D5D620 /* YGRChildRefreshDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRChildRefreshDelegate.h; sourceTree = "<group>"; };
 		03AFE1862F188EE500CC1CBB /* YGRLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryCell.h; sourceTree = "<group>"; };
@@ -369,6 +375,9 @@
 		03DCE2472F0DBFAE00E49AB9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				038135C32F2737E5009D465F /* Default.png */,
+				038135BF2F2734F5009D465F /* Default-568h@2x.png */,
+				038135C12F27376A009D465F /* Default@2x.png */,
 				03B5C1FD2F185B3500B8898A /* placeholder.png */,
 				03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */,
 				03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */,
@@ -602,11 +611,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				038135C22F27376A009D465F /* Default@2x.png in Resources */,
 				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
+				038135C02F2734F5009D465F /* Default-568h@2x.png in Resources */,
 				03FFDB4B2F0E182B00813B1C /* Icon@2x.png in Resources */,
 				03FFDB4D2F0E187E00813B1C /* Icon2x.png in Resources */,
 				03B5C1FE2F185B3500B8898A /* placeholder.png in Resources */,
 				03CCDAFB2F18A47C009C6C2A /* library.png in Resources */,
+				038135C42F2737E5009D465F /* Default.png in Resources */,
 				03CCDAFC2F18A47C009C6C2A /* library@2x.png in Resources */,
 				03CCDAFF2F18A4D5009C6C2A /* browse.png in Resources */,
 				03CCDB002F18A4D5009C6C2A /* browse@2x.png in Resources */,
@@ -863,6 +875,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7066D610C04B17028E21BD90 /* Pods-Yomigaeru.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = armv7;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -872,6 +886,7 @@
 				INFOPLIST_FILE = "Yomigaeru/Yomigaeru-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -880,6 +895,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C38258450F3C2F1586EE9EE3 /* Pods-Yomigaeru.release.xcconfig */;
 			buildSettings = {
+				ARCHS = armv7;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -889,6 +906,7 @@
 				INFOPLIST_FILE = "Yomigaeru/Yomigaeru-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

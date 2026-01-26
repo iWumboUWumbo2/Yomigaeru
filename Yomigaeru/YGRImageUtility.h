@@ -10,13 +10,9 @@
 
 @interface YGRImageUtility : NSObject
 
-+ (UIImage *)imageWithWebPData:(NSData *)data
-                         scale:(CGFloat)scale
-                   fittingSize:(CGSize)fittingSize
-                         error:(NSError *__autoreleasing *)error;
-
 + (UIImage *)imageFromData:(NSData *)data
                   mimeType:(NSString *)mimeType
+               targetWidth:(CGFloat)targetWidth
                      error:(NSError *__autoreleasing *)error;
 
 @end

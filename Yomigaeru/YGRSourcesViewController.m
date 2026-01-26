@@ -29,9 +29,9 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         // Custom initialization
-        self.sourceService = [[YGRSourceService alloc] init];
-        self.languages = [NSMutableArray array];
-        self.sourcesByLanguage = [[NSMutableDictionary alloc] init];
+        _sourceService = [[YGRSourceService alloc] init];
+        _languages = [NSMutableArray array];
+        _sourcesByLanguage = [[NSMutableDictionary alloc] init];
     }
     return self;
 }

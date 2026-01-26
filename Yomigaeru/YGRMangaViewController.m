@@ -27,8 +27,8 @@
     if (self)
     {
         // Custom initialization
-        self.mangaService = [[YGRMangaService alloc] init];
-        self.chapters = nil;
+        _mangaService = [[YGRMangaService alloc] init];
+        _chapters = nil;
     }
     return self;
 }
@@ -165,11 +165,18 @@ toIndexPath:(NSIndexPath *)toIndexPath
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc] init];
-
+    YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                                                                          navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                                                                        options:nil];
+    
     chapterViewController.manga = self.manga;
-    chapterViewController.chapters = self.chapters;
-    chapterViewController.chaptersArrayIndex = indexPath.row;
+    
+        
+    YGRChapter *chapter = (YGRChapter *)self.chapters[indexPath.row];
+    chapterViewController.chapterNumber = chapter.chapterNumber;
+    chapterViewController.chapterIndex = chapter.index;
+    chapterViewController.chapterCount = chapter.chapterCount;
+    
     chapterViewController.refreshDelegate = self;
     
     // Pass the selected object to the new view controller.
@@ -177,7 +184,7 @@ toIndexPath:(NSIndexPath *)toIndexPath
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:chapterViewController];
     
     // Present modally (fullscreen)
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)childDidFinishRefreshing

@@ -22,8 +22,8 @@
     if (self)
     {
         // Custom initialization
-        self.serverSettings = @[ @"Base URL" ];
-        self.serverSettingsViewControllers =
+        _serverSettings = @[ @"Base URL" ];
+        _serverSettingsViewControllers =
             @{@"Base URL" : [YGRServerBaseURLViewController class]};
     }
     return self;

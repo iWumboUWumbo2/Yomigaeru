@@ -182,6 +182,11 @@
     
     self.currentViewController = [self.viewControllers objectAtIndex:0];
     [self displayViewController:self.currentViewController];
+    
+    // Prevent nav bar and tab bar from overlaying the view in iOS 7.0
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -27,6 +27,10 @@
 - (void)fetchChaptersWithMangaId:(NSString *)mangaId
                       completion:(void (^)(NSArray *chapters, NSError *error))completion;
 
+- (void)fetchChapterWithMangaId:(NSString *)mangaId
+                   chapterIndex:(NSUInteger)chapterIndex
+                     completion:(void (^)(YGRChapter *chapter, NSError *error))completion;
+
 - (void)markReadStatusChapterWithMangaId:(NSString *)mangaId
                             chapterIndex:(NSUInteger)chapterIndex
                               readStatus:(BOOL)readStatus

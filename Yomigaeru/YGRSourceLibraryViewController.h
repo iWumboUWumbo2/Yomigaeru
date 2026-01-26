@@ -10,7 +10,7 @@
 #import "YGRSource.h"
 #import <AQGridView/AQGridView.h>
 
-@interface YGRSourceLibraryViewController : UIViewController <AQGridViewDataSource, AQGridViewDelegate>
+@interface YGRSourceLibraryViewController : UIViewController <AQGridViewDataSource, AQGridViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) YGRSource *source;
 
