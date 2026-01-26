@@ -19,6 +19,9 @@
 @property (nonatomic, strong) UIProgressView *pageProgressView;
 @property (nonatomic, strong) UILabel *totalPageLabel;
 
+@property (nonatomic, strong) UIView *loadingOverlay;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
+
 @end
 
 @implementation YGRChapterViewController
@@ -179,6 +182,21 @@
 
     [self configureToolbar];
     [self.navigationController setToolbarHidden:NO animated:NO];
+
+    self.loadingOverlay = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.loadingOverlay.backgroundColor = [UIColor blackColor];
+    self.loadingOverlay.autoresizingMask =
+        UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    self.loadingSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.loadingSpinner.hidesWhenStopped = YES;
+    self.loadingSpinner.autoresizingMask =
+        UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    CGRect bounds = self.view.bounds;
+    self.loadingSpinner.center = CGPointMake(bounds.size.width / 2.0f, bounds.size.height / 2.0f);
+    [self.loadingOverlay addSubview:self.loadingSpinner];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -239,11 +257,12 @@
                                        {
                                            dispatch_async(dispatch_get_main_queue(), ^{
                                                UIAlertView *alert = [[UIAlertView alloc]
-                                                   initWithTitle:@"Error"
-                                                         message:@"Failed to save reading progress"
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
+                                                       initWithTitle:@"Error"
+                                                             message:
+                                                                 @"Failed to save reading progress"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
                                                [alert show];
                                            });
                                        }
@@ -332,11 +351,28 @@
     }
 }
 
+- (void)showLoadingOverlay
+{
+    if (![self.loadingOverlay superview])
+    {
+        [self.view addSubview:self.loadingOverlay];
+    }
+    [self.loadingSpinner startAnimating];
+}
+
+- (void)hideLoadingOverlay
+{
+    [self.loadingSpinner stopAnimating];
+    [self.loadingOverlay removeFromSuperview];
+}
+
 - (void)loadChapter:(NSInteger)chapterIndex
           direction:(UIPageViewControllerNavigationDirection)direction
 {
     if (chapterIndex < 1 || chapterIndex > self.chapterCount)
         return;
+
+    [self showLoadingOverlay];
 
     __weak typeof(self) weakSelf = self;
     [self.mangaService
@@ -346,15 +382,20 @@
                          __strong typeof(weakSelf) self = weakSelf;
                          if (!self)
                              return;
+
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [self hideLoadingOverlay];
+                         });
+
                          if (error || !chapter || chapter.pageCount == 0)
                          {
                              dispatch_async(dispatch_get_main_queue(), ^{
-                                 UIAlertView *alert = [[UIAlertView alloc]
-                                     initWithTitle:@"Error"
-                                           message:@"Failed to load chapter"
-                                          delegate:nil
-                                 cancelButtonTitle:@"OK"
-                                 otherButtonTitles:nil];
+                                 UIAlertView *alert =
+                                     [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Failed to load chapter"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
                                  [alert show];
                              });
                              return;

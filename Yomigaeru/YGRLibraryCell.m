@@ -11,6 +11,7 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) CAGradientLayer *gradientLayer;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
 @end
 
@@ -53,6 +54,12 @@
     _titleLabel.backgroundColor = [UIColor clearColor];
     [_imageView addSubview:_titleLabel];
 
+    // Loading spinner for thumbnail
+    _loadingSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _loadingSpinner.hidesWhenStopped = YES;
+    [_imageView addSubview:_loadingSpinner];
+
     return self;
 }
 
@@ -63,6 +70,7 @@
     [super prepareForReuse];
     self.imageView.image = nil;
     self.titleLabel.text = nil;
+    [self.loadingSpinner stopAnimating];
 }
 
 #pragma mark - Properties
@@ -89,6 +97,16 @@
 - (void)showBorder
 {
     self.imageView.layer.borderWidth = 2.0f;
+}
+
+- (void)showLoadingSpinner
+{
+    [self.loadingSpinner startAnimating];
+}
+
+- (void)hideLoadingSpinner
+{
+    [self.loadingSpinner stopAnimating];
 }
 
 #pragma mark - Layout
@@ -127,6 +145,9 @@
     CGFloat titlePadding = 6.0; // padding from left and right
     self.titleLabel.frame = CGRectMake(titlePadding, imageHeight - gradientHeight + titlePadding,
                                        imageWidth - 2 * titlePadding, gradientHeight);
+
+    // Center the spinner in the image view
+    self.loadingSpinner.center = CGPointMake(imageWidth / 2.0f, imageHeight / 2.0f);
 }
 
 @end

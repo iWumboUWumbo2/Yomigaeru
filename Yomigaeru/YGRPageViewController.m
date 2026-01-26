@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
 @end
 
@@ -39,6 +40,16 @@
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
     [self.scrollView addSubview:self.imageView];
+
+    self.loadingSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.loadingSpinner.hidesWhenStopped = YES;
+    self.loadingSpinner.autoresizingMask =
+        UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    CGRect bounds = self.view.bounds;
+    self.loadingSpinner.center = CGPointMake(bounds.size.width / 2.0f, bounds.size.height / 2.0f);
+    [self.view addSubview:self.loadingSpinner];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -74,32 +85,39 @@
 
 - (void)loadPageImage
 {
+    [self.loadingSpinner startAnimating];
+
     __weak typeof(self) weakSelf = self;
 
-    [[YGRImageService sharedService] fetchPageWithMangaId:self.mangaId
-                                             chapterIndex:self.chapterIndex
-                                                pageIndex:self.pageIndex
-                                               completion:^(UIImage *pageData, NSError *error) {
-                                                   __strong typeof(weakSelf) strongSelf = weakSelf;
+    [[YGRImageService sharedService]
+        fetchPageWithMangaId:self.mangaId
+                chapterIndex:self.chapterIndex
+                   pageIndex:self.pageIndex
+                  completion:^(UIImage *pageData, NSError *error) {
+                      __strong typeof(weakSelf) strongSelf = weakSelf;
 
-                                                   if (error || !pageData)
-                                                   {
-                                                       dispatch_async(dispatch_get_main_queue(), ^{
-                                                           UIAlertView *alert = [[UIAlertView alloc]
-                                                               initWithTitle:@"Error"
-                                                                     message:@"Failed to load page image"
-                                                                    delegate:nil
-                                                           cancelButtonTitle:@"OK"
-                                                           otherButtonTitles:nil];
-                                                           [alert show];
-                                                       });
-                                                       return;
-                                                   }
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          [strongSelf.loadingSpinner stopAnimating];
+                      });
 
-                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                       [strongSelf setImage:pageData];
-                                                   });
-                                               }];
+                      if (error || !pageData)
+                      {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              UIAlertView *alert =
+                                  [[UIAlertView alloc] initWithTitle:@"Error"
+                                                             message:@"Failed to load page image"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
+                              [alert show];
+                          });
+                          return;
+                      }
+
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          [strongSelf setImage:pageData];
+                      });
+                  }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

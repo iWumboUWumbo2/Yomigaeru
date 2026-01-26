@@ -155,11 +155,11 @@
                                   {
                                       dispatch_async(dispatch_get_main_queue(), ^{
                                           UIAlertView *alert = [[UIAlertView alloc]
-                                              initWithTitle:@"Error"
-                                                    message:@"Failed to delete manga"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+                                                  initWithTitle:@"Error"
+                                                        message:@"Failed to delete manga"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
                                           [alert show];
                                       });
                                       return;
@@ -189,11 +189,11 @@
                                     {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             UIAlertView *alert = [[UIAlertView alloc]
-                                                initWithTitle:@"Error"
-                                                      message:@"Failed to mark manga as read"
-                                                     delegate:nil
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles:nil];
+                                                    initWithTitle:@"Error"
+                                                          message:@"Failed to mark manga as read"
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
                                             [alert show];
                                         });
                                         return;
@@ -217,11 +217,11 @@
                                     {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             UIAlertView *alert = [[UIAlertView alloc]
-                                                initWithTitle:@"Error"
-                                                      message:@"Failed to mark manga as unread"
-                                                     delegate:nil
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles:nil];
+                                                    initWithTitle:@"Error"
+                                                          message:@"Failed to mark manga as unread"
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
                                             [alert show];
                                         });
                                         return;
@@ -271,12 +271,11 @@
         if (error)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertView *alert = [[UIAlertView alloc]
-                    initWithTitle:@"Error"
-                          message:@"Failed to fetch library"
-                         delegate:nil
-                cancelButtonTitle:@"OK"
-                otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Failed to fetch library"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
                 [alert show];
             });
             return;
@@ -334,6 +333,7 @@
     cell.title = manga.title;
 
     cell.image = [UIImage imageNamed:@"placeholder"];
+    [cell showLoadingSpinner];
 
     __weak typeof(cell) weakCell = cell;
     __weak typeof(self) weakSelf = self;
@@ -341,14 +341,18 @@
         fetchThumbnailWithMangaId:manga.id_
                        completion:^(UIImage *thumbnailImage, NSError *error) {
                            __strong typeof(weakSelf) strongSelf = weakSelf;
-                           if (!strongSelf || error || !thumbnailImage)
+                           if (!strongSelf)
                                return;
 
                            dispatch_async(dispatch_get_main_queue(), ^{
                                // Ensure the cell still represents the same manga
                                if ([weakCell.title isEqualToString:manga.title])
                                {
-                                   weakCell.image = thumbnailImage;
+                                   [weakCell hideLoadingSpinner];
+                                   if (!error && thumbnailImage)
+                                   {
+                                       weakCell.image = thumbnailImage;
+                                   }
                                }
                            });
                        }];

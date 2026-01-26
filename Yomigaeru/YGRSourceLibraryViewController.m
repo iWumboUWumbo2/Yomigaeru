@@ -34,6 +34,8 @@
 
 @property (nonatomic, assign) CGSize portraitCellSize;
 
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
+
 @end
 
 @implementation YGRSourceLibraryViewController
@@ -156,6 +158,17 @@
     longPress.minimumPressDuration = 0.5f;
     [self.libraryGridView addGestureRecognizer:longPress];
 
+    self.loadingSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loadingSpinner.hidesWhenStopped = YES;
+    self.loadingSpinner.autoresizingMask =
+        UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    CGRect gridBounds = self.libraryGridView.bounds;
+    self.loadingSpinner.center =
+        CGPointMake(gridBounds.size.width / 2.0f, gridBounds.size.height / 2.0f);
+    [self.libraryGridView addSubview:self.loadingSpinner];
+
     // Prevent nav bar and tab bar from overlaying the view in iOS 7.0
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
@@ -199,11 +212,11 @@
                              {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      UIAlertView *alert = [[UIAlertView alloc]
-                                         initWithTitle:@"Error"
-                                               message:@"Failed to add manga to library"
-                                              delegate:nil
-                                     cancelButtonTitle:@"OK"
-                                     otherButtonTitles:nil];
+                                             initWithTitle:@"Error"
+                                                   message:@"Failed to add manga to library"
+                                                  delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
                                      [alert show];
                                  });
                                  return;
@@ -227,11 +240,12 @@
                                   {
                                       dispatch_async(dispatch_get_main_queue(), ^{
                                           UIAlertView *alert = [[UIAlertView alloc]
-                                              initWithTitle:@"Error"
-                                                    message:@"Failed to remove manga from library"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+                                                  initWithTitle:@"Error"
+                                                        message:
+                                                            @"Failed to remove manga from library"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
                                           [alert show];
                                       });
                                       return;
@@ -247,8 +261,23 @@
     }
 }
 
+- (void)showLoadingSpinner
+{
+    if (self.mangas.count == 0)
+    {
+        [self.loadingSpinner startAnimating];
+    }
+}
+
+- (void)hideLoadingSpinner
+{
+    [self.loadingSpinner stopAnimating];
+}
+
 - (void)fetchPopularManga
 {
+    [self showLoadingSpinner];
+
     __weak typeof(self) weakSelf = self;
 
     [self.sourceService
@@ -257,21 +286,23 @@
                            completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
                                __strong typeof(weakSelf) strongSelf = weakSelf;
 
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   [strongSelf hideLoadingSpinner];
+                               });
+
                                if (error)
                                {
                                    dispatch_async(dispatch_get_main_queue(), ^{
                                        UIAlertView *alert = [[UIAlertView alloc]
-                                           initWithTitle:@"Error"
-                                                 message:@"Failed to fetch popular manga"
-                                                delegate:nil
-                                       cancelButtonTitle:@"OK"
-                                       otherButtonTitles:nil];
+                                               initWithTitle:@"Error"
+                                                     message:@"Failed to fetch popular manga"
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
                                        [alert show];
                                    });
                                    return;
                                }
-
-                               NSLog(@"ABC");
 
                                [strongSelf.mangas addObjectsFromArray:mangaList];
                                strongSelf.hasNextPage = hasNextPage;
@@ -285,6 +316,8 @@
 
 - (void)fetchLatestManga
 {
+    [self showLoadingSpinner];
+
     __weak typeof(self) weakSelf = self;
 
     [self.sourceService
@@ -293,15 +326,19 @@
                           completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
                               __strong typeof(weakSelf) strongSelf = weakSelf;
 
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  [strongSelf hideLoadingSpinner];
+                              });
+
                               if (error)
                               {
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                       UIAlertView *alert = [[UIAlertView alloc]
-                                          initWithTitle:@"Error"
-                                                message:@"Failed to fetch latest manga"
-                                               delegate:nil
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:nil];
+                                              initWithTitle:@"Error"
+                                                    message:@"Failed to fetch latest manga"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
                                       [alert show];
                                   });
                                   return;
@@ -319,6 +356,8 @@
 
 - (void)fetchMangaWithSearchTerm:(NSString *)searchTerm
 {
+    [self showLoadingSpinner];
+
     __weak typeof(self) weakSelf = self;
 
     [self.sourceService
@@ -328,15 +367,19 @@
                    completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
                        __strong typeof(weakSelf) strongSelf = weakSelf;
 
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           [strongSelf hideLoadingSpinner];
+                       });
+
                        if (error)
                        {
                            dispatch_async(dispatch_get_main_queue(), ^{
-                               UIAlertView *alert = [[UIAlertView alloc]
-                                   initWithTitle:@"Error"
-                                         message:@"Failed to search manga"
-                                        delegate:nil
-                               cancelButtonTitle:@"OK"
-                               otherButtonTitles:nil];
+                               UIAlertView *alert =
+                                   [[UIAlertView alloc] initWithTitle:@"Error"
+                                                              message:@"Failed to search manga"
+                                                             delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
                                [alert show];
                            });
                            return;
@@ -456,6 +499,7 @@
     }
 
     cell.image = [UIImage imageNamed:@"placeholder"];
+    [cell showLoadingSpinner];
 
     __weak typeof(cell) weakCell = cell;
     __weak typeof(self) weakSelf = self;
@@ -463,14 +507,18 @@
         fetchThumbnailWithMangaId:manga.id_
                        completion:^(UIImage *thumbnailImage, NSError *error) {
                            __strong typeof(weakSelf) strongSelf = weakSelf;
-                           if (!strongSelf || error || !thumbnailImage)
+                           if (!strongSelf)
                                return;
 
                            dispatch_async(dispatch_get_main_queue(), ^{
                                // Ensure the cell still represents the same manga
                                if ([weakCell.title isEqualToString:manga.title])
                                {
-                                   weakCell.image = thumbnailImage;
+                                   [weakCell hideLoadingSpinner];
+                                   if (!error && thumbnailImage)
+                                   {
+                                       weakCell.image = thumbnailImage;
+                                   }
                                }
                            });
                        }];

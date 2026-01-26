@@ -17,6 +17,8 @@
 @property (nonatomic, strong) YGRMangaService *mangaService;
 @property (nonatomic, strong) NSArray *chapters;
 
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
+
 @end
 
 @implementation YGRMangaViewController
@@ -38,24 +40,40 @@
     [super viewDidLoad];
 
     self.title = self.manga.title;
+
+    self.loadingSpinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loadingSpinner.hidesWhenStopped = YES;
+    self.loadingSpinner.autoresizingMask =
+        UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    CGRect bounds = self.tableView.bounds;
+    self.loadingSpinner.center = CGPointMake(bounds.size.width / 2.0f, bounds.size.height / 2.0f);
+    [self.tableView addSubview:self.loadingSpinner];
 }
 
 - (void)fetchChapters
 {
+    [self.loadingSpinner startAnimating];
+
     __weak typeof(self) weakSelf = self;
     [self.mangaService fetchChaptersWithMangaId:self.manga.id_
                                      completion:^(NSArray *chapters, NSError *error) {
                                          __strong typeof(weakSelf) strongSelf = weakSelf;
 
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             [strongSelf.loadingSpinner stopAnimating];
+                                         });
+
                                          if (error)
                                          {
                                              dispatch_async(dispatch_get_main_queue(), ^{
                                                  UIAlertView *alert = [[UIAlertView alloc]
-                                                     initWithTitle:@"Error"
-                                                           message:@"Failed to load chapters"
-                                                          delegate:nil
-                                                 cancelButtonTitle:@"OK"
-                                                 otherButtonTitles:nil];
+                                                         initWithTitle:@"Error"
+                                                               message:@"Failed to load chapters"
+                                                              delegate:nil
+                                                     cancelButtonTitle:@"OK"
+                                                     otherButtonTitles:nil];
                                                  [alert show];
                                              });
                                              return;

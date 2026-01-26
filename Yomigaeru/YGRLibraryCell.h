@@ -17,4 +17,7 @@
 - (void)hideBorder;
 - (void)showBorder;
 
+- (void)showLoadingSpinner;
+- (void)hideLoadingSpinner;
+
 @end
