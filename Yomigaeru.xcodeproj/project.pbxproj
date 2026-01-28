@@ -27,6 +27,8 @@
 		038BAEB72F29AAAA00B04C27 /* YGRSourcesViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 038BAEB62F29AAAA00B04C27 /* YGRSourcesViewModel.m */; };
 		039CD8702F274B5500854AD7 /* YGRMangaInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039CD86F2F274B5500854AD7 /* YGRMangaInfoViewController.m */; };
 		039CD8722F27D5D900854AD7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 039CD8712F27D5D900854AD7 /* Images.xcassets */; };
+		03A404472F29AE4300A133A2 /* YGRSourceLibraryViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A404462F29AE4300A133A2 /* YGRSourceLibraryViewModel.m */; };
+		03A4044A2F29AE6700A133A2 /* YGRLibraryViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A404492F29AE6700A133A2 /* YGRLibraryViewModel.m */; };
 		03AFE1882F188EE500CC1CBB /* YGRLibraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */; };
 		03B5C1FE2F185B3500B8898A /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 03B5C1FD2F185B3500B8898A /* placeholder.png */; };
 		03CCDAFB2F18A47C009C6C2A /* library.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CCDAF92F18A47C009C6C2A /* library.png */; };
@@ -139,6 +141,10 @@
 		039CD86E2F274B5500854AD7 /* YGRMangaInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRMangaInfoViewController.h; sourceTree = "<group>"; };
 		039CD86F2F274B5500854AD7 /* YGRMangaInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRMangaInfoViewController.m; sourceTree = "<group>"; };
 		039CD8712F27D5D900854AD7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		03A404452F29AE4300A133A2 /* YGRSourceLibraryViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSourceLibraryViewModel.h; sourceTree = "<group>"; };
+		03A404462F29AE4300A133A2 /* YGRSourceLibraryViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSourceLibraryViewModel.m; sourceTree = "<group>"; };
+		03A404482F29AE6700A133A2 /* YGRLibraryViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryViewModel.h; sourceTree = "<group>"; };
+		03A404492F29AE6700A133A2 /* YGRLibraryViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryViewModel.m; sourceTree = "<group>"; };
 		03AFE1862F188EE500CC1CBB /* YGRLibraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRLibraryCell.h; sourceTree = "<group>"; };
 		03AFE1872F188EE500CC1CBB /* YGRLibraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryCell.m; sourceTree = "<group>"; };
 		03B5C1FD2F185B3500B8898A /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
@@ -301,6 +307,8 @@
 				038BAEB62F29AAAA00B04C27 /* YGRSourcesViewModel.m */,
 				0357B2162F1711FA00D5096E /* YGRSourcesViewController.h */,
 				0357B2172F1711FA00D5096E /* YGRSourcesViewController.m */,
+				03A404452F29AE4300A133A2 /* YGRSourceLibraryViewModel.h */,
+				03A404462F29AE4300A133A2 /* YGRSourceLibraryViewModel.m */,
 				03D81E462F1A8C6C00C27FB2 /* YGRSourceLibraryViewController.h */,
 				03D81E472F1A8C6C00C27FB2 /* YGRSourceLibraryViewController.m */,
 			);
@@ -523,6 +531,8 @@
 		03DCE2E12F0DC40300E49AB9 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				03A404482F29AE6700A133A2 /* YGRLibraryViewModel.h */,
+				03A404492F29AE6700A133A2 /* YGRLibraryViewModel.m */,
 				03DCE2E22F0DC41300E49AB9 /* YGRLibraryViewController.h */,
 				03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */,
 				03DCE2E42F0DC41300E49AB9 /* YGRMangaViewController.h */,
@@ -771,8 +781,10 @@
 				03DCE2E62F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */,
 				03DCE2E82F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */,
 				0314977A2F0DD7030018F3F1 /* YGRChapterViewController.m in Sources */,
+				03A4044A2F29AE6700A133A2 /* YGRLibraryViewModel.m in Sources */,
 				0314977E2F0DD7170018F3F1 /* YGRPageViewController.m in Sources */,
 				03FFDB502F0F25EA00813B1C /* YGRSettingsViewController.m in Sources */,
+				03A404472F29AE4300A133A2 /* YGRSourceLibraryViewModel.m in Sources */,
 				03FFDB592F0F267B00813B1C /* YGRServerSettingsViewController.m in Sources */,
 				03FFDB612F0F48E200813B1C /* YGRServerBaseURLViewController.m in Sources */,
 				0357B2002F0F67D500D5096E /* YGRTextFieldCell.m in Sources */,
