@@ -14,6 +14,7 @@
 @property (nonatomic, copy) NSString *apkName;
 @property (nonatomic, strong) NSURL *iconUrl;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, strong) NSString *lowerName;
 @property (nonatomic, copy) NSString *pkgName;
 @property (nonatomic, copy) NSString *versionName;
 @property (nonatomic, assign) NSInteger versionCode;

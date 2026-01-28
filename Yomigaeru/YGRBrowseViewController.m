@@ -10,18 +10,21 @@
 
 #import "YGRExtensionsViewController.h"
 #import "YGRSourcesViewController.h"
+#import "YGRBrowseSearchBarDelegateProxy.h"
 
 @interface YGRBrowseViewController ()
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UISegmentedControl *viewControllerSegmentedControl;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) YGRBrowseSearchBarDelegateProxy *searchBarDelegateProxy;
 
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
 
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) NSArray *viewControllerTitles;
-@property (nonatomic, strong) UIViewController<YGRRefreshable> *currentViewController;
+@property (nonatomic, strong) UIViewController<YGRRefreshable, UISearchBarDelegate> *currentViewController;
 
 @end
 
@@ -47,7 +50,7 @@
     [viewController didMoveToParentViewController:self];
 }
 
-- (void)cycleToNewViewController:(UIViewController<YGRRefreshable> *)newViewController
+- (void)cycleToNewViewController:(UIViewController<YGRRefreshable, UISearchBarDelegate> *)newViewController
 {
     if (!self.currentViewController)
     {
@@ -105,6 +108,40 @@
     [self.view addSubview:self.viewControllerSegmentedControl];
 }
 
+- (void)configureSearchBar
+{
+    self.searchBar = [[UISearchBar alloc] initWithFrame:self.viewControllerSegmentedControl.frame];
+    self.searchBar.barStyle = UIBarStyleBlackTranslucent;
+    self.searchBar.showsCancelButton = YES;
+    self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    self.searchBarDelegateProxy = [[YGRBrowseSearchBarDelegateProxy alloc] init];
+    self.searchBarDelegateProxy.stateHandler = self;
+    
+    self.searchBar.delegate = self.searchBarDelegateProxy;
+}
+
+- (void)showSearchBar
+{
+    self.searchBarDelegateProxy.searchHandler = self.currentViewController;
+    
+    [self.viewControllerSegmentedControl removeFromSuperview];
+    [self.view addSubview:self.searchBar];
+    [self.searchBar becomeFirstResponder];
+}
+
+- (void)hideSearchBar
+{
+    [self.searchBar removeFromSuperview];
+    [self.view addSubview:self.viewControllerSegmentedControl];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self hideSearchBar];
+//    [self mangaListDidChange:self.mangaListSegmentedControl];
+}
+
 - (void)viewControllerDidChange:(UISegmentedControl *)sender
 {
     if (sender.selectedSegmentIndex < 0 ||
@@ -113,7 +150,7 @@
         return;
     }
 
-    UIViewController<YGRRefreshable> *newViewController =
+    UIViewController<YGRRefreshable, UISearchBarDelegate> *newViewController =
         [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
     [self cycleToNewViewController:newViewController];
     [self disableSpinner];
@@ -194,9 +231,16 @@
     self.refreshSpinner = [[UIActivityIndicatorView alloc]
         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.leftBarButtonItem = self.refreshButton;
+    
+    self.navigationItem.rightBarButtonItem =
+    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
+                                                  target:self
+                                                  action:@selector(showSearchBar)];
 
     [self configureViewControllers];
     [self configureViewControllerSegmentedControl];
+    [self configureSearchBar];
+    
     [self configureContentView];
 
     self.currentViewController = [self.viewControllers objectAtIndex:0];

@@ -20,6 +20,11 @@
 @property (nonatomic, strong) NSMutableArray *languages;
 @property (nonatomic, strong) NSMutableDictionary *sourcesByLanguage;
 
+@property (nonatomic, strong) NSMutableArray *searchLanguages;
+@property (nonatomic, strong) NSMutableDictionary *searchSourcesByLanguage;
+
+@property (nonatomic, assign) BOOL isSearching;
+
 @end
 
 @implementation YGRSourcesViewController
@@ -32,7 +37,12 @@
         // Custom initialization
         _sourceService = [[YGRSourceService alloc] init];
         _languages = [NSMutableArray array];
-        _sourcesByLanguage = [[NSMutableDictionary alloc] init];
+        _sourcesByLanguage = [NSMutableDictionary dictionary];
+        
+        _searchLanguages = [NSMutableArray array];
+        _searchSourcesByLanguage = [NSMutableDictionary dictionary];
+        
+        _isSearching = NO;
     }
     return self;
 }
@@ -120,16 +130,19 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return !self.languages ? 1 : self.languages.count;
+    NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
+    return !languageArray ? 1 : languageArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSString *sectionLanguage = [self.languages objectAtIndex:section];
+    NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
+    NSDictionary *sourcesByLanguageDictionary = (self.isSearching) ? self.searchSourcesByLanguage : self.sourcesByLanguage;
+    
+    NSString *sectionLanguage = [languageArray objectAtIndex:section];
 
-    NSMutableArray *arrayForLang = [self.sourcesByLanguage objectForKey:sectionLanguage];
+    NSMutableArray *arrayForLang = [sourcesByLanguageDictionary objectForKey:sectionLanguage];
     if (!arrayForLang)
     {
         return 0;
@@ -140,8 +153,11 @@
 
 - (YGRSource *)sourceForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *sectionLanguage = [self.languages objectAtIndex:indexPath.section];
-    NSMutableArray *arrayForLang = [self.sourcesByLanguage objectForKey:sectionLanguage];
+    NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
+    NSDictionary *sourcesByLanguageDictionary = (self.isSearching) ? self.searchSourcesByLanguage : self.sourcesByLanguage;
+    
+    NSString *sectionLanguage = [languageArray objectAtIndex:indexPath.section];
+    NSMutableArray *arrayForLang = [sourcesByLanguageDictionary objectForKey:sectionLanguage];
     if (!arrayForLang)
     {
         return nil;
@@ -178,77 +194,96 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section < 0 || section >= self.languages.count)
+    NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
+    
+    if (section < 0 || section >= languageArray.count)
     {
         return @"Error";
     }
 
-    return [self.languages objectAtIndex:section];
+    return [languageArray objectAtIndex:section];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath
-*)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new
-row to the table view
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
-toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc]
-     initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-
     YGRSourceLibraryViewController *sourceLibraryViewController =
         [[YGRSourceLibraryViewController alloc] init];
 
     sourceLibraryViewController.source = [self sourceForRowAtIndexPath:indexPath];
 
     [self.navigationController pushViewController:sourceLibraryViewController animated:YES];
+}
+
+#pragma mark - Search bar delegate
+
+- (void)filterSourcesBySearchTerm:(NSString *)searchTerm
+{
+    if (searchTerm.length == 0) {
+        self.searchLanguages = [self.languages mutableCopy];
+        self.searchSourcesByLanguage = [self.sourcesByLanguage mutableCopy];
+        return;
+    }
+    
+    [self.searchLanguages removeAllObjects];
+    [self.searchSourcesByLanguage removeAllObjects];
+    
+    NSString *term = [searchTerm lowercaseString];
+    
+    for (NSString *language in self.languages) {
+        NSArray *sources = self.sourcesByLanguage[language];
+        BOOL addedLanguage = NO;
+        
+        for (YGRSource *source in sources) {
+            if ([source.lowerName hasPrefix:term]) {
+                if (!addedLanguage) {
+                    addedLanguage = YES;
+                    [self.searchLanguages addObject:language];
+                    self.searchSourcesByLanguage[language] = [NSMutableArray array];
+                }
+                
+                [self.searchSourcesByLanguage[language] addObject:source];
+            }
+        }
+    }
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    self.isSearching = YES;
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    self.isSearching = NO;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.tableView layoutIfNeeded];
+    });
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self filterSourcesBySearchTerm:searchText];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.tableView layoutIfNeeded];
+    });
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self filterSourcesBySearchTerm:searchBar.text];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.tableView layoutIfNeeded];
+    });
+    
+    [searchBar resignFirstResponder];
 }
 
 @end

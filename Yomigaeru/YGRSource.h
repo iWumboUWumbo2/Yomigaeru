@@ -12,6 +12,7 @@
 
 @property (nonatomic, copy) NSString *id_;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, strong) NSString *lowerName;
 @property (nonatomic, copy) NSString *lang;
 @property (nonatomic, strong) NSURL *iconUrl;
 @property (nonatomic, assign) BOOL supportsLatest;

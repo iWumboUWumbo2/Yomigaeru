@@ -18,6 +18,7 @@
     {
         _id_ = [dictionary objectForKey:@"id"];
         _name = [dictionary objectForKey:@"name"];
+        _lowerName = [_name lowercaseString];
         _lang = [dictionary objectForKey:@"lang"];
         _iconUrl =
             [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];

@@ -21,6 +21,7 @@
         _iconUrl =
             [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
         _name = [dictionary objectForKey:@"name"];
+        _lowerName = [_name lowercaseString];
         _pkgName = [dictionary objectForKey:@"pkgName"];
         _versionName = [dictionary objectForKey:@"versionName"];
         _versionCode = [[dictionary objectForKey:@"versionCode"] integerValue];

@@ -10,7 +10,7 @@
 #import "YGRRefreshable.h"
 #import <UIKit/UIKit.h>
 
-@interface YGRSourcesViewController : UITableViewController <YGRRefreshable>
+@interface YGRSourcesViewController : UITableViewController <YGRRefreshable, UISearchBarDelegate>
 
 @property (nonatomic, weak) id<YGRChildRefreshDelegate> refreshDelegate;
 
