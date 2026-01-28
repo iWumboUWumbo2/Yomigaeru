@@ -7,34 +7,25 @@
 //
 
 #import "YGRSourceLibraryViewController.h"
+#import "YGRSourceLibraryViewModel.h"
 #import "YGRMangaViewController.h"
-
-#import "YGRManga.h"
-#import "YGRMangaService.h"
-#import "YGRSourceService.h"
 
 #import "YGRImageService.h"
 #import "YGRLibraryCell.h"
 
-@interface YGRSourceLibraryViewController ()
+#import <AQGridView/AQGridView.h>
+
+@interface YGRSourceLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate,
+                                              UISearchBarDelegate>
+
+@property (nonatomic, strong) YGRSourceLibraryViewModel *viewModel;
 
 @property (nonatomic, strong) UISegmentedControl *mangaListSegmentedControl;
 @property (nonatomic, strong) UISearchBar *mangaSearchBar;
-
 @property (nonatomic, strong) AQGridView *libraryGridView;
-
-@property (nonatomic, strong) YGRSourceService *sourceService;
-@property (nonatomic, strong) YGRMangaService *mangaService;
-
-@property (nonatomic, strong) NSMutableArray *mangas;
-@property (nonatomic, assign) BOOL hasNextPage;
-@property (nonatomic, assign) BOOL isLoadingPage;
-
-@property (nonatomic, assign) NSUInteger currentPage;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
 @property (nonatomic, assign) CGSize portraitCellSize;
-
-@property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
 @end
 
@@ -45,11 +36,7 @@
     self = [super init];
     if (self)
     {
-        // Custom initialization
-        _sourceService = [[YGRSourceService alloc] init];
-        _mangaService = [[YGRMangaService alloc] init];
-        _mangas = [NSMutableArray array];
-        _currentPage = 1;
+        _viewModel = [[YGRSourceLibraryViewModel alloc] init];
 
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenWidth = screenRect.size.width;
@@ -62,7 +49,47 @@
     return self;
 }
 
-- (void)configureViewControllerSegmentedControl
+- (void)setSource:(YGRSource *)source
+{
+    _source = source;
+    self.viewModel.source = source;
+}
+
+#pragma mark - View Lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.title = self.source.displayName;
+    self.navigationItem.rightBarButtonItem =
+        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
+                                                      target:self
+                                                      action:@selector(showSearchBar)];
+
+    self.view.backgroundColor = [UIColor whiteColor];
+
+    [self configureSegmentedControl];
+    [self configureSearchBar];
+    [self configureGridView];
+    [self configureLoadingSpinner];
+
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
+    {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self fetchMangaListForSelectedSegment];
+}
+
+#pragma mark - UI Configuration
+
+- (void)configureSegmentedControl
 {
     self.mangaListSegmentedControl =
         [[UISegmentedControl alloc] initWithItems:@[ @"Popular", @"Latest" ]];
@@ -83,7 +110,7 @@
     [self.view addSubview:self.mangaListSegmentedControl];
 }
 
-- (void)configureMangaSearchBar
+- (void)configureSearchBar
 {
     self.mangaSearchBar = [[UISearchBar alloc] initWithFrame:self.mangaListSegmentedControl.frame];
     self.mangaSearchBar.barStyle = UIBarStyleBlackTranslucent;
@@ -92,50 +119,8 @@
     self.mangaSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
-- (void)showSearchBar
+- (void)configureGridView
 {
-    [self.mangaListSegmentedControl removeFromSuperview];
-    [self.view addSubview:self.mangaSearchBar];
-    [self.mangaSearchBar becomeFirstResponder];
-}
-
-- (void)hideSearchBar
-{
-    [self.mangaSearchBar removeFromSuperview];
-    [self.view addSubview:self.mangaListSegmentedControl];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    self.currentPage = 1;
-    [self.mangas removeAllObjects];
-
-    [self.libraryGridView setContentOffset:CGPointZero animated:NO];
-    [self fetchMangaWithSearchTerm:searchBar.text];
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self hideSearchBar];
-    [self mangaListDidChange:self.mangaListSegmentedControl];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.title = self.source.displayName;
-    self.navigationItem.rightBarButtonItem =
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
-                                                      target:self
-                                                      action:@selector(showSearchBar)];
-
-    self.view.backgroundColor = [UIColor whiteColor];
-
-    [self configureViewControllerSegmentedControl];
-    [self configureMangaSearchBar];
-
     CGFloat top = CGRectGetMaxY(self.mangaListSegmentedControl.frame) + 8.0f;
 
     CGRect contentViewFrame =
@@ -157,7 +142,10 @@
                                                       action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.libraryGridView addGestureRecognizer:longPress];
+}
 
+- (void)configureLoadingSpinner
+{
     self.loadingSpinner = [[UIActivityIndicatorView alloc]
         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.loadingSpinner.hidesWhenStopped = YES;
@@ -168,20 +156,96 @@
     self.loadingSpinner.center =
         CGPointMake(gridBounds.size.width / 2.0f, gridBounds.size.height / 2.0f);
     [self.libraryGridView addSubview:self.loadingSpinner];
-
-    // Prevent nav bar and tab bar from overlaying the view in iOS 7.0
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
 }
 
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark - Search Bar
+
+- (void)showSearchBar
 {
-    [super viewWillAppear:animated];
-
-    [self fetchMangaList:self.mangaListSegmentedControl];
+    [self.mangaListSegmentedControl removeFromSuperview];
+    [self.view addSubview:self.mangaSearchBar];
+    [self.mangaSearchBar becomeFirstResponder];
 }
+
+- (void)hideSearchBar
+{
+    [self.mangaSearchBar removeFromSuperview];
+    [self.view addSubview:self.mangaListSegmentedControl];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.viewModel resetPagination];
+    [self.libraryGridView setContentOffset:CGPointZero animated:NO];
+
+    [self showLoadingSpinnerIfEmpty];
+
+    __weak typeof(self) weakSelf = self;
+    [self.viewModel searchMangaWithTerm:searchBar.text
+                             completion:^(NSError *error) {
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     __strong typeof(weakSelf) strongSelf = weakSelf;
+                                     [strongSelf hideLoadingSpinner];
+
+                                     if (error)
+                                     {
+                                         [strongSelf showErrorAlertWithMessage:@"Failed to search manga"];
+                                         return;
+                                     }
+
+                                     [strongSelf.libraryGridView reloadData];
+                                 });
+                             }];
+
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self hideSearchBar];
+    [self mangaListDidChange:self.mangaListSegmentedControl];
+}
+
+#pragma mark - Data Fetching
+
+- (void)fetchMangaListForSelectedSegment
+{
+    YGRSourceLibraryListType listType =
+        (YGRSourceLibraryListType)self.mangaListSegmentedControl.selectedSegmentIndex;
+
+    [self showLoadingSpinnerIfEmpty];
+
+    __weak typeof(self) weakSelf = self;
+    [self.viewModel fetchMangaListOfType:listType
+                              completion:^(NSError *error) {
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      __strong typeof(weakSelf) strongSelf = weakSelf;
+                                      [strongSelf hideLoadingSpinner];
+
+                                      if (error)
+                                      {
+                                          NSString *message = (listType == YGRSourceLibraryListTypePopular)
+                                                                  ? @"Failed to fetch popular manga"
+                                                                  : @"Failed to fetch latest manga";
+                                          [strongSelf showErrorAlertWithMessage:message];
+                                          return;
+                                      }
+
+                                      [strongSelf.libraryGridView reloadData];
+                                  });
+                              }];
+}
+
+- (void)mangaListDidChange:(UISegmentedControl *)sender
+{
+    [self.viewModel resetPagination];
+    [self.libraryGridView setContentOffset:CGPointZero animated:NO];
+    [self fetchMangaListForSelectedSegment];
+}
+
+#pragma mark - Long Press (Library Toggle)
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
@@ -198,72 +262,35 @@
         return;
     }
 
-    YGRManga *selectedManga = self.mangas[index];
+    YGRManga *selectedManga = [self.viewModel mangaAtIndex:index];
+    NSString *errorMessage = selectedManga.inLibrary ? @"Failed to remove manga from library"
+                                                     : @"Failed to add manga to library";
 
     __weak typeof(self) weakSelf = self;
-    if (!selectedManga.inLibrary)
-    {
-        [self.mangaService
-            addToLibraryWithMangaId:selectedManga.id_
-                         completion:^(BOOL success, NSError *error) {
-                             __strong typeof(weakSelf) strongSelf = weakSelf;
+    [self.viewModel
+        toggleLibraryStatusAtIndex:index
+                        completion:^(BOOL success, NSError *error) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                __strong typeof(weakSelf) strongSelf = weakSelf;
 
-                             if (error || !success)
-                             {
-                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                     UIAlertView *alert = [[UIAlertView alloc]
-                                             initWithTitle:@"Error"
-                                                   message:@"Failed to add manga to library"
-                                                  delegate:nil
-                                         cancelButtonTitle:@"OK"
-                                         otherButtonTitles:nil];
-                                     [alert show];
-                                 });
-                                 return;
-                             }
+                                if (!success || error)
+                                {
+                                    [strongSelf showErrorAlertWithMessage:errorMessage];
+                                    return;
+                                }
 
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 selectedManga.inLibrary = YES;
-                                 [strongSelf.libraryGridView
-                                     reloadItemsAtIndices:[NSIndexSet indexSetWithIndex:index]
-                                            withAnimation:AQGridViewItemAnimationFade];
-                             });
-                         }];
-    }
-    else
-    {
-        [self.mangaService
-            deleteFromLibraryWithMangaId:selectedManga.id_
-                              completion:^(BOOL success, NSError *error) {
-                                  __strong typeof(weakSelf) strongSelf = weakSelf;
-                                  if (error || !success)
-                                  {
-                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                          UIAlertView *alert = [[UIAlertView alloc]
-                                                  initWithTitle:@"Error"
-                                                        message:
-                                                            @"Failed to remove manga from library"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-                                          [alert show];
-                                      });
-                                      return;
-                                  }
-
-                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                      selectedManga.inLibrary = NO;
-                                      [strongSelf.libraryGridView
-                                          reloadItemsAtIndices:[NSIndexSet indexSetWithIndex:index]
-                                                 withAnimation:AQGridViewItemAnimationFade];
-                                  });
-                              }];
-    }
+                                [strongSelf.libraryGridView
+                                    reloadItemsAtIndices:[NSIndexSet indexSetWithIndex:index]
+                                           withAnimation:AQGridViewItemAnimationFade];
+                            });
+                        }];
 }
 
-- (void)showLoadingSpinner
+#pragma mark - Loading Spinner
+
+- (void)showLoadingSpinnerIfEmpty
 {
-    if (self.mangas.count == 0)
+    if ([self.viewModel numberOfItems] == 0)
     {
         [self.loadingSpinner startAnimating];
     }
@@ -274,162 +301,22 @@
     [self.loadingSpinner stopAnimating];
 }
 
-- (void)fetchPopularManga
+#pragma mark - Error Handling
+
+- (void)showErrorAlertWithMessage:(NSString *)message
 {
-    [self showLoadingSpinner];
-
-    __weak typeof(self) weakSelf = self;
-
-    [self.sourceService
-        fetchPopularMangaFromSourceId:self.source.id_
-                              pageNum:self.currentPage
-                           completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
-                               __strong typeof(weakSelf) strongSelf = weakSelf;
-
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   [strongSelf hideLoadingSpinner];
-                               });
-
-                               if (error)
-                               {
-                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                       UIAlertView *alert = [[UIAlertView alloc]
-                                               initWithTitle:@"Error"
-                                                     message:@"Failed to fetch popular manga"
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-                                       [alert show];
-                                   });
-                                   return;
-                               }
-
-                               [strongSelf.mangas addObjectsFromArray:mangaList];
-                               strongSelf.hasNextPage = hasNextPage;
-                               strongSelf.isLoadingPage = NO;
-
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   [strongSelf.libraryGridView reloadData];
-                               });
-                           }];
-}
-
-- (void)fetchLatestManga
-{
-    [self showLoadingSpinner];
-
-    __weak typeof(self) weakSelf = self;
-
-    [self.sourceService
-        fetchLatestMangaFromSourceId:self.source.id_
-                             pageNum:self.currentPage
-                          completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
-                              __strong typeof(weakSelf) strongSelf = weakSelf;
-
-                              dispatch_async(dispatch_get_main_queue(), ^{
-                                  [strongSelf hideLoadingSpinner];
-                              });
-
-                              if (error)
-                              {
-                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                      UIAlertView *alert = [[UIAlertView alloc]
-                                              initWithTitle:@"Error"
-                                                    message:@"Failed to fetch latest manga"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:message
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
-                                      [alert show];
-                                  });
-                                  return;
-                              }
-
-                              [strongSelf.mangas addObjectsFromArray:mangaList];
-                              strongSelf.hasNextPage = hasNextPage;
-                              strongSelf.isLoadingPage = NO;
-
-                              dispatch_async(dispatch_get_main_queue(), ^{
-                                  [strongSelf.libraryGridView reloadData];
-                              });
-                          }];
+    [alert show];
 }
 
-- (void)fetchMangaWithSearchTerm:(NSString *)searchTerm
-{
-    [self showLoadingSpinner];
-
-    __weak typeof(self) weakSelf = self;
-
-    [self.sourceService
-        searchMangaInSourceId:self.source.id_
-                   searchTerm:searchTerm
-                      pageNum:self.currentPage
-                   completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
-                       __strong typeof(weakSelf) strongSelf = weakSelf;
-
-                       dispatch_async(dispatch_get_main_queue(), ^{
-                           [strongSelf hideLoadingSpinner];
-                       });
-
-                       if (error)
-                       {
-                           dispatch_async(dispatch_get_main_queue(), ^{
-                               UIAlertView *alert =
-                                   [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Failed to search manga"
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-                               [alert show];
-                           });
-                           return;
-                       }
-
-                       [strongSelf.mangas addObjectsFromArray:mangaList];
-                       strongSelf.hasNextPage = hasNextPage;
-                       strongSelf.isLoadingPage = NO;
-
-                       dispatch_async(dispatch_get_main_queue(), ^{
-                           [strongSelf.libraryGridView reloadData];
-                       });
-                   }];
-}
-
-- (void)fetchMangaList:(UISegmentedControl *)segmentedControl
-{
-    switch (segmentedControl.selectedSegmentIndex)
-    {
-    case 0: // Popular
-        [self fetchPopularManga];
-        break;
-
-    case 1: // Latest
-        [self fetchLatestManga];
-    default:
-        break;
-    }
-}
-
-- (void)mangaListDidChange:(UISegmentedControl *)sender
-{
-    self.currentPage = 1;
-    [self.mangas removeAllObjects];
-
-    [self.libraryGridView setContentOffset:CGPointZero animated:NO];
-    [self fetchMangaList:sender];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - ScrolView
+#pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // How close to the bottom before loading more
     CGFloat preloadMargin = self.portraitCellSize.height * 2.0f;
 
     if (scrollView.contentOffset.y + scrollView.bounds.size.height >=
@@ -441,27 +328,31 @@
 
 - (void)loadNextPageIfNeeded
 {
-    if (!self.hasNextPage)
+    if (![self.viewModel hasNextPage] || self.viewModel.isLoading)
     {
         return;
     }
 
-    if (self.isLoadingPage)
-    {
-        return;
-    }
+    __weak typeof(self) weakSelf = self;
+    [self.viewModel loadNextPageWithCompletion:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(weakSelf) strongSelf = weakSelf;
 
-    self.isLoadingPage = YES;
-    self.currentPage++;
+            if (error)
+            {
+                return;
+            }
 
-    [self fetchMangaList:self.mangaListSegmentedControl];
+            [strongSelf.libraryGridView reloadData];
+        });
+    }];
 }
 
-#pragma mark - AQGridView DataSource
+#pragma mark - AQGridViewDataSource
 
 - (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView
 {
-    return !self.mangas ? 0 : self.mangas.count;
+    return [self.viewModel numberOfItems];
 }
 
 - (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView
@@ -474,7 +365,7 @@
     static NSString *CellIdentifier = @"LibraryCell";
 
     YGRLibraryCell *cell =
-        (YGRLibraryCell *) [gridView dequeueReusableCellWithIdentifier:CellIdentifier];
+        (YGRLibraryCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     if (!cell)
     {
@@ -486,7 +377,7 @@
         cell.selectionStyle = AQGridViewCellSelectionStyleBlueGray;
     }
 
-    YGRManga *manga = [self.mangas objectAtIndex:index];
+    YGRManga *manga = [self.viewModel mangaAtIndex:index];
     cell.title = manga.title;
 
     if (manga.inLibrary)
@@ -502,16 +393,10 @@
     [cell showLoadingSpinner];
 
     __weak typeof(cell) weakCell = cell;
-    __weak typeof(self) weakSelf = self;
     [[YGRImageService sharedService]
         fetchThumbnailWithMangaId:manga.id_
                        completion:^(UIImage *thumbnailImage, NSError *error) {
-                           __strong typeof(weakSelf) strongSelf = weakSelf;
-                           if (!strongSelf)
-                               return;
-
                            dispatch_async(dispatch_get_main_queue(), ^{
-                               // Ensure the cell still represents the same manga
                                if ([weakCell.title isEqualToString:manga.title])
                                {
                                    [weakCell hideLoadingSpinner];
@@ -526,17 +411,22 @@
     return cell;
 }
 
-#pragma mark - AQGridView Delegate
+#pragma mark - AQGridViewDelegate
 
 - (void)gridView:(AQGridView *)gridView didSelectItemAtIndex:(NSUInteger)index
 {
     [gridView deselectItemAtIndex:index animated:YES];
 
-    YGRManga *selectedManga = [self.mangas objectAtIndex:index];
+    YGRManga *selectedManga = [self.viewModel mangaAtIndex:index];
     YGRMangaViewController *mangaVC = [[YGRMangaViewController alloc] init];
     mangaVC.manga = selectedManga;
 
     [self.navigationController pushViewController:mangaVC animated:YES];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
 }
 
 @end
