@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString *const kServerAddressKey = @"serverAddress";
-
 @interface YGRSettingsManager : NSObject
 
 + (instancetype)sharedInstance;

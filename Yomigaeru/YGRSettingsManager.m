@@ -9,6 +9,8 @@
 #import "YGRSettingsManager.h"
 #import "YGRNetworkManager.h"
 
+static NSString *const kServerAddressKey = @"serverAddress";
+
 @interface YGRSettingsManager ()
 
 @end

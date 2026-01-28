@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
 @end
 
 @implementation YGRMangaViewController
@@ -32,6 +34,11 @@
         // Custom initialization
         _mangaService = [[YGRMangaService alloc] init];
         _chapters = nil;
+        
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        _dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        _dateFormatter.timeStyle = NSDateFormatterNoStyle;
+        _dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     }
     return self;
 }
@@ -136,7 +143,7 @@
 
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
     }
 
@@ -144,6 +151,9 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
     cell.textLabel.text = selectedChapter.name;
+    
+    NSDate *uploadDate = [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval)selectedChapter.uploadDate/1000];
+    cell.detailTextLabel.text = [self.dateFormatter stringFromDate:uploadDate];
 
     return cell;
 }

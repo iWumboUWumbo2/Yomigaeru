@@ -9,7 +9,7 @@
 #import "YGRManga.h"
 #import <UIKit/UIKit.h>
 
-@interface YGRMangaInfoViewController : UIViewController
+@interface YGRMangaInfoViewController : UITableViewController
 
 @property (nonatomic, copy) NSString *mangaId;
 
