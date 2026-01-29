@@ -7,7 +7,6 @@
 //
 
 #import "YGRMangaInfoViewController.h"
-#import "YGRMangaDescriptionViewController.h"
 
 #import "YGRMangaService.h"
 #import "YGRImageService.h"
@@ -98,9 +97,7 @@
          {
              strongSelf.thumbnailImage = image;
              dispatch_async(dispatch_get_main_queue(), ^{
-                 [strongSelf.tableView reloadRowsAtIndexPaths:@[
-                                                                [NSIndexPath indexPathForRow:0 inSection:0]
-                                                                ] withRowAnimation:UITableViewRowAnimationFade];
+                 [strongSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
              });
          }
      }];
@@ -142,7 +139,7 @@ titleForHeaderInSection:(NSInteger)section
     {
         case 0: return @"Manga";
         case 1: return @"Genres";
-        case 2: return @"Details";
+        case 2: return @"Description";
         default: return nil;
     }
 }
@@ -163,6 +160,35 @@ titleForHeaderInSection:(NSInteger)section
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 2 && indexPath.row == 0)
+    {
+        static NSString *CellIdentifier = @"DescriptionCell";
+        UITableViewCell *cell =
+        [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc]
+                    initWithStyle:UITableViewCellStyleDefault
+                    reuseIdentifier:CellIdentifier];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell.textLabel.numberOfLines = 0;
+            cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
+            cell.textLabel.textColor = [UIColor darkGrayColor];
+        }
+        
+        NSString *desc = [self safeString:self.manga.description_];;
+        if (![desc isKindOfClass:[NSString class]] || desc.length == 0)
+            desc = @"—";
+        
+        cell.textLabel.text = desc;
+        
+        return cell;
+    }
+    
     static NSString *CellIdentifier = @"InfoCell";
     UITableViewCell *cell =
     [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -184,7 +210,6 @@ titleForHeaderInSection:(NSInteger)section
     NSString *title  = [self safeString:self.manga.title];
     NSString *author = [self safeString:self.manga.author];
     NSString *artist = [self safeString:self.manga.artist];
-    NSString *desc   = [self safeString:self.manga.description_];
     
     if (indexPath.section == 0)
     {
@@ -192,7 +217,7 @@ titleForHeaderInSection:(NSInteger)section
         {
             case 0:
                 cell.imageView.image = self.thumbnailImage;
-                cell.textLabel.text = @"Name";
+                cell.textLabel.text = @"";
                 cell.detailTextLabel.text = title ?: @"—";
                 break;
                 
@@ -230,34 +255,42 @@ titleForHeaderInSection:(NSInteger)section
             [value isKindOfClass:[NSString class]] ? value : @"—";
         }
     }
-    else if (indexPath.section == 2)
-    {
-        cell.textLabel.text = @"Description";
-        cell.detailTextLabel.text = desc.length ? @"View" : @"—";
-        cell.accessoryType = desc.length
-        ? UITableViewCellAccessoryDisclosureIndicator
-        : UITableViewCellAccessoryNone;
-    }
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView
-didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView
+heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 0 && indexPath.row == 0)
+    {
+        return tableView.rowHeight * 3;
+    }
+    
     if (indexPath.section == 2 && indexPath.row == 0)
     {
+        CGFloat padding = 20.0f; // matches grouped table insets
+        
         NSString *desc = [self safeString:self.manga.description_];
-        if (!desc.length)
-            return;
+        if (![desc isKindOfClass:[NSString class]] || desc.length == 0)
+            desc = @"—";
         
-        YGRMangaDescriptionViewController *vc = [[YGRMangaDescriptionViewController alloc] init];
+        UIFont *font = [UIFont systemFontOfSize:14.0f];
         
-        vc.mangaTitle = self.manga.title;
-        vc.mangaDescription = desc;
+        CGSize constraint =
+        CGSizeMake(tableView.bounds.size.width - padding * 2,
+                   CGFLOAT_MAX);
         
-        [self.navigationController pushViewController:vc animated:YES];
+        CGSize size =
+        [desc sizeWithFont:font
+         constrainedToSize:constraint
+             lineBreakMode:NSLineBreakByWordWrapping];
+        
+        // Top + bottom padding
+        return size.height * 1.3 + 24.0f;
     }
+    
+    return tableView.rowHeight;
 }
 
 @end
