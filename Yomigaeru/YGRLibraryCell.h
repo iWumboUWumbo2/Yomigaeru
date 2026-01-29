@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, assign) NSInteger unreadCount;
 
 - (void)hideBorder;
 - (void)showBorder;

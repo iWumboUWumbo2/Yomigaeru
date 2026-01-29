@@ -192,7 +192,7 @@
                                          return;
                                      }
 
-                                     // TODO: Update UI to reflect read status
+                                     [strongSelf refreshLibrary];
                                  });
                              }];
     }
@@ -210,7 +210,7 @@
                                            return;
                                        }
 
-                                       // TODO: Update UI to reflect unread status
+                                       [strongSelf refreshLibrary];
                                    });
                                }];
     }
@@ -311,7 +311,7 @@
 
     YGRManga *manga = [self.viewModel mangaAtIndex:index];
     cell.title = manga.title;
-
+    cell.unreadCount = manga.unreadCount;
     cell.image = [UIImage imageNamed:@"placeholder"];
     [cell showLoadingSpinner];
 
