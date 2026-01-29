@@ -48,13 +48,14 @@
     [super viewDidLoad];
 
     self.title = self.manga.title;
-
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
     [infoButton addTarget:self
                    action:@selector(showMangaInfo)
          forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem =
-        [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
 
     self.loadingSpinner = [[UIActivityIndicatorView alloc]
         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -65,7 +66,70 @@
     CGRect bounds = self.tableView.bounds;
     self.loadingSpinner.center = CGPointMake(bounds.size.width / 2.0f, bounds.size.height / 2.0f);
     [self.tableView addSubview:self.loadingSpinner];
+    
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;
+    
+    UILongPressGestureRecognizer *longPress =
+    [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                  action:@selector(handleLongPress:)];
+    longPress.minimumPressDuration = 0.5f;
+    [self.tableView addGestureRecognizer:longPress];
 }
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    
+    static UIColor *defaultTextLabelHighlightedTextColor = nil;
+    static UIColor *defaultDetailTextLabelHighlightedTextColor = nil;
+    
+    for (UITableViewCell *cell in self.tableView.visibleCells)
+    {
+        if (!defaultTextLabelHighlightedTextColor)
+        {
+            defaultTextLabelHighlightedTextColor = cell.textLabel.highlightedTextColor;
+        }
+        
+        if (!defaultDetailTextLabelHighlightedTextColor)
+        {
+            defaultDetailTextLabelHighlightedTextColor = cell.detailTextLabel.highlightedTextColor;
+        }
+        
+        if (editing) {
+            cell.textLabel.highlightedTextColor = cell.textLabel.textColor;
+            cell.detailTextLabel.highlightedTextColor = cell.detailTextLabel.textColor;
+        } else {
+            cell.textLabel.highlightedTextColor = defaultTextLabelHighlightedTextColor;
+            cell.detailTextLabel.highlightedTextColor = defaultDetailTextLabelHighlightedTextColor;
+        }
+    }
+    
+    self.navigationItem.leftBarButtonItem = (editing) ? self.editButtonItem : nil;
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
+{
+    if (gesture.state != UIGestureRecognizerStateBegan)
+    {
+        return;
+    }
+    
+    CGPoint point = [gesture locationInView:self.tableView];
+    NSIndexPath *index = [self.tableView indexPathForRowAtPoint:point];
+    
+    if (!index)
+    {
+        return;
+    }
+    
+    if (!self.isEditing)
+    {
+        [self setEditing:YES animated:YES];
+    }
+
+    [self.tableView selectRowAtIndexPath:index animated:YES scrollPosition:UITableViewScrollPositionNone];
+}
+
 
 - (void)fetchChapters
 {
@@ -129,6 +193,11 @@
     return 1;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [NSString stringWithFormat:@"%d Chapter%@", self.chapters.count, self.chapters.count == 1 ? @"" : @"s"];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
@@ -152,60 +221,39 @@
     YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
     cell.textLabel.text = selectedChapter.name;
     
+    if (selectedChapter.read)
+    {
+        cell.textLabel.textColor = [UIColor darkGrayColor];
+    }
+    
     NSDate *uploadDate = [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval)selectedChapter.uploadDate/1000];
     cell.detailTextLabel.text = [self.dateFormatter stringFromDate:uploadDate];
 
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath
-*)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new
-row to the table view
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath
-toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView
+didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (!self.isEditing) {
+        return;
+    }
+    
+    NSArray *selected = [tableView indexPathsForSelectedRows];
+    if (selected.count == 0) {
+        [self setEditing:NO animated:YES];
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.isEditing)
+    {
+        return;
+    }
+    
     // Navigation logic may go here. Create and push another view controller.
     YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc]
         initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
