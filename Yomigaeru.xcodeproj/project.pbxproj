@@ -87,6 +87,7 @@
 		03DCE2E72F0DC41300E49AB9 /* YGRLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */; };
 		03DCE2E82F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */; };
 		03DCE2E92F0DC41300E49AB9 /* YGRMangaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */; };
+		03E20F412F2C7CFE00757FFD /* favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E20F402F2C7CFE00757FFD /* favorite.png */; };
 		03F4D4482F1BD7F400F7E804 /* YGRImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4D4472F1BD7F400F7E804 /* YGRImageService.m */; };
 		03FFDB4B2F0E182B00813B1C /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FFDB4A2F0E182B00813B1C /* Icon@2x.png */; };
 		03FFDB4D2F0E187E00813B1C /* Icon2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FFDB4C2F0E187E00813B1C /* Icon2x.png */; };
@@ -210,6 +211,7 @@
 		03DCE2E32F0DC41300E49AB9 /* YGRLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRLibraryViewController.m; sourceTree = "<group>"; };
 		03DCE2E42F0DC41300E49AB9 /* YGRMangaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRMangaViewController.h; sourceTree = "<group>"; };
 		03DCE2E52F0DC41300E49AB9 /* YGRMangaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRMangaViewController.m; sourceTree = "<group>"; };
+		03E20F402F2C7CFE00757FFD /* favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorite.png; sourceTree = "<group>"; };
 		03F4D4462F1BD7F400F7E804 /* YGRImageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRImageService.h; sourceTree = "<group>"; };
 		03F4D4472F1BD7F400F7E804 /* YGRImageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRImageService.m; sourceTree = "<group>"; };
 		03FFDB4A2F0E182B00813B1C /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 				038135BF2F2734F5009D465F /* Default-568h@2x.png */,
 				038135C12F27376A009D465F /* Default@2x.png */,
 				03B5C1FD2F185B3500B8898A /* placeholder.png */,
+				03E20F402F2C7CFE00757FFD /* favorite.png */,
 				03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */,
 				03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */,
 				03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */,
@@ -646,6 +649,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				038135C22F27376A009D465F /* Default@2x.png in Resources */,
+				03E20F412F2C7CFE00757FFD /* favorite.png in Resources */,
 				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
 				038135C02F2734F5009D465F /* Default-568h@2x.png in Resources */,
 				03FFDB4B2F0E182B00813B1C /* Icon@2x.png in Resources */,

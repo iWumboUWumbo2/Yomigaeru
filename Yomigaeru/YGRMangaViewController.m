@@ -50,6 +50,12 @@
 
 - (void)configureToolbar
 {
+    UIBarButtonItem *unbookmarkButton = [[UIBarButtonItem alloc] initWithTitle:@"Unbookmark" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersUnbookmarked)];
+    
+    UIBarButtonItem *bookmarkButton = [[UIBarButtonItem alloc] initWithTitle:@"Bookmark" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersBookmarked)];
+    
+    UIBarButtonItem *markUnreadButton = [[UIBarButtonItem alloc] initWithTitle:@"Unread" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersUnread)];
+    
     UIBarButtonItem *markReadButton = [[UIBarButtonItem alloc] initWithTitle:@"Read" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersRead)];
     
     UIBarButtonItem *flexibleSpace =
@@ -57,13 +63,67 @@
                                                   target:nil
                                                   action:nil];
     
-    UIBarButtonItem *markUnreadButton = [[UIBarButtonItem alloc] initWithTitle:@"Unread" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersUnread)];
+    BOOL toolbarConfig[4] = {NO, NO, NO, NO};
     
-    self.toolbarItems = @[ flexibleSpace,
-                           markReadButton,
-                           flexibleSpace,
-                           markUnreadButton,
-                           flexibleSpace ];
+    for (NSIndexPath *indexPath in [self.tableView indexPathsForSelectedRows])
+    {
+        YGRChapter *chapter = (YGRChapter *) self.chapters[indexPath.row];
+        
+        // Add unbookmark button
+        if (chapter.bookmarked) toolbarConfig[0] = YES;
+        
+        // Add unbookmark button
+        if (!chapter.bookmarked) toolbarConfig[1] = YES;
+        
+        // Add unread button
+        if (chapter.read) toolbarConfig[2] = YES;
+        
+        // Add read button
+        if (!chapter.read) toolbarConfig[3] = YES;
+    }
+    
+    BOOL allSet = YES;
+    for (int i = 0; i < 4; i++)
+    {
+        allSet = allSet && toolbarConfig[i];
+    }
+    
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad && allSet)
+    {
+        unbookmarkButton.title = @"Unbkmk.";
+        bookmarkButton.title = @"Bkmrk.";
+        markUnreadButton.title = @"Unrd.";
+        markReadButton.title = @"Rd.";
+    }
+    
+    NSMutableArray *toolbar = [NSMutableArray array];
+
+    if (toolbarConfig[0])
+    {
+        [toolbar addObject:flexibleSpace];
+        [toolbar addObject:unbookmarkButton];
+    }
+    
+    if (toolbarConfig[1])
+    {
+        [toolbar addObject:flexibleSpace];
+        [toolbar addObject:bookmarkButton];
+    }
+    
+    if (toolbarConfig[2])
+    {
+        [toolbar addObject:flexibleSpace];
+        [toolbar addObject:markUnreadButton];
+    }
+    
+    if (toolbarConfig[3])
+    {
+        [toolbar addObject:flexibleSpace];
+        [toolbar addObject:markReadButton];
+    }
+    
+    [toolbar addObject:flexibleSpace];
+    self.toolbarItems = [toolbar copy];
 }
 
 - (void)showAlertForChapter:(YGRChapter *)chapter
@@ -76,6 +136,61 @@
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil];
     [alert show];
+}
+
+- (void)markSelectedChaptersWithBookmarkStatus:(BOOL)bookmarkStatus
+{
+    NSArray *selected = [self.tableView indexPathsForSelectedRows];
+    
+    if (selected == nil || selected.count == 0) return;
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_group_t group = dispatch_group_create();
+    
+    for (NSIndexPath *indexPath in selected)
+    {
+        YGRChapter *chapter = self.chapters[indexPath.row];
+        
+        if (chapter.bookmarked == bookmarkStatus) continue;
+        
+        dispatch_group_enter(group);
+        
+        [self.mangaService markBookmarkStatusChapterWithMangaId:self.manga.id_
+                                               chapterIndex:chapter.index
+                                                 bookmarkStatus:bookmarkStatus
+                                                 completion:^(BOOL success, NSError *error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 if (success && !error)
+                 {
+                     chapter.bookmarked = bookmarkStatus;
+                 }
+                 else
+                 {
+                     [weakSelf showAlertForChapter:chapter];
+                 }
+                 dispatch_group_leave(group);
+             });
+         }];
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [weakSelf.tableView reloadRowsAtIndexPaths:selected
+                                  withRowAnimation:UITableViewRowAnimationNone];
+    });
+    
+    [self setEditing:NO animated:YES];
+}
+
+- (void)markSelectedChaptersBookmarked
+{
+    [self markSelectedChaptersWithBookmarkStatus:YES];
+}
+
+
+- (void)markSelectedChaptersUnbookmarked
+{
+    [self markSelectedChaptersWithBookmarkStatus:NO];
 }
 
 - (void)markSelectedChaptersWithReadStatus:(BOOL)readStatus
@@ -193,8 +308,6 @@
                                                   action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.tableView addGestureRecognizer:longPress];
-    
-    [self configureToolbar];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -225,6 +338,8 @@
         }
     }
     
+    [self configureToolbar];
+    
     self.navigationItem.leftBarButtonItem = (editing) ? self.editButtonItem : nil;
     [self.navigationController setToolbarHidden:!editing animated:YES];
 }
@@ -250,8 +365,8 @@
     }
 
     [self.tableView selectRowAtIndexPath:index animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self configureToolbar];
 }
-
 
 - (void)fetchChapters
 {
@@ -366,14 +481,51 @@
     YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
     cell.textLabel.text = selectedChapter.name;
     
-    cell.textLabel.textColor = selectedChapter.read
-    ? [UIColor darkGrayColor]
-    : [UIColor blackColor];
+    cell.imageView.image = selectedChapter.bookmarked ? [UIImage imageNamed:@"favorite"] : nil;
+    cell.textLabel.textColor = selectedChapter.read ? [UIColor darkGrayColor] : [UIColor blackColor];
     
     NSDate *uploadDate = [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval)selectedChapter.uploadDate/1000];
     cell.detailTextLabel.text = [self.dateFormatter stringFromDate:uploadDate];
     
     __weak typeof(self) weakSelf = self;
+    
+    MGSwipeButton *bookmarkButton = nil;
+    
+    if (selectedChapter.bookmarked)
+    {
+        bookmarkButton = [MGSwipeButton buttonWithTitle:@"Unbookmark"
+                                    backgroundColor:[UIColor grayColor]];
+    }
+    else
+    {
+        bookmarkButton = [MGSwipeButton buttonWithTitle:@"Bookmark"
+                                    backgroundColor:[UIColor orangeColor]];
+    }
+    
+    bookmarkButton.callback = ^BOOL(MGSwipeTableCell *sender) {
+        BOOL bookmarkStatus = !selectedChapter.bookmarked;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf.mangaService markBookmarkStatusChapterWithMangaId:strongSelf.manga.id_
+                                                         chapterIndex:selectedChapter.index
+                                                       bookmarkStatus:bookmarkStatus
+                                                           completion:^(BOOL success, NSError *error) {
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   if (success && !error)
+                                                                   {
+                                                                       selectedChapter.bookmarked = bookmarkStatus;
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       [strongSelf showAlertForChapter:selectedChapter];
+                                                                   }
+                                                                   
+                                                                   [strongSelf.tableView reloadData];
+                                                               });
+                                                           }];
+        
+        return YES;
+    };
     
     MGSwipeButton *readButton = nil;
     
@@ -392,22 +544,24 @@
         BOOL readStatus = !selectedChapter.read;
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
-        [strongSelf.mangaService markMangaReadStatusWithMangaId:strongSelf.manga.id_
-                                                     readStatus:readStatus
-                                                     completion:^(BOOL success, NSError *error) {
-                                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                                             if (success && !error)
-                                                             {
-                                                                 selectedChapter.read = readStatus;
-                                                             }
-                                                             else
-                                                             {
-                                                                 [strongSelf showAlertForChapter:selectedChapter];
-                                                             }
-                                                         
-                                                             [strongSelf.tableView reloadData];
-                                                         });
-                                                     }];
+        [strongSelf.mangaService markReadStatusChapterWithMangaId:strongSelf.manga.id_
+                                                     chapterIndex:selectedChapter.index
+                                                       readStatus:readStatus
+                                                       completion:^(BOOL success, NSError *error) {
+                                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                                               if (success && !error)
+                                                               {
+                                                                   selectedChapter.read = readStatus;
+                                                               }
+                                                               else
+                                                               {
+                                                                   [strongSelf showAlertForChapter:selectedChapter];
+                                                               }
+                                                               
+                                                               [strongSelf.tableView reloadData];
+                                                           });
+                                                       }];
+        
         return YES;
     };
     
@@ -429,6 +583,11 @@
                                                                                      }];
                                   return YES;
                               }];
+    
+    cell.leftButtons = @[ bookmarkButton ];
+    cell.leftSwipeSettings.transition = MGSwipeTransitionBorder;
+    cell.leftExpansion.buttonIndex = 0;
+    cell.leftExpansion.fillOnTrigger = YES;
 
     cell.rightButtons = @[ readButton, prevReadButton ];
     cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
@@ -440,8 +599,7 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView
-didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.isEditing) {
         return;
@@ -451,12 +609,17 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
     if (selected.count == 0) {
         [self setEditing:NO animated:YES];
     }
+    else
+    {
+        [self configureToolbar];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.isEditing)
     {
+        [self configureToolbar];
         return;
     }
     
@@ -466,9 +629,8 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
           navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                         options:nil];
 
-    chapterViewController.manga = self.manga;
-
     YGRChapter *chapter = (YGRChapter *) self.chapters[indexPath.row];
+    chapterViewController.manga = self.manga;
     chapterViewController.chapterNumber = chapter.chapterNumber;
     chapterViewController.chapterIndex = chapter.index;
     chapterViewController.chapterCount = chapter.chapterCount;
