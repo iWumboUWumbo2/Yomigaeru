@@ -22,6 +22,8 @@
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
+@property (nonatomic, strong) UIBarButtonItem *continueButton;
+
 @end
 
 @implementation YGRMangaViewController
@@ -43,6 +45,118 @@
     return self;
 }
 
+- (void)configureToolbar
+{
+    UIBarButtonItem *markReadButton = [[UIBarButtonItem alloc] initWithTitle:@"Read" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersRead)];
+    
+    UIBarButtonItem *flexibleSpace =
+    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                  target:nil
+                                                  action:nil];
+    
+    UIBarButtonItem *markUnreadButton = [[UIBarButtonItem alloc] initWithTitle:@"Unread" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersUnread)];
+    
+    self.toolbarItems = @[ flexibleSpace,
+                           markReadButton,
+                           flexibleSpace,
+                           markUnreadButton,
+                           flexibleSpace ];
+}
+
+- (void)showAlertForChapter:(YGRChapter *)chapter
+{
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Error"
+                          message:[NSString stringWithFormat:@"Failed to load Chapter %.1f",
+                                   chapter.chapterNumber]
+                          delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void)markSelectedChaptersWithReadStatus:(BOOL)readStatus
+{
+    NSArray *selected = [self.tableView indexPathsForSelectedRows];
+    
+    if (selected == nil || selected.count == 0) return;
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_group_t group = dispatch_group_create();
+    
+    for (NSIndexPath *indexPath in selected)
+    {
+        YGRChapter *chapter = self.chapters[indexPath.row];
+        
+        if (chapter.read == readStatus) continue;
+        
+        dispatch_group_enter(group);
+        
+        [self.mangaService markReadStatusChapterWithMangaId:self.manga.id_
+                                               chapterIndex:chapter.index
+                                                 readStatus:readStatus
+                                                 completion:^(BOOL success, NSError *error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 if (success && !error)
+                 {
+                     chapter.read = readStatus;
+                 }
+                 else
+                 {
+                     [weakSelf showAlertForChapter:chapter];
+                 }
+                 dispatch_group_leave(group);
+             });
+         }];
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [weakSelf.tableView reloadRowsAtIndexPaths:selected
+                                  withRowAnimation:UITableViewRowAnimationNone];
+    });
+    
+    [self setEditing:NO animated:YES];
+}
+
+
+- (void)markSelectedChaptersRead
+{
+    [self markSelectedChaptersWithReadStatus:YES];
+}
+
+
+- (void)markSelectedChaptersUnread
+{
+    [self markSelectedChaptersWithReadStatus:NO];
+}
+
+- (void)continueReading
+{
+    // Navigation logic may go here. Create and push another view controller.
+    YGRChapterViewController *chapterViewController = [[YGRChapterViewController alloc]
+                                                       initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                                       navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                       options:nil];
+    
+    chapterViewController.manga = self.manga;
+    
+    YGRChapter *chapter = self.manga.lastChapterRead;
+    chapterViewController.chapterNumber = chapter.chapterNumber;
+    chapterViewController.chapterIndex = chapter.index;
+    chapterViewController.chapterCount = chapter.chapterCount;
+    
+    chapterViewController.refreshDelegate = self;
+    
+    // Pass the selected object to the new view controller.
+    // Wrap in a navigation controller if you want a back button
+    UINavigationController *navController =
+    [[UINavigationController alloc] initWithRootViewController:chapterViewController];
+    
+    // Present modally (fullscreen)
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,8 +168,10 @@
                    action:@selector(showMangaInfo)
          forControlEvents:UIControlEventTouchUpInside];
     
+    self.continueButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(continueReading)];
+    self.continueButton.enabled = NO;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:infoButton], self.continueButton ];
 
     self.loadingSpinner = [[UIActivityIndicatorView alloc]
         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -74,6 +190,8 @@
                                                   action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.tableView addGestureRecognizer:longPress];
+    
+    [self configureToolbar];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -105,6 +223,7 @@
     }
     
     self.navigationItem.leftBarButtonItem = (editing) ? self.editButtonItem : nil;
+    [self.navigationController setToolbarHidden:!editing animated:YES];
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
@@ -166,11 +285,34 @@
                                      }];
 }
 
+- (void)fetchFullManga
+{
+    __weak typeof(self) weakSelf = self;
+    [self.mangaService fetchFullMangaWithId:self.manga.id_ completion:^(YGRManga *manga, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        if (!manga || error)
+        {
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            strongSelf.manga = manga;
+            
+            if (manga.lastChapterRead != nil)
+            {
+                strongSelf.continueButton.enabled = YES;
+            }
+        });
+    }];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
     [self fetchChapters];
+    [self fetchFullManga];
 }
 
 - (void)viewDidUnload

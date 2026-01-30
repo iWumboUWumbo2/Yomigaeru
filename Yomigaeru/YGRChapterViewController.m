@@ -245,33 +245,43 @@
         return;
 
     __weak typeof(self) weakSelf = self;
-    [self.mangaService
-        markLastPageReadForChapterWithMangaId:self.manga.id_
-                                 chapterIndex:self.chapterIndex
-                                 lastPageRead:currentPageVC.pageIndex
-                                   completion:^(BOOL success, NSError *error) {
-                                       __strong typeof(weakSelf) self = weakSelf;
-                                       if (!self)
-                                           return;
-                                       if (error || !success)
-                                       {
-                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                               UIAlertView *alert = [[UIAlertView alloc]
-                                                       initWithTitle:@"Error"
-                                                             message:
-                                                                 @"Failed to save reading progress"
-                                                            delegate:nil
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:nil];
-                                               [alert show];
-                                           });
-                                       }
-                                       if ([self.refreshDelegate respondsToSelector:@selector
-                                                                 (childDidFinishRefreshing)])
-                                       {
-                                           [self.refreshDelegate childDidFinishRefreshing];
-                                       }
-                                   }];
+    
+    NSDictionary *parameters;
+    if (currentPageVC.pageIndex == self.currentChapter.pageCount - 1)
+    {
+        parameters = @{@"read" : @"true", @"lastPageRead" : @(currentPageVC.pageIndex)};
+    }
+    else
+    {
+        parameters = @{@"lastPageRead" : @(currentPageVC.pageIndex)};
+    }
+    
+    [self.mangaService modifyChapterWithMangaId:self.manga.id_
+                                   chapterIndex:self.chapterIndex
+                                     parameters:parameters
+                                     completion:^(BOOL success, NSError *error) {
+                                         __strong typeof(weakSelf) self = weakSelf;
+                                         if (!self)
+                                             return;
+                                         if (error || !success)
+                                         {
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 UIAlertView *alert = [[UIAlertView alloc]
+                                                                       initWithTitle:@"Error"
+                                                                       message:
+                                                                       @"Failed to save reading progress"
+                                                                       delegate:nil
+                                                                       cancelButtonTitle:@"OK"
+                                                                       otherButtonTitles:nil];
+                                                 [alert show];
+                                             });
+                                         }
+                                         if ([self.refreshDelegate respondsToSelector:@selector
+                                              (childDidFinishRefreshing)])
+                                         {
+                                             [self.refreshDelegate childDidFinishRefreshing];
+                                         }
+                                     }];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

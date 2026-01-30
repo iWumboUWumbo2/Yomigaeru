@@ -100,7 +100,7 @@
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
                                      destructiveButtonTitle:@"Delete"
-                                          otherButtonTitles:@"Mark Read", @"Mark Unread", nil];
+                                          otherButtonTitles:@"Read", @"Unread", nil];
 }
 
 - (void)configureGridView

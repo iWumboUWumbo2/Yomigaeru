@@ -31,6 +31,11 @@
                    chapterIndex:(NSUInteger)chapterIndex
                      completion:(void (^)(YGRChapter *chapter, NSError *error))completion;
 
+- (void)modifyChapterWithMangaId:(NSString *)mangaId
+                    chapterIndex:(NSUInteger)chapterIndex
+                      parameters:(NSDictionary *)parameters
+                      completion:(void (^)(BOOL success, NSError *error))completion;
+
 - (void)markReadStatusChapterWithMangaId:(NSString *)mangaId
                             chapterIndex:(NSUInteger)chapterIndex
                               readStatus:(BOOL)readStatus
