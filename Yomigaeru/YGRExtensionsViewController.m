@@ -93,7 +93,7 @@
     NSString *section = self.viewModel.sections[indexPath.section];
     
     cell.textLabel.text = extension.name;
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     [cell.imageView setImageWithURL:extension.iconUrl
                    placeholderImage:[UIImage imageNamed:@"placeholder"]];

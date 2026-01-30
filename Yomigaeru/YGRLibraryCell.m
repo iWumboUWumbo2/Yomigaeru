@@ -63,7 +63,7 @@
     
     // --- Unread label container ---
     _unreadBubbleView = [[UIView alloc] initWithFrame:CGRectZero];
-    _unreadBubbleView.backgroundColor = [UIColor colorWithRed: 0.68 green: 0.73 blue: 0.80 alpha: 1.00];
+    _unreadBubbleView.backgroundColor = [UIColor redColor];
     _unreadBubbleView.layer.cornerRadius = 10.0f;
     _unreadBubbleView.layer.masksToBounds = YES;
     _unreadBubbleView.hidden = YES; // initially hidden
@@ -71,7 +71,7 @@
     
     _unreadLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _unreadLabel.font = [UIFont systemFontOfSize:12.0f];
-    _unreadLabel.textColor = [UIColor blackColor];
+    _unreadLabel.textColor = [UIColor whiteColor];
     _unreadLabel.textAlignment = NSTextAlignmentCenter;
     _unreadLabel.backgroundColor = [UIColor clearColor];
     [_unreadBubbleView addSubview:_unreadLabel];

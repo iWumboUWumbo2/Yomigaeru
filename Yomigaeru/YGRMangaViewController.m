@@ -8,6 +8,9 @@
 
 #import "YGRMangaViewController.h"
 
+#import <MGSwipeTableCell/MGSwipeTableCell.h>
+#import <MGSwipeTableCell/MGSwipeButton.h>
+
 #import "YGRChapter.h"
 #import "YGRChapterViewController.h"
 #import "YGRMangaInfoViewController.h"
@@ -349,12 +352,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"ChapterCell";
+    MGSwipeTableCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+        cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
     }
 
@@ -363,13 +366,74 @@
     YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
     cell.textLabel.text = selectedChapter.name;
     
-    if (selectedChapter.read)
-    {
-        cell.textLabel.textColor = [UIColor darkGrayColor];
-    }
+    cell.textLabel.textColor = selectedChapter.read
+    ? [UIColor darkGrayColor]
+    : [UIColor blackColor];
     
     NSDate *uploadDate = [[NSDate alloc] initWithTimeIntervalSince1970:(NSTimeInterval)selectedChapter.uploadDate/1000];
     cell.detailTextLabel.text = [self.dateFormatter stringFromDate:uploadDate];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    MGSwipeButton *readButton = nil;
+    
+    if (selectedChapter.read)
+    {
+        readButton = [MGSwipeButton buttonWithTitle:@"Unread"
+                       backgroundColor:[UIColor orangeColor]];
+    }
+    else
+    {
+        readButton = [MGSwipeButton buttonWithTitle:@"Read"
+                                    backgroundColor:[UIColor blueColor]];
+    }
+    
+    readButton.callback = ^BOOL(MGSwipeTableCell *sender) {
+        BOOL readStatus = !selectedChapter.read;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf.mangaService markMangaReadStatusWithMangaId:strongSelf.manga.id_
+                                                     readStatus:readStatus
+                                                     completion:^(BOOL success, NSError *error) {
+                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                             if (success && !error)
+                                                             {
+                                                                 selectedChapter.read = readStatus;
+                                                             }
+                                                             else
+                                                             {
+                                                                 [strongSelf showAlertForChapter:selectedChapter];
+                                                             }
+                                                         
+                                                             [strongSelf.tableView reloadData];
+                                                         });
+                                                     }];
+        return YES;
+    };
+    
+    
+    MGSwipeButton *prevReadButton =
+        [MGSwipeButton buttonWithTitle:@"Mark Prev"
+                       backgroundColor:[UIColor purpleColor]
+                              callback:^BOOL(MGSwipeTableCell *sender) {
+                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+                                  
+                                  [strongSelf.mangaService markPrevReadStatusChapterWithMangaId:strongSelf.manga.id_
+                                                                                   chapterIndex:selectedChapter.index
+                                                                             markPrevReadStatus:YES
+                                                                                     completion:^(BOOL success, NSError *error) {
+                                                                                         if (success && !error)
+                                                                                         {
+                                                                                             [strongSelf fetchChapters];
+                                                                                         }
+                                                                                     }];
+                                  return YES;
+                              }];
+
+    cell.rightButtons = @[ readButton, prevReadButton ];
+    cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
+    cell.rightExpansion.buttonIndex = 0;
+    cell.rightExpansion.fillOnTrigger = YES;
 
     return cell;
 }
