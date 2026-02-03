@@ -9,6 +9,7 @@
 #import "YGRImageService.h"
 #import "YGRMangaService.h"
 #import "YGRPageViewController.h"
+#import "YGRSettingsManager.h"
 
 @interface YGRChapterViewController ()
 
@@ -377,8 +378,10 @@
     
     NSInteger pageCount = self.currentChapter.pageCount;
     
-    NSInteger start = MAX(0, pageIndex - 1);
-    NSInteger end   = MIN(pageCount - 1, pageIndex + 2);
+    YGRSettingsManager *settingsManager = [YGRSettingsManager sharedInstance];
+    
+    NSInteger start = MAX(0, pageIndex - settingsManager.previousPrefetchCount);
+    NSInteger end   = MIN(pageCount - 1, pageIndex + settingsManager.nextPrefetchCount);
     
     for (NSInteger i = start; i <= end; i++)
     {

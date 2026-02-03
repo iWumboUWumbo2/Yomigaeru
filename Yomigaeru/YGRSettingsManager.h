@@ -10,10 +10,13 @@
 
 @interface YGRSettingsManager : NSObject
 
-+ (instancetype)sharedInstance;
-
 @property (nonatomic, strong) NSURL *serverBaseURL;
 @property (nonatomic, strong) NSURL *apiBaseURL;
+
+@property (nonatomic, assign) NSInteger nextPrefetchCount;
+@property (nonatomic, assign) NSInteger previousPrefetchCount;
+
++ (instancetype)sharedInstance;
 
 - (NSURL *)URLForPath:(NSString *)path;
 - (NSURL *)URLForEndpoint:(NSString *)endpoint;

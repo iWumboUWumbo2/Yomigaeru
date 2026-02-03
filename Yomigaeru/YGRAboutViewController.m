@@ -7,6 +7,7 @@
 //
 
 #import "YGRAboutViewController.h"
+#import "YGRGitVersion.h"
 
 @interface YGRAboutViewController ()
 
@@ -23,7 +24,7 @@
     if (self)
     {
         _aboutStrings = @[ @"Build" ];
-        _aboutDictionary = @{@"Build" : @"v0.0.1"};
+        _aboutDictionary = @{@"Build" : GIT_BUILD_HASH};
     }
     return self;
 }

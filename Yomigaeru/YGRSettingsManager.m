@@ -10,6 +10,8 @@
 #import "YGRNetworkManager.h"
 
 static NSString *const kServerAddressKey = @"serverAddress";
+static NSString *const kNextPrefetchCountKey = @"nextPrefetchCount";
+static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
 
 @interface YGRSettingsManager ()
 
@@ -33,23 +35,23 @@ static NSString *const kServerAddressKey = @"serverAddress";
 
     if (self)
     {
-        NSString *baseURLString =
-            [[NSUserDefaults standardUserDefaults] objectForKey:kServerAddressKey];
-
-        if (baseURLString.length > 0)
-        {
-            _serverBaseURL = [NSURL URLWithString:baseURLString];
-        }
-        else
-        {
-            // Default URL if nothing saved
-            _serverBaseURL = [NSURL URLWithString:@"http://localhost:4567/"];
-            [[NSUserDefaults standardUserDefaults] setObject:_serverBaseURL.absoluteString
-                                                      forKey:kServerAddressKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
+        // Register app defaults (only used if nothing is saved yet)
+        [defaults registerDefaults:@{
+                                     kServerAddressKey : @"http://localhost:4567/",
+                                     kNextPrefetchCountKey : @(2),
+                                     kPreviousPrefetchCountKey: @(1)
+                                     }];
+        
+        // Server Address
+        NSString *baseURLString = [defaults stringForKey:kServerAddressKey];
+        _serverBaseURL = [NSURL URLWithString:baseURLString];
         _apiBaseURL = [NSURL URLWithString:@"api/v1/" relativeToURL:_serverBaseURL];
+        
+        // Prefetch Count
+        _nextPrefetchCount = [defaults integerForKey:kNextPrefetchCountKey];
+        _previousPrefetchCount = [defaults integerForKey:kPreviousPrefetchCountKey];
     }
     return self;
 }
@@ -80,6 +82,24 @@ static NSString *const kServerAddressKey = @"serverAddress";
 - (NSURL *)URLForEndpoint:(NSString *)endpoint
 {
     return [NSURL URLWithString:endpoint relativeToURL:[self apiBaseURL]];
+}
+
+- (void)setNextPrefetchCount:(NSInteger)prefetchCount
+{
+    prefetchCount = MIN(10, MAX(2, prefetchCount));
+    _nextPrefetchCount = prefetchCount;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:prefetchCount
+                                               forKey:kNextPrefetchCountKey];
+}
+
+- (void)setPreviousPrefetchCount:(NSInteger)prefetchCount
+{
+    prefetchCount = MIN(10, MAX(1, prefetchCount));
+    _previousPrefetchCount = prefetchCount;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:prefetchCount
+                                               forKey:kPreviousPrefetchCountKey];
 }
 
 @end

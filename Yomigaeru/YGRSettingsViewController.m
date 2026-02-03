@@ -9,6 +9,7 @@
 #import "YGRSettingsViewController.h"
 
 #import "YGRAboutViewController.h"
+#import "YGRReaderSettingsViewController.h"
 #import "YGRServerSettingsViewController.h"
 
 @interface YGRSettingsViewController ()
@@ -26,9 +27,10 @@
     if (self)
     {
         // Custom initialization
-        _settings = @[ @"Server", @"About" ];
+        _settings = @[ @"Server", @"Reader" , @"About" ];
         _settingsViewControllers = @{
             @"Server" : [YGRServerSettingsViewController class],
+            @"Reader" : [YGRReaderSettingsViewController class],
             @"About" : [YGRAboutViewController class]
         };
     }
