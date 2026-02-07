@@ -19,9 +19,6 @@
 		0357B21B2F1712AC00D5096E /* YGRBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21A2F1712AC00D5096E /* YGRBrowseViewController.m */; };
 		0357B21E2F1732A600D5096E /* YGRExtensionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B21D2F1732A600D5096E /* YGRExtensionsViewController.m */; };
 		0357B2222F17640400D5096E /* YGRExtensionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */; };
-		038135C02F2734F5009D465F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038135BF2F2734F5009D465F /* Default-568h@2x.png */; };
-		038135C22F27376A009D465F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038135C12F27376A009D465F /* Default@2x.png */; };
-		038135C42F2737E5009D465F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 038135C32F2737E5009D465F /* Default.png */; };
 		038BAEB12F2911FD00B04C27 /* YGRBrowseSearchBarDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 038BAEB02F2911FD00B04C27 /* YGRBrowseSearchBarDelegateProxy.m */; };
 		038BAEB42F29A33700B04C27 /* YGRExtensionsViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 038BAEB32F29A33700B04C27 /* YGRExtensionsViewModel.m */; };
 		038BAEB72F29AAAA00B04C27 /* YGRSourcesViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 038BAEB62F29AAAA00B04C27 /* YGRSourcesViewModel.m */; };
@@ -91,8 +88,6 @@
 		03E20F452F2D01BF00757FFD /* YGRReaderSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E20F442F2D01BF00757FFD /* YGRReaderSettingsViewController.m */; };
 		03E20F482F2D0CAF00757FFD /* YGRStepperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E20F472F2D0CAF00757FFD /* YGRStepperCell.m */; };
 		03F4D4482F1BD7F400F7E804 /* YGRImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4D4472F1BD7F400F7E804 /* YGRImageService.m */; };
-		03FFDB4B2F0E182B00813B1C /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FFDB4A2F0E182B00813B1C /* Icon@2x.png */; };
-		03FFDB4D2F0E187E00813B1C /* Icon2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FFDB4C2F0E187E00813B1C /* Icon2x.png */; };
 		03FFDB502F0F25EA00813B1C /* YGRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FFDB4F2F0F25EA00813B1C /* YGRSettingsViewController.m */; };
 		03FFDB512F0F25EA00813B1C /* YGRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FFDB4F2F0F25EA00813B1C /* YGRSettingsViewController.m */; };
 		03FFDB592F0F267B00813B1C /* YGRServerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FFDB582F0F267B00813B1C /* YGRServerSettingsViewController.m */; };
@@ -130,9 +125,6 @@
 		0357B21F2F17338D00D5096E /* YGRBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseViewController.h; sourceTree = "<group>"; };
 		0357B2202F17640300D5096E /* YGRExtensionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRExtensionInfoViewController.h; sourceTree = "<group>"; };
 		0357B2212F17640400D5096E /* YGRExtensionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRExtensionInfoViewController.m; sourceTree = "<group>"; };
-		038135BF2F2734F5009D465F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		038135C12F27376A009D465F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		038135C32F2737E5009D465F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		038216C02F19ABDF00D5D620 /* YGRRefreshable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRRefreshable.h; sourceTree = "<group>"; };
 		038216C32F19B22700D5D620 /* YGRChildRefreshDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRChildRefreshDelegate.h; sourceTree = "<group>"; };
 		038BAEAF2F2911FD00B04C27 /* YGRBrowseSearchBarDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRBrowseSearchBarDelegateProxy.h; sourceTree = "<group>"; };
@@ -221,8 +213,6 @@
 		03E20F492F31867800757FFD /* YGRGitVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRGitVersion.h; sourceTree = "<group>"; };
 		03F4D4462F1BD7F400F7E804 /* YGRImageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRImageService.h; sourceTree = "<group>"; };
 		03F4D4472F1BD7F400F7E804 /* YGRImageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRImageService.m; sourceTree = "<group>"; };
-		03FFDB4A2F0E182B00813B1C /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		03FFDB4C2F0E187E00813B1C /* Icon2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon2x.png; sourceTree = "<group>"; };
 		03FFDB4E2F0F25EA00813B1C /* YGRSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSettingsViewController.h; sourceTree = "<group>"; };
 		03FFDB4F2F0F25EA00813B1C /* YGRSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSettingsViewController.m; sourceTree = "<group>"; };
 		03FFDB572F0F267B00813B1C /* YGRServerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRServerSettingsViewController.h; sourceTree = "<group>"; };
@@ -340,7 +330,7 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */ = {
+		03766A0A2F0E0DAC004441D1 /* Tab Bar */ = {
 			isa = PBXGroup;
 			children = (
 				03CCDB012F18A525009C6C2A /* settings.png */,
@@ -350,7 +340,7 @@
 				03CCDAF92F18A47C009C6C2A /* library.png */,
 				03CCDAFA2F18A47C009C6C2A /* library@2x.png */,
 			);
-			name = "Tab Bar Icons";
+			name = "Tab Bar";
 			sourceTree = "<group>";
 		};
 		038216C22F19B13D00D5D620 /* Protocols */ = {
@@ -362,11 +352,19 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
+		03A9517B2F37A62E00463BED /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				03B5C1FD2F185B3500B8898A /* placeholder.png */,
+				03E20F402F2C7CFE00757FFD /* favorite.png */,
+				03766A0A2F0E0DAC004441D1 /* Tab Bar */,
+			);
+			name = Icons;
+			sourceTree = "<group>";
+		};
 		03DCE2312F0DBFAE00E49AB9 = {
 			isa = PBXGroup;
 			children = (
-				03FFDB4C2F0E187E00813B1C /* Icon2x.png */,
-				03FFDB4A2F0E182B00813B1C /* Icon@2x.png */,
 				03DCE2462F0DBFAE00E49AB9 /* Yomigaeru */,
 				03DCE2672F0DBFAE00E49AB9 /* YomigaeruTests */,
 				03DCE23F2F0DBFAE00E49AB9 /* Frameworks */,
@@ -416,12 +414,7 @@
 		03DCE2472F0DBFAE00E49AB9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				038135C32F2737E5009D465F /* Default.png */,
-				038135BF2F2734F5009D465F /* Default-568h@2x.png */,
-				038135C12F27376A009D465F /* Default@2x.png */,
-				03B5C1FD2F185B3500B8898A /* placeholder.png */,
-				03E20F402F2C7CFE00757FFD /* favorite.png */,
-				03766A0A2F0E0DAC004441D1 /* Tab Bar Icons */,
+				03A9517B2F37A62E00463BED /* Icons */,
 				03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */,
 				03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */,
 				03DCE24C2F0DBFAE00E49AB9 /* main.m */,
@@ -668,15 +661,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				038135C22F27376A009D465F /* Default@2x.png in Resources */,
 				03E20F412F2C7CFE00757FFD /* favorite.png in Resources */,
 				03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */,
-				038135C02F2734F5009D465F /* Default-568h@2x.png in Resources */,
-				03FFDB4B2F0E182B00813B1C /* Icon@2x.png in Resources */,
-				03FFDB4D2F0E187E00813B1C /* Icon2x.png in Resources */,
 				03B5C1FE2F185B3500B8898A /* placeholder.png in Resources */,
 				03CCDAFB2F18A47C009C6C2A /* library.png in Resources */,
-				038135C42F2737E5009D465F /* Default.png in Resources */,
 				03CCDAFC2F18A47C009C6C2A /* library@2x.png in Resources */,
 				039CD8722F27D5D900854AD7 /* Images.xcassets in Resources */,
 				03CCDAFF2F18A4D5009C6C2A /* browse.png in Resources */,

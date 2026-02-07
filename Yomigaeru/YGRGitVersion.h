@@ -1,1 +1,1 @@
-#define GIT_BUILD_HASH @"d1fab2d"
+#define GIT_BUILD_HASH @"de7c790"
