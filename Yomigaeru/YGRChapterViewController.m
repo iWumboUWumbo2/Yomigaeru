@@ -229,6 +229,11 @@
 {
     [super viewWillAppear:animated];
 
+    NSLog(@"[YGR-DEBUG] ChapterVC viewWillAppear self=%p currentChapter=%@ "
+          @"view.bounds=%@ view.window=%@",
+          self, self.currentChapter, NSStringFromCGRect(self.view.bounds),
+          self.view.window);
+
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setToolbarHidden:YES animated:NO];
 
@@ -245,12 +250,9 @@
         UIViewController *pageVC = [self viewControllerForPage:pageIndex];
         if (pageVC)
         {
-            [self setViewControllers:@[ pageVC ]
-                           direction:UIPageViewControllerNavigationDirectionForward
-                            animated:NO
-                          completion:nil];
-
-            [self updateToolbarWithCurrentPage:pageIndex];
+            [self presentInitialPageViewController:pageVC
+                                          direction:UIPageViewControllerNavigationDirectionForward
+                                          pageIndex:pageIndex];
         }
     }
 }
@@ -325,6 +327,55 @@
         NSLog(@"Dismissed");
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark - Initial Page Presentation
+
+/**
+ *  Applies the given page as the page view controller's initial content.
+ *
+ *  Confirmed via logging (not just the docs): `UIPageViewController` does
+ *  not reliably forward `viewWillAppear:`/`viewDidAppear:` to a child set
+ *  via `setViewControllers:direction:animated:completion:` — the
+ *  completion block fires with `finished=YES` and the child is genuinely
+ *  in `self.viewControllers`, but the child's own `-viewWillAppear:` is
+ *  simply never called, so `YGRPageViewController` never starts fetching
+ *  its image. This is a known, documented gap for the *initial* content
+ *  set on a page view controller (as opposed to swipe-driven page turns,
+ *  which go through UIPageViewController's own transition machinery and
+ *  are unaffected). The fix is to drive the child's appearance transition
+ *  manually. (An earlier attempt deferred this call until after our own
+ *  `viewDidAppear:` on the theory that it was a presentation-timing race;
+ *  logging showed that was wrong — deferring made the missing-callback
+ *  case fire every time instead of intermittently, since it pushed the
+ *  call further outside whatever window the automatic forwarding does
+ *  sometimes catch. `YGRPageViewController.loadPageImage` is idempotent
+ *  now specifically so it doesn't matter whether that automatic
+ *  forwarding also fires in addition to this manual call.)
+ *
+ *  @param pageVC    The page view controller to present.
+ *  @param direction The direction to hand to `setViewControllers:`.
+ *  @param pageIndex The 0-based page index being presented, for the toolbar.
+ */
+- (void)presentInitialPageViewController:(UIViewController *)pageVC
+                                direction:(UIPageViewControllerNavigationDirection)direction
+                                pageIndex:(NSInteger)pageIndex
+{
+    NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController pageIndex=%ld "
+          @"self.view.window=%@ thread=%@",
+          (long) pageIndex, self.view.window, [NSThread isMainThread] ? @"main" : @"bg");
+
+    [self setViewControllers:@[ pageVC ]
+                    direction:direction
+                     animated:NO
+                   completion:^(BOOL finished) {
+                       NSLog(@"[YGR-DEBUG] ChapterVC setViewControllers completion finished=%d "
+                             @"— manually forcing appearance transition on pageVC=%@",
+                             finished, pageVC);
+                       [pageVC beginAppearanceTransition:YES animated:NO];
+                       [pageVC endAppearanceTransition];
+                   }];
+    [self updateToolbarWithCurrentPage:pageIndex];
 }
 
 #pragma mark - Navigation
@@ -478,8 +529,16 @@
 - (void)loadChapter:(NSInteger)chapterIndex
           direction:(UIPageViewControllerNavigationDirection)direction
 {
+    NSLog(@"[YGR-DEBUG] ChapterVC loadChapter START chapterIndex=%ld chapterCount=%ld self=%p",
+          (long) chapterIndex, (long) self.chapterCount, self);
+
     if (chapterIndex < 1 || chapterIndex > self.chapterCount)
+    {
+        NSLog(@"[YGR-DEBUG] ChapterVC loadChapter BAILING — chapterIndex=%ld out of bounds "
+              @"[1, %ld] — no overlay shown, no view controllers set, nothing will ever render",
+              (long) chapterIndex, (long) self.chapterCount);
         return;
+    }
 
     [self showLoadingOverlay];
 
@@ -489,8 +548,18 @@
                    chapterIndex:chapterIndex
                      completion:^(YGRChapter *chapter, NSError *error) {
                          __strong typeof(weakSelf) self = weakSelf;
+
+                         NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter COMPLETION self=%p chapter=%@ "
+                               @"error=%@ thread=%@",
+                               self, chapter, error,
+                               [NSThread isMainThread] ? @"main" : @"bg");
+
                          if (!self)
+                         {
+                             NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter completion — self "
+                                   @"deallocated, bailing");
                              return;
+                         }
 
                          dispatch_async(dispatch_get_main_queue(), ^{
                              [self hideLoadingOverlay];
@@ -498,6 +567,9 @@
 
                          if (error || !chapter || chapter.pageCount == 0)
                          {
+                             NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter FAILED error=%@ chapter=%@ "
+                                   @"pageCount=%ld",
+                                   error, chapter, (long) chapter.pageCount);
                              dispatch_async(dispatch_get_main_queue(), ^{
                                  UIAlertView *alert =
                                      [[UIAlertView alloc] initWithTitle:@"Error"
@@ -517,16 +589,24 @@
                          NSInteger startPage =
                              MAX(0, MIN(chapter.lastPageRead, chapter.pageCount - 1));
                          UIViewController *pageVC = [self viewControllerForPage:startPage];
+
+                         NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter SUCCESS pageCount=%ld "
+                               @"lastPageRead=%ld startPage=%ld pageVC=%@",
+                               (long) chapter.pageCount, (long) chapter.lastPageRead,
+                               (long) startPage, pageVC);
+
                          if (!pageVC)
+                         {
+                             NSLog(@"[YGR-DEBUG] ChapterVC viewControllerForPage returned nil for "
+                                   @"startPage=%ld — nothing will be presented",
+                                   (long) startPage);
                              return;
+                         }
 
                          dispatch_async(dispatch_get_main_queue(), ^{
-                             [self setViewControllers:@[ pageVC ]
-                                            direction:direction
-                                             animated:NO
-                                           completion:nil];
-
-                             [self updateToolbarWithCurrentPage:startPage];
+                             [self presentInitialPageViewController:pageVC
+                                                           direction:direction
+                                                           pageIndex:startPage];
 //                             [self prefetchImagesForChapter:chapter];
                          });
                      }];

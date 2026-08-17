@@ -17,6 +17,8 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
+@property (nonatomic, assign) BOOL hasStartedLoading;
+
 @end
 
 @implementation YGRPageViewController
@@ -77,6 +79,10 @@
  */
 - (void)setImage:(UIImage *)image
 {
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld setImage: image=%@ size=%@ scrollView.bounds=%@ thread=%@",
+          (long) self.pageIndex, image, NSStringFromCGSize(image.size),
+          NSStringFromCGRect(self.scrollView.bounds), [NSThread isMainThread] ? @"main" : @"bg");
+
     self.imageView.image = image;
 
     CGSize imageSize = image.size;
@@ -108,6 +114,27 @@
  */
 - (void)loadPageImage
 {
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage START mangaId=%@ chapterIndex=%lu self=%p "
+          @"hasStartedLoading=%d",
+          (long) self.pageIndex, self.mangaId, (unsigned long) self.chapterIndex, self,
+          self.hasStartedLoading);
+
+    // viewWillAppear: can end up firing twice for the same page — once via
+    // UIPageViewController's automatic appearance forwarding (when it
+    // happens to apply) and once via our own manual
+    // beginAppearanceTransition:/endAppearanceTransition workaround in
+    // YGRChapterViewController (see presentInitialPageViewController:). Make
+    // this idempotent rather than trying to guarantee exactly one call site
+    // wins.
+    if (self.hasStartedLoading)
+    {
+        NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage — already started, skipping duplicate "
+              @"call",
+              (long) self.pageIndex);
+        return;
+    }
+    self.hasStartedLoading = YES;
+
     [self.loadingSpinner startAnimating];
 
     __weak typeof(self) weakSelf = self;
@@ -120,6 +147,18 @@
                   completion:^(UIImage *pageData, NSError *error) {
                       __strong typeof(weakSelf) strongSelf = weakSelf;
 
+                      NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage COMPLETION strongSelf=%p "
+                            @"pageData=%@ error=%@ thread=%@",
+                            (long) weakSelf.pageIndex, strongSelf, pageData, error,
+                            [NSThread isMainThread] ? @"main" : @"bg");
+
+                      if (!strongSelf)
+                      {
+                          NSLog(@"[YGR-DEBUG] PageVC page=%ld strongSelf is nil — deallocated "
+                                @"before completion, bailing",
+                                (long) weakSelf.pageIndex);
+                      }
+
                       dispatch_async(dispatch_get_main_queue(), ^{
                           [strongSelf.loadingSpinner stopAnimating];
                       });
@@ -130,7 +169,7 @@
                               UIAlertView *alert =
                                   [[UIAlertView alloc] initWithTitle:@"Error"
                                                              message:@"Failed to load page image"
-                                                            delegate:self
+                                                            delegate:strongSelf
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
                               [alert show];
@@ -139,6 +178,8 @@
                       }
 
                       dispatch_async(dispatch_get_main_queue(), ^{
+                          NSLog(@"[YGR-DEBUG] PageVC page=%ld about to setImage: on main queue",
+                                (long) strongSelf.pageIndex);
                           [strongSelf setImage:pageData];
                       });
                   }];
@@ -160,6 +201,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld viewWillAppear self=%p view.bounds=%@ view.window=%@",
+          (long) self.pageIndex, self, NSStringFromCGRect(self.view.bounds), self.view.window);
     self.scrollView.zoomScale = 1.0;
     [self loadPageImage];
 }
