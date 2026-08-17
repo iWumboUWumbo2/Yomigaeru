@@ -113,19 +113,12 @@
                                       pageNum:self.currentPage
                                    completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
                                        __strong typeof(weakSelf) strongSelf = weakSelf;
+                                       if (!strongSelf) return;
 
-                                       strongSelf.isLoadingPage = NO;
-
-                                       if (error)
-                                       {
-                                           completion(error);
-                                           return;
-                                       }
-
-                                       [strongSelf.mangaList addObjectsFromArray:mangaList];
-                                       strongSelf.hasNextPageFlag = hasNextPage;
-
-                                       completion(nil);
+                                       [strongSelf handleMangaListResult:mangaList
+                                                              hasNextPage:hasNextPage
+                                                                    error:error
+                                                               completion:completion];
                                    }];
 }
 
@@ -161,19 +154,12 @@
                               pageNum:self.currentPage
                            completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
                                __strong typeof(weakSelf) strongSelf = weakSelf;
+                               if (!strongSelf) return;
 
-                               strongSelf.isLoadingPage = NO;
-
-                               if (error)
-                               {
-                                   completion(error);
-                                   return;
-                               }
-
-                               [strongSelf.mangaList addObjectsFromArray:mangaList];
-                               strongSelf.hasNextPageFlag = hasNextPage;
-
-                               completion(nil);
+                               [strongSelf handleMangaListResult:mangaList
+                                                      hasNextPage:hasNextPage
+                                                            error:error
+                                                       completion:completion];
                            }];
 }
 
@@ -188,20 +174,32 @@
                              pageNum:self.currentPage
                           completion:^(NSArray *mangaList, BOOL hasNextPage, NSError *error) {
                               __strong typeof(weakSelf) strongSelf = weakSelf;
+                              if (!strongSelf) return;
 
-                              strongSelf.isLoadingPage = NO;
-
-                              if (error)
-                              {
-                                  completion(error);
-                                  return;
-                              }
-
-                              [strongSelf.mangaList addObjectsFromArray:mangaList];
-                              strongSelf.hasNextPageFlag = hasNextPage;
-
-                              completion(nil);
+                              [strongSelf handleMangaListResult:mangaList
+                                                     hasNextPage:hasNextPage
+                                                           error:error
+                                                      completion:completion];
                           }];
+}
+
+- (void)handleMangaListResult:(NSArray *)mangaList
+                   hasNextPage:(BOOL)hasNextPage
+                         error:(NSError *)error
+                    completion:(void (^)(NSError *error))completion
+{
+    self.isLoadingPage = NO;
+
+    if (error)
+    {
+        completion(error);
+        return;
+    }
+
+    [self.mangaList addObjectsFromArray:mangaList];
+    self.hasNextPageFlag = hasNextPage;
+
+    completion(nil);
 }
 
 #pragma mark - Library Management
@@ -224,16 +222,13 @@
         [self.mangaService addToLibraryWithMangaId:manga.id_
                                         completion:^(BOOL success, NSError *error) {
                                             __strong typeof(weakSelf) strongSelf = weakSelf;
+                                            if (!strongSelf) return;
 
-                                            if (error || !success)
-                                            {
-                                                completion(NO, error);
-                                                return;
-                                            }
-
-                                            YGRManga *m = strongSelf.mangaList[index];
-                                            m.inLibrary = YES;
-                                            completion(YES, nil);
+                                            [strongSelf handleLibraryToggleSuccess:success
+                                                                              error:error
+                                                                            atIndex:index
+                                                                          inLibrary:YES
+                                                                         completion:completion];
                                         }];
     }
     else
@@ -241,18 +236,32 @@
         [self.mangaService deleteFromLibraryWithMangaId:manga.id_
                                              completion:^(BOOL success, NSError *error) {
                                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+                                                 if (!strongSelf) return;
 
-                                                 if (error || !success)
-                                                 {
-                                                     completion(NO, error);
-                                                     return;
-                                                 }
-
-                                                 YGRManga *m = strongSelf.mangaList[index];
-                                                 m.inLibrary = NO;
-                                                 completion(YES, nil);
+                                                 [strongSelf handleLibraryToggleSuccess:success
+                                                                                   error:error
+                                                                                 atIndex:index
+                                                                               inLibrary:NO
+                                                                              completion:completion];
                                              }];
     }
+}
+
+- (void)handleLibraryToggleSuccess:(BOOL)success
+                              error:(NSError *)error
+                            atIndex:(NSUInteger)index
+                          inLibrary:(BOOL)inLibrary
+                         completion:(void (^)(BOOL success, NSError *error))completion
+{
+    if (error || !success)
+    {
+        completion(NO, error);
+        return;
+    }
+
+    YGRManga *m = self.mangaList[index];
+    m.inLibrary = inLibrary;
+    completion(YES, nil);
 }
 
 @end

@@ -96,6 +96,7 @@
                     priority:NSOperationQueuePriorityHigh
                   completion:^(UIImage *pageData, NSError *error) {
                       __strong typeof(weakSelf) strongSelf = weakSelf;
+                      if (!strongSelf) return;
 
                       dispatch_async(dispatch_get_main_queue(), ^{
                           [strongSelf.loadingSpinner stopAnimating];
@@ -107,7 +108,7 @@
                               UIAlertView *alert =
                                   [[UIAlertView alloc] initWithTitle:@"Error"
                                                              message:@"Failed to load page image"
-                                                            delegate:self
+                                                            delegate:strongSelf
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
                               [alert show];

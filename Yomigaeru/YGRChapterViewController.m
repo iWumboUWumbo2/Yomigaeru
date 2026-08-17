@@ -261,8 +261,8 @@
                                    chapterIndex:self.chapterIndex
                                      parameters:parameters
                                      completion:^(BOOL success, NSError *error) {
-                                         __strong typeof(weakSelf) self = weakSelf;
-                                         if (!self)
+                                         __strong typeof(weakSelf) strongSelf = weakSelf;
+                                         if (!strongSelf)
                                              return;
                                          if (error || !success)
                                          {
@@ -277,10 +277,10 @@
                                                  [alert show];
                                              });
                                          }
-                                         if ([self.refreshDelegate respondsToSelector:@selector
+                                         if ([strongSelf.refreshDelegate respondsToSelector:@selector
                                               (childDidFinishRefreshing)])
                                          {
-                                             [self.refreshDelegate childDidFinishRefreshing];
+                                             [strongSelf.refreshDelegate childDidFinishRefreshing];
                                          }
                                      }];
 }
@@ -422,12 +422,12 @@
         fetchChapterWithMangaId:self.manga.id_
                    chapterIndex:chapterIndex
                      completion:^(YGRChapter *chapter, NSError *error) {
-                         __strong typeof(weakSelf) self = weakSelf;
-                         if (!self)
+                         __strong typeof(weakSelf) strongSelf = weakSelf;
+                         if (!strongSelf)
                              return;
 
                          dispatch_async(dispatch_get_main_queue(), ^{
-                             [self hideLoadingOverlay];
+                             [strongSelf hideLoadingOverlay];
                          });
 
                          if (error || !chapter || chapter.pageCount == 0)
@@ -436,7 +436,7 @@
                                  UIAlertView *alert =
                                      [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Failed to load chapter"
-                                                               delegate:self
+                                                               delegate:strongSelf
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
                                  [alert show];
@@ -444,24 +444,24 @@
                              return;
                          }
 
-                         self.currentChapter = chapter;
-                         self.chapterIndex = chapterIndex;
-                         self.chapterNumber = chapter.chapterNumber;
+                         strongSelf.currentChapter = chapter;
+                         strongSelf.chapterIndex = chapterIndex;
+                         strongSelf.chapterNumber = chapter.chapterNumber;
 
                          NSInteger startPage =
                              MAX(0, MIN(chapter.lastPageRead, chapter.pageCount - 1));
-                         UIViewController *pageVC = [self viewControllerForPage:startPage];
+                         UIViewController *pageVC = [strongSelf viewControllerForPage:startPage];
                          if (!pageVC)
                              return;
 
                          dispatch_async(dispatch_get_main_queue(), ^{
-                             [self setViewControllers:@[ pageVC ]
+                             [strongSelf setViewControllers:@[ pageVC ]
                                             direction:direction
                                              animated:NO
                                            completion:nil];
 
-                             [self updateToolbarWithCurrentPage:startPage];
-//                             [self prefetchImagesForChapter:chapter];
+                             [strongSelf updateToolbarWithCurrentPage:startPage];
+//                             [strongSelf prefetchImagesForChapter:chapter];
                          });
                      }];
 }

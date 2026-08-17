@@ -164,6 +164,7 @@
                           completion:^(BOOL success, NSError *error) {
                               dispatch_async(dispatch_get_main_queue(), ^{
                                   __strong typeof(weakSelf) strongSelf = weakSelf;
+                                  if (!strongSelf) return;
 
                                   if (!success || error)
                                   {
@@ -184,6 +185,7 @@
                              completion:^(BOOL success, NSError *error) {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      __strong typeof(weakSelf) strongSelf = weakSelf;
+                                     if (!strongSelf) return;
 
                                      if (!success || error)
                                      {
@@ -202,6 +204,7 @@
                                completion:^(BOOL success, NSError *error) {
                                    dispatch_async(dispatch_get_main_queue(), ^{
                                        __strong typeof(weakSelf) strongSelf = weakSelf;
+                                       if (!strongSelf) return;
 
                                        if (!success || error)
                                        {
@@ -248,6 +251,7 @@
     [self.viewModel fetchLibraryWithCompletion:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
 
             [strongSelf disableSpinner];
 

@@ -107,6 +107,7 @@
                                 backgroundColor:[UIColor brownColor]
                                        callback:^BOOL(MGSwipeTableCell *_) {
                                            __strong typeof(weakSelf) strongSelf = weakSelf;
+                                           if (!strongSelf) return NO;
                                            [strongSelf.viewModel updateExtension:extension
                                                                       completion:^(NSError *error) {
                                                                           [strongSelf refresh];
@@ -119,6 +120,7 @@
                                 backgroundColor:[UIColor redColor]
                                        callback:^BOOL(MGSwipeTableCell *_) {
                                            __strong typeof(weakSelf) strongSelf = weakSelf;
+                                           if (!strongSelf) return NO;
                                            [strongSelf.viewModel removeExtension:extension
                                                                       completion:^(NSError *error) {
                                                                           [strongSelf refresh];
@@ -134,6 +136,7 @@
                                                                 alpha:1.0]
                                        callback:^BOOL(MGSwipeTableCell *_) {
                                            __strong typeof(weakSelf) strongSelf = weakSelf;
+                                           if (!strongSelf) return NO;
                                            [strongSelf.viewModel installExtension:extension
                                                                        completion:^(NSError *error) {
                                                                            [strongSelf refresh];

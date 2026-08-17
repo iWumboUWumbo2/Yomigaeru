@@ -72,6 +72,7 @@
     __weak typeof(self) weakSelf = self;
     [self.sourceService fetchAllSourcesWithCompletion:^(NSArray *sources, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
 
         [strongSelf.refreshDelegate childDidFinishRefreshing];
 
