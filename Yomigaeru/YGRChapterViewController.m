@@ -23,6 +23,9 @@
 @property (nonatomic, strong) UIView *loadingOverlay;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
+@property (nonatomic, assign) BOOL hasAppeared;
+@property (nonatomic, copy) void (^pendingInitialPageBlock)(void);
+
 @end
 
 @implementation YGRChapterViewController
@@ -245,12 +248,9 @@
         UIViewController *pageVC = [self viewControllerForPage:pageIndex];
         if (pageVC)
         {
-            [self setViewControllers:@[ pageVC ]
-                           direction:UIPageViewControllerNavigationDirectionForward
-                            animated:NO
-                          completion:nil];
-
-            [self updateToolbarWithCurrentPage:pageIndex];
+            [self presentInitialPageViewController:pageVC
+                                          direction:UIPageViewControllerNavigationDirectionForward
+                                          pageIndex:pageIndex];
         }
     }
 }
@@ -259,6 +259,14 @@
 {
     [super viewDidAppear:animated];
     [self layoutToolbar];
+
+    self.hasAppeared = YES;
+    if (self.pendingInitialPageBlock)
+    {
+        void (^block)(void) = self.pendingInitialPageBlock;
+        self.pendingInitialPageBlock = nil;
+        block();
+    }
 }
 
 /**
@@ -324,6 +332,53 @@
     {
         NSLog(@"Dismissed");
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+#pragma mark - Initial Page Presentation
+
+/**
+ *  Applies the given page as the page view controller's initial content,
+ *  deferring until the receiver has actually finished appearing if it
+ *  hasn't yet.
+ *
+ *  `UIPageViewController` can silently fail to render its first child view
+ *  if `setViewControllers:` is called while the container is still mid
+ *  presentation-transition (i.e. between `viewWillAppear:` and
+ *  `viewDidAppear:`) — the child gets its own appearance callbacks, but its
+ *  view never actually gets composited, leaving a black screen until some
+ *  later relayout (a swipe, a rotation) forces it to recover. Since this is
+ *  reached from a network completion handler, whether that race is hit
+ *  depends on how fast the chapter fetch returns.
+ *
+ *  @param pageVC    The page view controller to present.
+ *  @param direction The direction to hand to `setViewControllers:`.
+ *  @param pageIndex The 0-based page index being presented, for the toolbar.
+ */
+- (void)presentInitialPageViewController:(UIViewController *)pageVC
+                                direction:(UIPageViewControllerNavigationDirection)direction
+                                pageIndex:(NSInteger)pageIndex
+{
+    __weak typeof(self) weakSelf = self;
+    void (^applyBlock)(void) = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf)
+            return;
+
+        [strongSelf setViewControllers:@[ pageVC ]
+                              direction:direction
+                               animated:NO
+                             completion:nil];
+        [strongSelf updateToolbarWithCurrentPage:pageIndex];
+    };
+
+    if (self.hasAppeared)
+    {
+        applyBlock();
+    }
+    else
+    {
+        self.pendingInitialPageBlock = applyBlock;
     }
 }
 
@@ -521,12 +576,9 @@
                              return;
 
                          dispatch_async(dispatch_get_main_queue(), ^{
-                             [self setViewControllers:@[ pageVC ]
-                                            direction:direction
-                                             animated:NO
-                                           completion:nil];
-
-                             [self updateToolbarWithCurrentPage:startPage];
+                             [self presentInitialPageViewController:pageVC
+                                                           direction:direction
+                                                           pageIndex:startPage];
 //                             [self prefetchImagesForChapter:chapter];
                          });
                      }];
