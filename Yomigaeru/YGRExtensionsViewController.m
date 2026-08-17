@@ -24,6 +24,8 @@
 
 @implementation YGRExtensionsViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -33,6 +35,8 @@
     return self;
 }
 
+#pragma mark - Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,6 +44,12 @@
     [self refresh];
 }
 
+#pragma mark - YGRRefreshable
+
+/**
+ *  Re-fetches the extensions list via the view model and reloads the table
+ *  view on completion.
+ */
 - (void)refresh
 {
     __weak typeof(self) weakSelf = self;
@@ -70,11 +80,24 @@
     return self.viewModel.sections[section];
 }
 
+/**
+ *  Looks up the extension model backing the given index path via the view
+ *  model.
+ *
+ *  @param indexPath The table view index path.
+ *
+ *  @return The extension at that index path.
+ */
 - (YGRExtension *)extensionForIndexPath:(NSIndexPath *)indexPath
 {
     return [self.viewModel extensionAtIndexPath:indexPath];
 }
 
+/**
+ *  Configures a swipeable cell for the extension at the given index path.
+ *  The trailing swipe action's title and behavior (Update, Remove, or Add)
+ *  depend on which section the row belongs to.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

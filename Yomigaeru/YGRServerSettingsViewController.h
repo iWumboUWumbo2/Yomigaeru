@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  Top-level "Server" settings screen, listing server-related settings
+ *  rows (currently just "Base URL") that push their own detail screens.
+ */
 @interface YGRServerSettingsViewController : UITableViewController
 
 @end

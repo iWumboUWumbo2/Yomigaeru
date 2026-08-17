@@ -31,7 +31,9 @@
 
 @implementation YGRSourceLibraryViewController
 
-- (id)init
+#pragma mark - Initialization
+
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -48,6 +50,8 @@
     }
     return self;
 }
+
+#pragma mark - Properties
 
 - (void)setSource:(YGRSource *)source
 {
@@ -89,6 +93,9 @@
 
 #pragma mark - UI Configuration
 
+/**
+ *  Builds the Popular/Latest segmented control and adds it to the view.
+ */
 - (void)configureSegmentedControl
 {
     self.mangaListSegmentedControl =
@@ -110,6 +117,10 @@
     [self.view addSubview:self.mangaListSegmentedControl];
 }
 
+/**
+ *  Builds the search bar, sized to match the segmented control's frame. Not
+ *  added to the view here; it is swapped in when the search button is tapped.
+ */
 - (void)configureSearchBar
 {
     self.mangaSearchBar = [[UISearchBar alloc] initWithFrame:self.mangaListSegmentedControl.frame];
@@ -119,6 +130,10 @@
     self.mangaSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
+/**
+ *  Builds the grid view below the segmented control and attaches the
+ *  long-press gesture recognizer used to toggle a manga's library status.
+ */
 - (void)configureGridView
 {
     CGFloat top = CGRectGetMaxY(self.mangaListSegmentedControl.frame) + 8.0f;
@@ -144,6 +159,9 @@
     [self.libraryGridView addGestureRecognizer:longPress];
 }
 
+/**
+ *  Builds the loading spinner and centers it over the grid view.
+ */
 - (void)configureLoadingSpinner
 {
     self.loadingSpinner = [[UIActivityIndicatorView alloc]
@@ -160,6 +178,9 @@
 
 #pragma mark - Search Bar
 
+/**
+ *  Swaps the segmented control out for the search bar and focuses it.
+ */
 - (void)showSearchBar
 {
     [self.mangaListSegmentedControl removeFromSuperview];
@@ -167,6 +188,9 @@
     [self.mangaSearchBar becomeFirstResponder];
 }
 
+/**
+ *  Swaps the search bar out for the segmented control.
+ */
 - (void)hideSearchBar
 {
     [self.mangaSearchBar removeFromSuperview];
@@ -210,6 +234,10 @@
 
 #pragma mark - Data Fetching
 
+/**
+ *  Fetches the popular or latest manga list, depending on which segment of
+ *  the segmented control is currently selected, and reloads the grid.
+ */
 - (void)fetchMangaListForSelectedSegment
 {
     YGRSourceLibraryListType listType =
@@ -238,6 +266,12 @@
                               }];
 }
 
+/**
+ *  Handles a change in the Popular/Latest segmented control by resetting
+ *  pagination and re-fetching the list for the newly selected segment.
+ *
+ *  @param sender The segmented control that changed value.
+ */
 - (void)mangaListDidChange:(UISegmentedControl *)sender
 {
     [self.viewModel resetPagination];
@@ -247,6 +281,12 @@
 
 #pragma mark - Long Press (Library Toggle)
 
+/**
+ *  Toggles the library status of the manga under a long press once the
+ *  gesture begins, reloading just that grid cell on success.
+ *
+ *  @param gesture The long-press gesture recognizer attached to the grid view.
+ */
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
     if (gesture.state != UIGestureRecognizerStateBegan)
@@ -288,6 +328,10 @@
 
 #pragma mark - Loading Spinner
 
+/**
+ *  Starts the loading spinner, but only if the grid has no items yet — an
+ *  in-place refresh (e.g. pagination) leaves existing items visible.
+ */
 - (void)showLoadingSpinnerIfEmpty
 {
     if ([self.viewModel numberOfItems] == 0)
@@ -296,6 +340,9 @@
     }
 }
 
+/**
+ *  Stops the loading spinner.
+ */
 - (void)hideLoadingSpinner
 {
     [self.loadingSpinner stopAnimating];
@@ -303,6 +350,11 @@
 
 #pragma mark - Error Handling
 
+/**
+ *  Presents a simple error alert with an OK button.
+ *
+ *  @param message The message body to display in the alert.
+ */
 - (void)showErrorAlertWithMessage:(NSString *)message
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -326,6 +378,10 @@
     }
 }
 
+/**
+ *  Loads the next page of results if the view model has one and isn't
+ *  already loading, reloading the grid on success.
+ */
 - (void)loadNextPageIfNeeded
 {
     if (![self.viewModel hasNextPage] || self.viewModel.isLoading)
@@ -423,6 +479,8 @@
 
     [self.navigationController pushViewController:mangaVC animated:YES];
 }
+
+#pragma mark - Memory Management
 
 - (void)didReceiveMemoryWarning
 {

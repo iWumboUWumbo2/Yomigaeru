@@ -10,6 +10,8 @@
 
 @implementation YGRUpdateStrategyUtility
 
+#pragma mark - Conversion
+
 + (YGRUpdateStrategy)updateStrategyFromString:(NSString *)updateStrategyString
 {
     if (!updateStrategyString || [updateStrategyString isEqual:[NSNull null]])

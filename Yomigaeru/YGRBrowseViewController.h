@@ -9,8 +9,20 @@
 #import "YGRChildRefreshDelegate.h"
 #import <UIKit/UIKit.h>
 
+/**
+ *  Hosts the Sources and Extensions browse screens behind a segmented
+ *  control, with a shared search bar and a refresh spinner that reflects
+ *  whichever child is currently active.
+ */
 @interface YGRBrowseViewController : UIViewController <YGRChildRefreshDelegate, UISearchBarDelegate>
 
-- (id)init;
+#pragma mark - Initialization
+
+/**
+ *  Creates the browse container view controller.
+ *
+ *  @return A newly initialized browse view controller.
+ */
+- (instancetype)init;
 
 @end

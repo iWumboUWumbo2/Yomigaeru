@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  Top-level settings screen, listing the app's setting categories
+ *  ("Server", "Reader", "About") and pushing their respective screens.
+ */
 @interface YGRSettingsViewController : UITableViewController
 
-- (id)init;
+/**
+ *  Creates a new top-level settings screen.
+ *
+ *  @return An initialized YGRSettingsViewController instance.
+ */
+- (instancetype)init;
 
 @end

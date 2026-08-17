@@ -11,69 +11,85 @@
 
 @implementation YGRManga
 
+#pragma mark - Private Helpers
+
+/**
+ *  Reads an integer value out of a dictionary, tolerating missing or
+ *  NSNull entries.
+ *
+ *  @param key        The dictionary key to look up.
+ *  @param dictionary The dictionary to read from.
+ *
+ *  @return The integer value for `key`, or -1 if the key is absent or maps
+ *          to NSNull.
+ */
 - (NSInteger)integerValueForKey:(NSString *)key inDictionary:(NSDictionary *)dictionary
 {
-    id value = [dictionary objectForKey:key];
+    id value = dictionary[key];
     return (value != nil && ![value isEqual:[NSNull null]]) ? [value integerValue] : -1;
 }
+
+#pragma mark - Initialization
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
     if (self)
     {
-        _id_ = [dictionary objectForKey:@"id"];
-        _sourceId = [dictionary objectForKey:@"sourceId"];
-        _url = [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"url"]];
-        _title = [dictionary objectForKey:@"title"];
+        _id_ = dictionary[@"id"];
+        _sourceId = dictionary[@"sourceId"];
+        _url = [[YGRSettingsManager sharedInstance] URLForPath:dictionary[@"url"]];
+        _title = dictionary[@"title"];
         _thumbnailUrl = [[YGRSettingsManager sharedInstance]
-            URLForPath:[dictionary objectForKey:@"thumbnailUrl"]];
+            URLForPath:dictionary[@"thumbnailUrl"]];
         _thumbnailUrlLastFetched =
-            [[dictionary objectForKey:@"thumbnailUrlLastFetched"] integerValue];
-        _initialized = [[dictionary objectForKey:@"initialized"] boolValue];
-        _artist = [dictionary objectForKey:@"artist"];
-        _author = [dictionary objectForKey:@"author"];
-        _description_ = [dictionary objectForKey:@"description"];
-        _genres = [dictionary objectForKey:@"genre"];
-        _status = [YGRMangaStatusUtility mangaStatusFromString:[dictionary objectForKey:@"status"]];
-        _inLibrary = [[dictionary objectForKey:@"inLibrary"] boolValue];
-        _inLibraryAt = [[dictionary objectForKey:@"inLibraryAt"] integerValue];
+            [dictionary[@"thumbnailUrlLastFetched"] integerValue];
+        _initialized = [dictionary[@"initialized"] boolValue];
+        _artist = dictionary[@"artist"];
+        _author = dictionary[@"author"];
+        _description_ = dictionary[@"description"];
+        _genres = dictionary[@"genre"];
+        _status = [YGRMangaStatusUtility mangaStatusFromString:dictionary[@"status"]];
+        _inLibrary = [dictionary[@"inLibrary"] boolValue];
+        _inLibraryAt = [dictionary[@"inLibraryAt"] integerValue];
 
-        id sourceValue = [dictionary objectForKey:@"source"];
+        id sourceValue = dictionary[@"source"];
         _source = (sourceValue != nil && ![sourceValue isEqual:[NSNull null]])
                       ? [[YGRSource alloc] initWithDictionary:sourceValue]
                       : nil;
 
-        _meta = [dictionary objectForKey:@"meta"] ?: [NSDictionary dictionary];
+        _meta = dictionary[@"meta"] ?: [NSDictionary dictionary];
 
-        id realUrlValue = [dictionary objectForKey:@"realUrl"];
+        id realUrlValue = dictionary[@"realUrl"];
         _realUrl = (realUrlValue != nil && ![realUrlValue isEqual:[NSNull null]])
                        ? [NSURL URLWithString:realUrlValue]
                        : nil;
 
-        _lastFetchedAt = [[dictionary objectForKey:@"lastFetchedAt"] integerValue];
-        _chaptersLastFetchedAt = [[dictionary objectForKey:@"chaptersLastFetchedAt"] integerValue];
+        _lastFetchedAt = [dictionary[@"lastFetchedAt"] integerValue];
+        _chaptersLastFetchedAt = [dictionary[@"chaptersLastFetchedAt"] integerValue];
         _updateStrategy = [YGRUpdateStrategyUtility
-            updateStrategyFromString:[dictionary objectForKey:@"updateStrategy"]];
-        _freshDate = [[dictionary objectForKey:@"freshDate"] boolValue];
+            updateStrategyFromString:dictionary[@"updateStrategy"]];
+        _freshDate = [dictionary[@"freshDate"] boolValue];
 
         _unreadCount = [self integerValueForKey:@"unreadCount" inDictionary:dictionary];
         _downloadCount = [self integerValueForKey:@"downloadCount" inDictionary:dictionary];
         _chapterCount = [self integerValueForKey:@"chapterCount" inDictionary:dictionary];
         _lastReadAt = [self integerValueForKey:@"lastReadAt" inDictionary:dictionary];
 
-        id lastChapterReadValue = [dictionary objectForKey:@"lastChapterRead"];
+        id lastChapterReadValue = dictionary[@"lastChapterRead"];
         _lastChapterRead =
             (lastChapterReadValue != nil && ![lastChapterReadValue isEqual:[NSNull null]])
                 ? [[YGRChapter alloc] initWithDictionary:lastChapterReadValue]
                 : nil;
 
-        _age = [[dictionary objectForKey:@"age"] integerValue];
-        _chaptersAge = [[dictionary objectForKey:@"chaptersAge"] integerValue];
-        _trackers = [dictionary objectForKey:@"trackers"] ?: [NSArray array];
+        _age = [dictionary[@"age"] integerValue];
+        _chaptersAge = [dictionary[@"chaptersAge"] integerValue];
+        _trackers = dictionary[@"trackers"] ?: [NSArray array];
     }
     return self;
 }
+
+#pragma mark - NSObject
 
 - (NSString *)description
 {

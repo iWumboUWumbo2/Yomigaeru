@@ -21,7 +21,9 @@
 
 @implementation YGRSettingsViewController
 
-- (id)init
+#pragma mark - Init
+
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
@@ -36,6 +38,8 @@
     }
     return self;
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -84,7 +88,7 @@
 
     // Configure the cell...
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = [self.settings objectAtIndex:indexPath.row];
+    cell.textLabel.text = self.settings[indexPath.row];
 
     return cell;
 }
@@ -94,8 +98,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    Class viewControllerClass =
-        [self.settingsViewControllers objectForKey:[self.settings objectAtIndex:indexPath.row]];
+    Class viewControllerClass = self.settingsViewControllers[self.settings[indexPath.row]];
     UIViewController *viewController = [[viewControllerClass alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
 }

@@ -12,6 +12,8 @@
 
 @implementation YGRMangaService
 
+#pragma mark - Fetching
+
 - (void)fetchMangaWithId:(NSString *)mangaId
               completion:(void (^)(YGRManga *manga, NSError *error))completion
 {
@@ -48,6 +50,8 @@
         }];
 }
 
+#pragma mark - Library Management
+
 - (void)addToLibraryWithMangaId:(NSString *)mangaId
                      completion:(void (^)(BOOL success, NSError *error))completion
 {
@@ -83,6 +87,8 @@
             completion(NO, error);
         }];
 }
+
+#pragma mark - Chapters
 
 - (void)fetchChaptersWithMangaId:(NSString *)mangaId
                       completion:(void (^)(NSArray *chapters, NSError *error))completion
@@ -152,6 +158,16 @@
         }];
 }
 
+#pragma mark - Chapter Status
+
+/**
+ *  Converts a BOOL to the "true"/"false" string form the server's chapter
+ *  update endpoint expects for its form-encoded boolean fields.
+ *
+ *  @param value The boolean value to convert.
+ *
+ *  @return @"true" if `value` is `YES`, otherwise @"false".
+ */
 static inline NSString *NSStringFromBool(BOOL value) { return value ? @"true" : @"false"; }
 
 - (void)markReadStatusChapterWithMangaId:(NSString *)mangaId

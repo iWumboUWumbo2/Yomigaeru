@@ -11,24 +11,28 @@
 
 @implementation YGRSource
 
+#pragma mark - Initialization
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
     if (self)
     {
-        _id_ = [dictionary objectForKey:@"id"];
-        _name = [dictionary objectForKey:@"name"];
+        _id_ = dictionary[@"id"];
+        _name = dictionary[@"name"];
         _lowerName = [_name lowercaseString];
-        _lang = [dictionary objectForKey:@"lang"];
+        _lang = dictionary[@"lang"];
         _iconUrl =
-            [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
-        _supportsLatest = [[dictionary objectForKey:@"supportsLatest"] boolValue];
-        _isConfigurable = [[dictionary objectForKey:@"isConfigurable"] boolValue];
-        _isNsfw = [[dictionary objectForKey:@"isNsfw"] boolValue];
-        _displayName = [dictionary objectForKey:@"displayName"];
+            [[YGRSettingsManager sharedInstance] URLForPath:dictionary[@"iconUrl"]];
+        _supportsLatest = [dictionary[@"supportsLatest"] boolValue];
+        _isConfigurable = [dictionary[@"isConfigurable"] boolValue];
+        _isNsfw = [dictionary[@"isNsfw"] boolValue];
+        _displayName = dictionary[@"displayName"];
     }
     return self;
 }
+
+#pragma mark - NSObject
 
 - (NSString *)description
 {

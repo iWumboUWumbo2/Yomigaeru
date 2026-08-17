@@ -18,6 +18,13 @@
 
 @implementation YGRTabBarController
 
+#pragma mark - Configuration
+
+/**
+ *  Builds the Library, Browse, and Settings tabs, each wrapped in its own
+ *  navigation controller, and installs them as this controller's view
+ *  controllers.
+ */
 - (void)setupTabs
 {
     YGRLibraryViewController *libraryViewController = [[YGRLibraryViewController alloc] init];
@@ -48,6 +55,8 @@
         libraryNavigationController, browseNavigationController, settingsNavigationController
     ]];
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {
