@@ -18,6 +18,8 @@
 
 @implementation YGRAboutViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -28,6 +30,8 @@
     }
     return self;
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {

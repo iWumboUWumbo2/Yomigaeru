@@ -11,11 +11,25 @@
 
 @implementation YGRManga
 
+#pragma mark - Private Helpers
+
+/**
+ *  Reads an integer value out of a dictionary, tolerating missing or
+ *  NSNull entries.
+ *
+ *  @param key        The dictionary key to look up.
+ *  @param dictionary The dictionary to read from.
+ *
+ *  @return The integer value for `key`, or -1 if the key is absent or maps
+ *          to NSNull.
+ */
 - (NSInteger)integerValueForKey:(NSString *)key inDictionary:(NSDictionary *)dictionary
 {
     id value = dictionary[key];
     return (value != nil && ![value isEqual:[NSNull null]]) ? [value integerValue] : -1;
 }
+
+#pragma mark - Initialization
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
@@ -74,6 +88,8 @@
     }
     return self;
 }
+
+#pragma mark - NSObject
 
 - (NSString *)description
 {

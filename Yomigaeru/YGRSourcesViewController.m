@@ -29,6 +29,8 @@
 
 @implementation YGRSourcesViewController
 
+#pragma mark - Initialization
+
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -47,6 +49,8 @@
     return self;
 }
 
+#pragma mark - Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -64,6 +68,13 @@
     [self fetchSources];
 }
 
+#pragma mark - Data Fetching
+
+/**
+ *  Fetches every source from the server and buckets them by language into
+ *  `languages`/`sourcesByLanguage`, then reloads the table. Notifies
+ *  `refreshDelegate` when the fetch completes, and shows an alert on failure.
+ */
 - (void)fetchSources
 {
     [self.languages removeAllObjects];
@@ -109,10 +120,18 @@
     }];
 }
 
+#pragma mark - YGRRefreshable
+
+/**
+ *  Re-fetches the source list. Called by a parent controller (e.g. a
+ *  pull-to-refresh container) via the `YGRRefreshable` protocol.
+ */
 - (void)refresh
 {
     [self fetchSources];
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidUnload
 {
@@ -151,6 +170,15 @@
     return arrayForLang.count;
 }
 
+/**
+ *  Looks up the source backing a given row, taking into account whether the
+ *  table is currently showing the search results or the full source list.
+ *
+ *  @param indexPath The index path of the row.
+ *
+ *  @return The matching source, or `nil` if the section/row don't resolve
+ *  to one (e.g. a stale index path during a search update).
+ */
 - (YGRSource *)sourceForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
@@ -218,6 +246,13 @@
 
 #pragma mark - Search bar delegate
 
+/**
+ *  Rebuilds `searchLanguages`/`searchSourcesByLanguage` from `languages`/
+ *  `sourcesByLanguage`, keeping only sources whose lowercased name has
+ *  `searchTerm` as a prefix. An empty term copies the full, unfiltered list.
+ *
+ *  @param searchTerm The current search bar text.
+ */
 - (void)filterSourcesBySearchTerm:(NSString *)searchTerm
 {
     if (searchTerm.length == 0) {

@@ -16,6 +16,8 @@
 
 @implementation YGRServerBaseURLViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -25,6 +27,8 @@
     }
     return self;
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -54,6 +58,14 @@
     [cell.textField becomeFirstResponder];
 }
 
+#pragma mark - Settings Persistence
+
+/**
+ *  Validates and saves the text field's contents as the server base URL,
+ *  showing an alert if the text isn't a URL with both a scheme and a host.
+ *
+ *  @param textField The text field whose text should be saved.
+ */
 - (void)saveSettingsForTextField:(UITextField *)textField
 {
     NSURL *url = [NSURL URLWithString:textField.text];
@@ -74,6 +86,8 @@
     }
 }
 
+#pragma mark - UITextFieldDelegate
+
 // Called when user taps Return
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -92,10 +106,14 @@
     [self saveSettingsForTextField:textField];
 }
 
+#pragma mark - View Lifecycle
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

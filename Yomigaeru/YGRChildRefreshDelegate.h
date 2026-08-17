@@ -8,10 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Adopted by a container (e.g. a parent view controller) that hosts a child
+ *  which independently refreshes its own data, so the child can report back
+ *  when it's done.
+ */
 @protocol YGRChildRefreshDelegate <NSObject>
 
 @required
 
+/** Called by the child once its own refresh has completed. */
 - (void)childDidFinishRefreshing;
 
 @end

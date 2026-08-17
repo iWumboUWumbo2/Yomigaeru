@@ -58,6 +58,10 @@
 
 #pragma mark - Data Fetching
 
+/**
+ *  Fetches the full manga record for `mangaId` and reloads the table view
+ *  and title once it arrives, then kicks off the thumbnail fetch.
+ */
 - (void)fetchMangaInfo
 {
     __weak typeof(self) weakSelf = self;
@@ -82,6 +86,10 @@
                                  }];
 }
 
+/**
+ *  Fetches the manga's thumbnail image and reloads the info cell to
+ *  display it once loaded.
+ */
 - (void)fetchThumbnail
 {
     __weak typeof(self) weakSelf = self;
@@ -145,6 +153,14 @@ titleForHeaderInSection:(NSInteger)section
 }
 
 
+/**
+ *  Coerces a JSON-decoded value into a string, returning nil for NSNull,
+ *  nil, or any non-string value.
+ *
+ *  @param value The value to coerce, typically from a JSON dictionary.
+ *
+ *  @return The value as a string, or nil if it isn't a valid string.
+ */
 - (NSString *)safeString:(id)value
 {
     if (!value || value == [NSNull null])
@@ -258,6 +274,8 @@ titleForHeaderInSection:(NSInteger)section
     
     return cell;
 }
+
+#pragma mark - Table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView
 heightForRowAtIndexPath:(NSIndexPath *)indexPath

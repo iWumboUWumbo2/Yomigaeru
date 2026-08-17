@@ -20,6 +20,8 @@
 
 @implementation YGRNetworkManager
 
+#pragma mark - Initialization
+
 + (instancetype)sharedManager
 {
     static YGRNetworkManager *sharedInstance = nil;
@@ -56,6 +58,14 @@
 
 #pragma mark - Client Management
 
+/**
+ *  Rebuilds the JSON, HTTP, and image clients if `apiBaseURL` has changed
+ *  since the last call (or if this is the first call). Does nothing if
+ *  `apiBaseURL` is not yet set, other than logging a warning.
+ *
+ *  Called lazily before every client accessor, and in response to
+ *  `YGRBaseURLDidChangeNotification`.
+ */
 - (void)ensureClientsAreUpToDate
 {
     NSURL *baseURL = [YGRSettingsManager sharedInstance].apiBaseURL;

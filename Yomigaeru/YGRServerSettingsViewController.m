@@ -16,6 +16,8 @@
 
 @implementation YGRServerSettingsViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -27,6 +29,8 @@
     }
     return self;
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -41,6 +45,8 @@
 
     [self.tableView reloadData];
 }
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -75,6 +81,8 @@
 
     return cell;
 }
+
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

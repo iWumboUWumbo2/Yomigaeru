@@ -45,6 +45,10 @@
 
 #pragma mark - Lifecycle
 
+/**
+ *  Builds the toolbar items: current-page label, a stretching progress bar,
+ *  and total-page label.
+ */
 - (void)configureToolbar
 {
     self.currentPageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -99,6 +103,10 @@
     self.toolbarItems = @[ currentItem, flex, progressItem, flex, totalItem ];
 }
 
+/**
+ *  Resizes the progress bar's container to fill the space between the
+ *  current/total page labels within the toolbar's current width.
+ */
 - (void)layoutToolbar
 {
     UIToolbar *toolbar = self.navigationController.toolbar;
@@ -137,6 +145,12 @@
     self.pageProgressView.frame = progressFrame;
 }
 
+/**
+ *  Updates the toolbar's page labels and progress bar for the given page,
+ *  then re-lays out the toolbar to match the labels' new sizes.
+ *
+ *  @param page The 0-based index of the page now being displayed.
+ */
 - (void)updateToolbarWithCurrentPage:(NSInteger)page
 {
     NSInteger pageCount = MAX(self.currentChapter.pageCount, 1);
@@ -157,6 +171,11 @@
     [self layoutToolbar];
 }
 
+/**
+ *  Sets the chapter title, installs the back button and tap-to-toggle-bars
+ *  gesture, builds the toolbar, and prepares (but does not show) the
+ *  loading overlay.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -200,6 +219,12 @@
     [self.loadingOverlay addSubview:self.loadingSpinner];
 }
 
+/**
+ *  Loads the chapter from scratch if none is loaded yet; otherwise restores
+ *  the page the user last read.
+ *
+ *  @param animated Whether the appearance is animated.
+ */
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -236,6 +261,12 @@
     [self layoutToolbar];
 }
 
+/**
+ *  Persists the current page (and read status, if the last page was
+ *  reached) back to the server, then notifies `refreshDelegate`.
+ *
+ *  @param animated Whether the disappearance is animated.
+ */
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -285,6 +316,8 @@
                                      }];
 }
 
+#pragma mark - UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
@@ -296,11 +329,17 @@
 
 #pragma mark - Navigation
 
+/**
+ *  Dismisses the chapter reader.
+ */
 - (void)dismissSelf
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+/**
+ *  Toggles the visibility of the navigation bar and toolbar together.
+ */
 - (void)toggleNavigationBar
 {
     BOOL hidden = self.navigationController.navigationBarHidden;
@@ -310,6 +349,15 @@
 
 #pragma mark - Chapter/Page Helpers
 
+/**
+ *  Builds a page view controller configured to display the given page of
+ *  the current chapter.
+ *
+ *  @param pageIndex The 0-based page index to display.
+ *
+ *  @return A configured `YGRPageViewController`, or `nil` if the index is
+ *  out of range or no chapter is currently loaded.
+ */
 - (UIViewController *)viewControllerForPage:(NSInteger)pageIndex
 {
     if (!self.currentChapter || pageIndex < 0 || pageIndex >= self.currentChapter.pageCount)
@@ -351,6 +399,12 @@
 
 #pragma mark - Chapter Loading
 
+/**
+ *  Eagerly fetches every page image for the given chapter at low priority.
+ *  Currently unused (the call site is commented out).
+ *
+ *  @param chapter The chapter whose pages should be prefetched.
+ */
 - (void)prefetchImagesForChapter:(YGRChapter *)chapter
 {
     if (!chapter)
@@ -372,6 +426,12 @@
     }
 }
 
+/**
+ *  Prefetches page images within a window around the given page, sized by
+ *  the user's previous/next prefetch-count settings.
+ *
+ *  @param pageIndex The 0-based page index to prefetch around.
+ */
 - (void)prefetchAroundPage:(NSInteger)pageIndex
 {
     if (!self.currentChapter) return;
@@ -394,6 +454,9 @@
     }
 }
 
+/**
+ *  Adds the loading overlay to the view (if needed) and starts its spinner.
+ */
 - (void)showLoadingOverlay
 {
     if (![self.loadingOverlay superview])
@@ -403,6 +466,9 @@
     [self.loadingSpinner startAnimating];
 }
 
+/**
+ *  Stops the loading spinner and removes the loading overlay from the view.
+ */
 - (void)hideLoadingOverlay
 {
     [self.loadingSpinner stopAnimating];
@@ -465,6 +531,8 @@
                          });
                      }];
 }
+
+#pragma mark - UIPageViewControllerDelegate
 
 - (void)pageViewController:(UIPageViewController *)pageViewController
          didFinishAnimating:(BOOL)finished

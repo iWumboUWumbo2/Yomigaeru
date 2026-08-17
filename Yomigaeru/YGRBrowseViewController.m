@@ -30,6 +30,8 @@
 
 @implementation YGRBrowseViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super init];
@@ -40,6 +42,14 @@
     return self;
 }
 
+#pragma mark - Child View Controller Management
+
+/**
+ *  Adds the given view controller as a child, sizes its view to fill the
+ *  content view, and completes the containment transition.
+ *
+ *  @param viewController The child view controller to display.
+ */
 - (void)displayViewController:(UIViewController *)viewController
 {
     [self addChildViewController:viewController];
@@ -50,6 +60,13 @@
     [viewController didMoveToParentViewController:self];
 }
 
+/**
+ *  Swaps the currently displayed child view controller for a new one using
+ *  the container transition APIs. Does nothing if `newViewController` is
+ *  already the current one.
+ *
+ *  @param newViewController The child view controller to make current.
+ */
 - (void)cycleToNewViewController:(UIViewController<YGRRefreshable, UISearchBarDelegate> *)newViewController
 {
     if (!self.currentViewController)
@@ -86,6 +103,12 @@
                             }];
 }
 
+#pragma mark - UI Configuration
+
+/**
+ *  Builds and positions the segmented control used to switch between the
+ *  Sources and Extensions child view controllers.
+ */
 - (void)configureViewControllerSegmentedControl
 {
     self.viewControllerSegmentedControl =
@@ -108,6 +131,11 @@
     [self.view addSubview:self.viewControllerSegmentedControl];
 }
 
+/**
+ *  Builds the search bar and its delegate proxy, sized to match the
+ *  segmented control's frame. Not added to the view here; it is swapped in
+ *  when the search button is tapped.
+ */
 - (void)configureSearchBar
 {
     self.searchBar = [[UISearchBar alloc] initWithFrame:self.viewControllerSegmentedControl.frame];
@@ -121,6 +149,12 @@
     self.searchBar.delegate = self.searchBarDelegateProxy;
 }
 
+#pragma mark - Search Bar
+
+/**
+ *  Routes the proxy's search callbacks to the current child, then swaps the
+ *  segmented control out for the search bar and focuses it.
+ */
 - (void)showSearchBar
 {
     self.searchBarDelegateProxy.searchHandler = self.currentViewController;
@@ -130,11 +164,16 @@
     [self.searchBar becomeFirstResponder];
 }
 
+/**
+ *  Swaps the search bar out for the segmented control.
+ */
 - (void)hideSearchBar
 {
     [self.searchBar removeFromSuperview];
     [self.view addSubview:self.viewControllerSegmentedControl];
 }
+
+#pragma mark - Search bar delegate
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
@@ -142,6 +181,14 @@
 //    [self mangaListDidChange:self.mangaListSegmentedControl];
 }
 
+#pragma mark - Segmented Control
+
+/**
+ *  Handles a segmented control value change by cycling to the corresponding
+ *  child view controller and clearing the refresh spinner.
+ *
+ *  @param sender The segmented control that changed value.
+ */
 - (void)viewControllerDidChange:(UISegmentedControl *)sender
 {
     if (sender.selectedSegmentIndex < 0 ||
@@ -156,6 +203,12 @@
     [self disableSpinner];
 }
 
+#pragma mark - Content Setup
+
+/**
+ *  Builds the container view that hosts the current child view controller's
+ *  view, positioned below the segmented control.
+ */
 - (void)configureContentView
 {
     CGFloat top = CGRectGetMaxY(self.viewControllerSegmentedControl.frame) + 8.0f;
@@ -170,6 +223,10 @@
     [self.view addSubview:self.contentView];
 }
 
+/**
+ *  Instantiates the Sources and Extensions child view controllers and sets
+ *  self as their refresh delegate.
+ */
 - (void)configureViewControllers
 {
     YGRSourcesViewController *sourcesViewController = [[YGRSourcesViewController alloc] init];
@@ -183,6 +240,12 @@
     self.viewControllerTitles = @[ @"Sources", @"Extensions" ];
 }
 
+#pragma mark - Spinner
+
+/**
+ *  Replaces the refresh bar button item with an animating spinner, if not
+ *  already animating.
+ */
 - (void)enableSpinner
 {
     if (![self.refreshSpinner isAnimating])
@@ -194,6 +257,10 @@
     }
 }
 
+/**
+ *  Stops the spinner and restores the refresh bar button item, if it was
+ *  animating.
+ */
 - (void)disableSpinner
 {
     if ([self.refreshSpinner isAnimating])
@@ -204,16 +271,30 @@
     }
 }
 
+#pragma mark - Refresh
+
+/**
+ *  Enables the spinner and asks the current child view controller to
+ *  refresh itself; invoked by the refresh bar button item.
+ */
 - (void)refreshLibrary
 {
     [self enableSpinner];
     [self.currentViewController refresh];
 }
 
+#pragma mark - YGRChildRefreshDelegate
+
+/**
+ *  Stops the refresh spinner once the active child reports that it has
+ *  finished refreshing.
+ */
 - (void)childDidFinishRefreshing
 {
     [self disableSpinner];
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {

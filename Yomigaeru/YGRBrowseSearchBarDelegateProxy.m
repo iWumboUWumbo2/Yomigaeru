@@ -10,6 +10,14 @@
 
 @implementation YGRBrowseSearchBarDelegateProxy
 
+#pragma mark - UISearchBarDelegate
+
+/**
+ *  Forwards the cancel-button-clicked event to `stateHandler`, if it
+ *  implements this method.
+ *
+ *  @param searchBar The search bar whose cancel button was clicked.
+ */
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     if ([self.stateHandler respondsToSelector:@selector(searchBarCancelButtonClicked:)])
@@ -18,6 +26,12 @@
     }
 }
 
+/**
+ *  Forwards the begin-editing event to `searchHandler`, if it implements
+ *  this method.
+ *
+ *  @param searchBar The search bar that began editing.
+ */
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     if ([self.searchHandler respondsToSelector:@selector(searchBarTextDidBeginEditing:)])
@@ -26,6 +40,12 @@
     }
 }
 
+/**
+ *  Forwards the end-editing event to `searchHandler`, if it implements this
+ *  method.
+ *
+ *  @param searchBar The search bar that ended editing.
+ */
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
     if ([self.searchHandler respondsToSelector:@selector(searchBarTextDidEndEditing:)])
@@ -34,6 +54,12 @@
     }
 }
 
+/**
+ *  Forwards the search-button-clicked event to `searchHandler`, if it
+ *  implements this method.
+ *
+ *  @param searchBar The search bar whose search button was clicked.
+ */
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     if ([self.searchHandler respondsToSelector:@selector(searchBarSearchButtonClicked:)])
@@ -42,6 +68,13 @@
     }
 }
 
+/**
+ *  Forwards text-changed events to `searchHandler`, if it implements this
+ *  method.
+ *
+ *  @param searchBar The search bar whose text changed.
+ *  @param searchText The search bar's current text.
+ */
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if ([self.searchHandler respondsToSelector:@selector(searchBar:textDidChange:)])

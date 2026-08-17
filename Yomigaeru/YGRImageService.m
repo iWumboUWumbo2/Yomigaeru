@@ -51,6 +51,12 @@
 
 #pragma mark - Thumbnails
 
+/**
+ *  Computes the thumbnail image size for the current device/idiom, sized to
+ *  fit a 2-column (iPhone) or 4-column (iPad) grid at a 1.25 aspect ratio.
+ *
+ *  @return The target thumbnail size, in points.
+ */
 - (CGSize)thumbnailSize
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -161,6 +167,11 @@
     [imageClient enqueueHTTPRequestOperation:operation];
 }
 
+#pragma mark - Memory Management
+
+/**
+ *  Empties both the thumbnail and page caches to free up memory.
+ */
 - (void)didReceiveMemoryWarning
 {
     [self.thumbnailCache removeAllObjects];

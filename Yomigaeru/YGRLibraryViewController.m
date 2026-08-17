@@ -83,6 +83,10 @@
 
 #pragma mark - UI Configuration
 
+/**
+ *  Installs the refresh bar button item and prepares the spinner used to
+ *  replace it while a library fetch is in progress.
+ */
 - (void)configureNavigationBar
 {
     self.refreshButton =
@@ -94,6 +98,10 @@
     self.navigationItem.leftBarButtonItem = self.refreshButton;
 }
 
+/**
+ *  Builds the action sheet presented on a long press, offering delete,
+ *  read, and unread actions for the selected manga.
+ */
 - (void)configureActionSheet
 {
     self.actionSheet = [[UIActionSheet alloc] initWithTitle:@"Edit"
@@ -103,6 +111,11 @@
                                           otherButtonTitles:@"Read", @"Unread", nil];
 }
 
+/**
+ *  Configures the grid view's data source, delegate, and appearance, and
+ *  attaches the long-press gesture recognizer used to trigger the edit
+ *  action sheet.
+ */
 - (void)configureGridView
 {
     self.gridView.dataSource = self;
@@ -121,6 +134,11 @@
 
 #pragma mark - Long Press & Action Sheet
 
+/**
+ *  Presents the edit action sheet for the manga under a long press.
+ *
+ *  @param gesture The long-press gesture recognizer that triggered this handler.
+ */
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
     if (gesture.state != UIGestureRecognizerStateBegan)
@@ -218,6 +236,10 @@
 
 #pragma mark - Spinner
 
+/**
+ *  Replaces the refresh bar button item with an animating spinner, if not
+ *  already animating.
+ */
 - (void)enableSpinner
 {
     if (![self.refreshSpinner isAnimating])
@@ -229,6 +251,10 @@
     }
 }
 
+/**
+ *  Stops the spinner and restores the refresh bar button item, if it was
+ *  animating.
+ */
 - (void)disableSpinner
 {
     if ([self.refreshSpinner isAnimating])
@@ -241,6 +267,10 @@
 
 #pragma mark - Data Fetching
 
+/**
+ *  Fetches the current library from the view model and reloads the grid
+ *  view, disabling the spinner and showing an error alert on failure.
+ */
 - (void)fetchLibrary
 {
     __weak typeof(self) weakSelf = self;
@@ -262,6 +292,10 @@
     }];
 }
 
+/**
+ *  Enables the spinner and re-fetches the library; invoked by the refresh
+ *  bar button item.
+ */
 - (void)refreshLibrary
 {
     [self enableSpinner];
@@ -270,6 +304,11 @@
 
 #pragma mark - Error Handling
 
+/**
+ *  Presents a simple alert with the given message and an OK button.
+ *
+ *  @param message The message to display in the alert body.
+ */
 - (void)showErrorAlertWithMessage:(NSString *)message
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -292,6 +331,12 @@
     return self.portraitCellSize;
 }
 
+/**
+ *  Dequeues (or creates) a library cell and populates it with the manga's
+ *  title and unread count, then asynchronously fetches its thumbnail,
+ *  guarding against the cell having been reused for a different manga by
+ *  the time the fetch completes.
+ */
 - (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index
 {
     static NSString *CellIdentifier = @"LibraryCell";

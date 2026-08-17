@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
+/** Standard HTTP response status codes used when interpreting API responses. */
 typedef NS_ENUM(NSInteger, HttpStatus_t)
 {
     // 2xx Success

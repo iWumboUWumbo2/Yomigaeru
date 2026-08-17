@@ -10,6 +10,8 @@
 
 @implementation YGRMangaStatusUtility
 
+#pragma mark - Conversion
+
 + (YGRMangaStatus)mangaStatusFromString:(NSString *)statusString
 {
     if (!statusString || [statusString isEqual:[NSNull null]])

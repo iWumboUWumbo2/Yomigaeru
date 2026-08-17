@@ -14,6 +14,11 @@
 
 @implementation YGRExtensionInfoViewController
 
+#pragma mark - Init
+
+/**
+ *  Creates a grouped-style extension info screen.
+ */
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -23,6 +28,8 @@
     }
     return self;
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {

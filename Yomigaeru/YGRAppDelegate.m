@@ -16,6 +16,15 @@
 
 @implementation YGRAppDelegate
 
+#pragma mark - UIApplicationDelegate
+
+/**
+ *  Sets up the main window and installs `YGRTabBarController` as its root
+ *  view controller. Also posts `YGRBaseURLDidChangeNotification` so that
+ *  anything depending on the configured server base URL (initialized as a
+ *  side effect of touching `YGRSettingsManager`) picks up its current value
+ *  at launch.
+ */
 - (BOOL)application:(UIApplication *)application
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

@@ -21,6 +21,13 @@
 
 @implementation YGRPageViewController
 
+#pragma mark - Lifecycle
+
+/**
+ *  Builds the zoomable scroll view, image view, and loading spinner used to
+ *  display the page. The image itself is not loaded until
+ *  `viewWillAppear:`.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -52,11 +59,22 @@
     [self.view addSubview:self.loadingSpinner];
 }
 
+#pragma mark - UIScrollViewDelegate
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.imageView;
 }
 
+#pragma mark - Page Loading
+
+/**
+ *  Displays the given image, scaling it to fill the scroll view's width
+ *  while preserving aspect ratio, resetting the zoom level, and centering
+ *  the image vertically if it's shorter than the screen.
+ *
+ *  @param image The page image to display.
+ */
 - (void)setImage:(UIImage *)image
 {
     self.imageView.image = image;
@@ -83,6 +101,11 @@
     }
 }
 
+/**
+ *  Fetches this page's image from `YGRImageService` and displays it,
+ *  showing a spinner while the fetch is in flight and an alert if it
+ *  fails.
+ */
 - (void)loadPageImage
 {
     [self.loadingSpinner startAnimating];
@@ -121,6 +144,8 @@
                   }];
 }
 
+#pragma mark - UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
@@ -129,6 +154,8 @@
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewWillAppear:(BOOL)animated
 {

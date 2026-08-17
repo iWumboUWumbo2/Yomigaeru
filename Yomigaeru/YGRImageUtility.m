@@ -25,6 +25,19 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
 
 @implementation YGRImageUtility
 
+#pragma mark - Private WebP Decoding
+
+/**
+ *  Decodes WebP-encoded image data into a UIImage via libwebp, downscaling to
+ *  a target width while preserving aspect ratio.
+ *
+ *  @param data        The raw WebP-encoded bytes.
+ *  @param targetWidth The width, in points, to scale the decoded image to.
+ *  @param error       On failure, set to an NSError describing what went wrong
+ *                     (invalid data, decoder init failure, decode failure).
+ *
+ *  @return The decoded UIImage, or nil if decoding failed.
+ */
 + (UIImage *)imageWithWebPData:(NSData *)data
                    targetWidth:(CGFloat)targetWidth
                          error:(NSError *__autoreleasing *)error

@@ -10,6 +10,8 @@
 
 @implementation YGRChapter
 
+#pragma mark - Initialization
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
     self = [super init];
@@ -36,6 +38,8 @@
     }
     return self;
 }
+
+#pragma mark - NSObject
 
 - (NSString *)description
 {

@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  The app's root tab bar controller. Hosts the Library, Browse, and
+ *  Settings tabs, each wrapped in its own navigation controller.
+ */
 @interface YGRTabBarController : UITabBarController
 
 @end

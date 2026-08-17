@@ -5,6 +5,8 @@
 
 @implementation YGRSourceService
 
+#pragma mark - Sources
+
 - (void)fetchAllSourcesWithCompletion:(void (^)(NSArray *sources, NSError *error))completion
 {
     AFHTTPClient *jsonClient = [[YGRNetworkManager sharedManager] jsonClientInstance];
@@ -45,6 +47,20 @@
         }];
 }
 
+#pragma mark - Manga Listings
+
+/**
+ *  Fetches a paginated manga listing from an arbitrary source endpoint
+ *  (popular, latest, or search) and parses the common response shape they
+ *  all share. Backs the public listing methods, which each just supply a
+ *  different endpoint path.
+ *
+ *  @param endpoint The relative path to fetch, already containing any
+ *  query parameters.
+ *  @param completion Called with the parsed `YGRManga` array and whether a
+ *  further page is available on success, or `nil`/`NO` and an error on
+ *  failure.
+ */
 - (void)fetchMangaListFromEndpoint:(NSString *)endpoint
                         completion:(void (^)(NSArray *mangaList, BOOL hasNextPage,
                                              NSError *error))completion
