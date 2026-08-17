@@ -12,6 +12,6 @@
 
 @interface YGRLibraryViewController : AQGridViewController
 
-- (id)init;
+- (instancetype)init;
 
 @end

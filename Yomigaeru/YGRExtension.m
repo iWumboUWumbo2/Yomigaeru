@@ -16,20 +16,20 @@
     self = [super init];
     if (self)
     {
-        _repo = [NSURL URLWithString:[dictionary objectForKey:@"repo"]];
-        _apkName = [dictionary objectForKey:@"apkName"];
+        _repo = [NSURL URLWithString:dictionary[@"repo"]];
+        _apkName = dictionary[@"apkName"];
         _iconUrl =
-            [[YGRSettingsManager sharedInstance] URLForPath:[dictionary objectForKey:@"iconUrl"]];
-        _name = [dictionary objectForKey:@"name"];
+            [[YGRSettingsManager sharedInstance] URLForPath:dictionary[@"iconUrl"]];
+        _name = dictionary[@"name"];
         _lowerName = [_name lowercaseString];
-        _pkgName = [dictionary objectForKey:@"pkgName"];
-        _versionName = [dictionary objectForKey:@"versionName"];
-        _versionCode = [[dictionary objectForKey:@"versionCode"] integerValue];
-        _lang = [dictionary objectForKey:@"lang"];
-        _isNsfw = [[dictionary objectForKey:@"isNsfw"] boolValue];
-        _installed = [[dictionary objectForKey:@"installed"] boolValue];
-        _hasUpdate = [[dictionary objectForKey:@"hasUpdate"] boolValue];
-        _obsolete = [[dictionary objectForKey:@"obsolete"] boolValue];
+        _pkgName = dictionary[@"pkgName"];
+        _versionName = dictionary[@"versionName"];
+        _versionCode = [dictionary[@"versionCode"] integerValue];
+        _lang = dictionary[@"lang"];
+        _isNsfw = [dictionary[@"isNsfw"] boolValue];
+        _installed = [dictionary[@"installed"] boolValue];
+        _hasUpdate = [dictionary[@"hasUpdate"] boolValue];
+        _obsolete = [dictionary[@"obsolete"] boolValue];
     }
     return self;
 }

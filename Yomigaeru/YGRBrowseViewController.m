@@ -30,7 +30,7 @@
 
 @implementation YGRBrowseViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self)
@@ -151,7 +151,7 @@
     }
 
     UIViewController<YGRRefreshable, UISearchBarDelegate> *newViewController =
-        [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
+        self.viewControllers[sender.selectedSegmentIndex];
     [self cycleToNewViewController:newViewController];
     [self disableSpinner];
 }
@@ -243,7 +243,7 @@
     
     [self configureContentView];
 
-    self.currentViewController = [self.viewControllers objectAtIndex:0];
+    self.currentViewController = self.viewControllers[0];
     [self displayViewController:self.currentViewController];
 
     // Prevent nav bar and tab bar from overlaying the view in iOS 7.0

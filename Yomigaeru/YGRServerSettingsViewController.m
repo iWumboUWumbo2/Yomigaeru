@@ -64,7 +64,7 @@
                                       reuseIdentifier:CellIdentifier];
     }
 
-    NSString *rowTitle = [self.serverSettings objectAtIndex:indexPath.row];
+    NSString *rowTitle = self.serverSettings[indexPath.row];
     if ([rowTitle isEqualToString:@"Base URL"])
     {
         cell.textLabel.text = @"Base URL";
@@ -79,7 +79,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    NSString *rowTitle = [self.serverSettings objectAtIndex:indexPath.row];
+    NSString *rowTitle = self.serverSettings[indexPath.row];
     if ([rowTitle isEqualToString:@"Base URL"])
     {
         YGRServerBaseURLViewController *serverBaseURLViewController =

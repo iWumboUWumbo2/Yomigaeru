@@ -15,6 +15,6 @@
 
 @property (nonatomic, strong) YGRManga *manga;
 
-- (id)init;
+- (instancetype)init;
 
 @end

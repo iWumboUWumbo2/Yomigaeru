@@ -14,6 +14,6 @@
 
 @property (nonatomic, weak) id<YGRChildRefreshDelegate> refreshDelegate;
 
-- (id)init;
+- (instancetype)init;
 
 @end

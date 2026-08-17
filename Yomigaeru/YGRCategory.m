@@ -15,14 +15,14 @@
     self = [super init];
     if (self)
     {
-        _id_ = [[dictionary objectForKey:@"id"] description];
-        _order = [[dictionary objectForKey:@"order"] integerValue];
-        _name = [dictionary objectForKey:@"name"];
-        _isDefault = [[dictionary objectForKey:@"default"] boolValue];
-        _size = [[dictionary objectForKey:@"size"] integerValue];
-        _includeInUpdate = [[dictionary objectForKey:@"includeInUpdate"] integerValue];
-        _includeInDownload = [[dictionary objectForKey:@"includeInDownload"] integerValue];
-        _meta = [dictionary objectForKey:@"meta"] ?: [NSDictionary dictionary];
+        _id_ = [dictionary[@"id"] description];
+        _order = [dictionary[@"order"] integerValue];
+        _name = dictionary[@"name"];
+        _isDefault = [dictionary[@"default"] boolValue];
+        _size = [dictionary[@"size"] integerValue];
+        _includeInUpdate = [dictionary[@"includeInUpdate"] integerValue];
+        _includeInDownload = [dictionary[@"includeInDownload"] integerValue];
+        _meta = dictionary[@"meta"] ?: [NSDictionary dictionary];
     }
     return self;
 }

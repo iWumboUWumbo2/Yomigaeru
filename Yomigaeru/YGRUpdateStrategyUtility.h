@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
+typedef NS_ENUM(NSInteger, YGRUpdateStrategy)
 {
     YGRUpdateStrategyAlwaysUpdate,
     YGRUpdateStrategyOnlyFetchOnce,
-} YGRUpdateStrategy;
+};
 
 @interface YGRUpdateStrategyUtility : NSObject
 

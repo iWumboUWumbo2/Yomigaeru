@@ -11,6 +11,6 @@
 
 @interface YGRBrowseViewController : UIViewController <YGRChildRefreshDelegate, UISearchBarDelegate>
 
-- (id)init;
+- (instancetype)init;
 
 @end

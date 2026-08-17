@@ -29,7 +29,7 @@
 
 @implementation YGRSourcesViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
@@ -91,11 +91,11 @@
 
         for (YGRSource *source in sources)
         {
-            NSMutableArray *arrayForLang = [strongSelf.sourcesByLanguage objectForKey:source.lang];
+            NSMutableArray *arrayForLang = strongSelf.sourcesByLanguage[source.lang];
             if (!arrayForLang)
             {
                 arrayForLang = [NSMutableArray array];
-                [strongSelf.sourcesByLanguage setObject:arrayForLang forKey:source.lang];
+                strongSelf.sourcesByLanguage[source.lang] = arrayForLang;
 
                 [strongSelf.languages addObject:source.lang];
             }
@@ -140,9 +140,9 @@
     NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
     NSDictionary *sourcesByLanguageDictionary = (self.isSearching) ? self.searchSourcesByLanguage : self.sourcesByLanguage;
     
-    NSString *sectionLanguage = [languageArray objectAtIndex:section];
+    NSString *sectionLanguage = languageArray[section];
 
-    NSMutableArray *arrayForLang = [sourcesByLanguageDictionary objectForKey:sectionLanguage];
+    NSMutableArray *arrayForLang = sourcesByLanguageDictionary[sectionLanguage];
     if (!arrayForLang)
     {
         return 0;
@@ -156,14 +156,14 @@
     NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
     NSDictionary *sourcesByLanguageDictionary = (self.isSearching) ? self.searchSourcesByLanguage : self.sourcesByLanguage;
     
-    NSString *sectionLanguage = [languageArray objectAtIndex:indexPath.section];
-    NSMutableArray *arrayForLang = [sourcesByLanguageDictionary objectForKey:sectionLanguage];
+    NSString *sectionLanguage = languageArray[indexPath.section];
+    NSMutableArray *arrayForLang = sourcesByLanguageDictionary[sectionLanguage];
     if (!arrayForLang)
     {
         return nil;
     }
 
-    return [arrayForLang objectAtIndex:indexPath.row];
+    return arrayForLang[indexPath.row];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -201,7 +201,7 @@
         return @"Error";
     }
 
-    return [languageArray objectAtIndex:section];
+    return languageArray[section];
 }
 
 #pragma mark - Table view delegate

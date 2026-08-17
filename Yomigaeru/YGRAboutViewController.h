@@ -10,6 +10,6 @@
 
 @interface YGRAboutViewController : UITableViewController
 
-- (id)init;
+- (instancetype)init;
 
 @end

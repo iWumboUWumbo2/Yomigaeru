@@ -10,6 +10,6 @@
 
 @interface YGRReaderSettingsViewController : UITableViewController
 
-- (id)init;
+- (instancetype)init;
 
 @end

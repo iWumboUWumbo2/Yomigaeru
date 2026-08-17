@@ -29,7 +29,7 @@
 
 #pragma mark - Init
 
-- (id)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
+- (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
         navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation
                       options:(NSDictionary *)options
 {

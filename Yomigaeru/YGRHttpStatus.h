@@ -9,7 +9,9 @@
 #ifndef Kaiko_HttpStatus_h
 #define Kaiko_HttpStatus_h
 
-typedef enum
+#import <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSInteger, HttpStatus_t)
 {
     // 2xx Success
     HttpStatusOK = 200,
@@ -40,6 +42,6 @@ typedef enum
     HttpStatusBadGateway = 502,
     HttpStatusServiceUnavailable = 503,
     HttpStatusGatewayTimeout = 504
-} HttpStatus_t;
+};
 
 #endif

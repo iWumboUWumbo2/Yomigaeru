@@ -56,7 +56,7 @@
         success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *jsonDict = (NSDictionary *) responseObject;
 
-            NSArray *jsonMangaList = [jsonDict objectForKey:@"mangaList"];
+            NSArray *jsonMangaList = jsonDict[@"mangaList"];
             NSMutableArray *mangaList = [NSMutableArray arrayWithCapacity:jsonMangaList.count];
 
             for (NSDictionary *dict in jsonMangaList)
@@ -64,7 +64,7 @@
                 [mangaList addObject:[[YGRManga alloc] initWithDictionary:dict]];
             }
 
-            BOOL hasNextPage = [[jsonDict objectForKey:@"hasNextPage"] boolValue];
+            BOOL hasNextPage = [jsonDict[@"hasNextPage"] boolValue];
 
             completion(mangaList, hasNextPage, nil);
         }

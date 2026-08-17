@@ -15,24 +15,24 @@
     self = [super init];
     if (self)
     {
-        _id_ = [[dictionary objectForKey:@"id"] description];
-        _url = [NSURL URLWithString:[dictionary objectForKey:@"url"]];
-        _name = [dictionary objectForKey:@"name"];
-        _uploadDate = [[dictionary objectForKey:@"uploadDate"] longLongValue];
-        _chapterNumber = [[dictionary objectForKey:@"chapterNumber"] doubleValue];
-        _scanlator = [dictionary objectForKey:@"scanlator"];
-        _mangaId = [dictionary objectForKey:@"mangaId"];
-        _read = [[dictionary objectForKey:@"read"] boolValue];
-        _bookmarked = [[dictionary objectForKey:@"bookmarked"] boolValue];
-        _lastPageRead = [[dictionary objectForKey:@"lastPageRead"] integerValue];
-        _lastReadAt = [[dictionary objectForKey:@"lastReadAt"] longLongValue];
-        _index = [[dictionary objectForKey:@"index"] integerValue];
-        _fetchedAt = [[dictionary objectForKey:@"fetchedAt"] longLongValue];
-        _realUrl = [NSURL URLWithString:[dictionary objectForKey:@"realUrl"]];
-        _downloaded = [[dictionary objectForKey:@"downloaded"] boolValue];
-        _pageCount = [[dictionary objectForKey:@"pageCount"] integerValue];
-        _chapterCount = [[dictionary objectForKey:@"chapterCount"] integerValue];
-        _meta = [dictionary objectForKey:@"meta"] ?: [NSDictionary dictionary];
+        _id_ = [dictionary[@"id"] description];
+        _url = [NSURL URLWithString:dictionary[@"url"]];
+        _name = dictionary[@"name"];
+        _uploadDate = [dictionary[@"uploadDate"] longLongValue];
+        _chapterNumber = [dictionary[@"chapterNumber"] doubleValue];
+        _scanlator = dictionary[@"scanlator"];
+        _mangaId = dictionary[@"mangaId"];
+        _read = [dictionary[@"read"] boolValue];
+        _bookmarked = [dictionary[@"bookmarked"] boolValue];
+        _lastPageRead = [dictionary[@"lastPageRead"] integerValue];
+        _lastReadAt = [dictionary[@"lastReadAt"] longLongValue];
+        _index = [dictionary[@"index"] integerValue];
+        _fetchedAt = [dictionary[@"fetchedAt"] longLongValue];
+        _realUrl = [NSURL URLWithString:dictionary[@"realUrl"]];
+        _downloaded = [dictionary[@"downloaded"] boolValue];
+        _pageCount = [dictionary[@"pageCount"] integerValue];
+        _chapterCount = [dictionary[@"chapterCount"] integerValue];
+        _meta = dictionary[@"meta"] ?: [NSDictionary dictionary];
     }
     return self;
 }

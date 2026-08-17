@@ -11,7 +11,7 @@
 
 @implementation YGRStepperCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
     reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleValue1

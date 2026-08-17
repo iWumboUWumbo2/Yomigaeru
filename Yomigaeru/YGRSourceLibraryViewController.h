@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) YGRSource *source;
 
-- (id)init;
+- (instancetype)init;
 
 @end

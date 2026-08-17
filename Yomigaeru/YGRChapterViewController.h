@@ -20,7 +20,7 @@
 @property (nonatomic, assign) NSInteger chapterCount;
 @property (nonatomic, weak) id<YGRChildRefreshDelegate> refreshDelegate;
 
-- (id)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
+- (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
         navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation
                       options:(NSDictionary *)options;
 - (void)loadChapter:(NSInteger)chapterIndex

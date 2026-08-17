@@ -31,7 +31,7 @@
 
 @implementation YGRMangaViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
@@ -478,7 +478,7 @@
 
     // Configure the cell...
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
+    YGRChapter *selectedChapter = self.chapters[indexPath.row];
     cell.textLabel.text = selectedChapter.name;
     
     cell.imageView.image = selectedChapter.bookmarked ? [UIImage imageNamed:@"favorite"] : nil;

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
+typedef NS_ENUM(NSInteger, YGRMangaStatus)
 {
     YGRMangaStatusUnknown = 0,
     YGRMangaStatusOngoing = 1,
@@ -17,7 +17,7 @@ typedef enum
     YGRMangaStatusPublishingFinished = 4,
     YGRMangaStatusCancelled = 5,
     YGRMangaStatusOnHiatus = 6,
-} YGRMangaStatus;
+};
 
 @interface YGRMangaStatusUtility : NSObject
 

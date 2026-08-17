@@ -10,6 +10,6 @@
 
 @interface YGRSettingsViewController : UITableViewController
 
-- (id)init;
+- (instancetype)init;
 
 @end
