@@ -186,10 +186,22 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
     CGFloat sourceWidth = [properties[(__bridge NSString *) kCGImagePropertyPixelWidth] doubleValue];
     CGFloat sourceHeight = [properties[(__bridge NSString *) kCGImagePropertyPixelHeight] doubleValue];
 
-    if (sourceWidth > 0 && sourceHeight > 0 && sourceWidth > targetWidth)
+    if (sourceWidth > 0 && sourceHeight > 0)
     {
+        // kCGImageSourceThumbnailMaxPixelSize bounds the *larger* of width/height,
+        // not width specifically. For webcomic-style long strips, that dimension is
+        // height, which can dwarf sourceWidth even when sourceWidth is already
+        // narrower than targetWidth. Previously this branch only ran when
+        // sourceWidth > targetWidth, so those strips fell through to
+        // maxPixelSize == targetWidth unmodified — which then capped *height* to
+        // targetWidth and dragged width down far below both sourceWidth and
+        // targetWidth. Computing maxPixelSize from the larger source dimension
+        // scaled by targetWidth/sourceWidth handles both cases uniformly: when
+        // sourceWidth <= targetWidth the result exceeds the source's largest
+        // dimension, so ImageIO's cap is a no-op and the image passes through
+        // at native resolution (still not upscaled).
         CGFloat scaleFactor = targetWidth / sourceWidth;
-        maxPixelSize = sourceHeight * scaleFactor;
+        maxPixelSize = MAX(sourceWidth, sourceHeight) * scaleFactor;
     }
 
     NSLog(@"[YGR-DEBUG] ImageUtility downsampled sourceWidth=%.1f sourceHeight=%.1f "
