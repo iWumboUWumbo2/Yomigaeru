@@ -130,21 +130,27 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
  *  Decodes image data (JPEG, PNG, etc. — anything ImageIO understands) directly
  *  at a reduced pixel size via `CGImageSourceCreateThumbnailAtIndex`, instead of
  *  decoding at full resolution and only then scaling. This keeps peak decode
- *  memory bounded to the target size rather than the source image's actual
- *  resolution, which matters a lot on memory-constrained devices: a decoded
- *  bitmap costs `width * height * 4` bytes regardless of how compressed the
- *  source file was.
+ *  memory bounded to roughly the target size rather than the source image's
+ *  actual resolution, which matters a lot on memory-constrained devices: a
+ *  decoded bitmap costs `width * height * 4` bytes regardless of how
+ *  compressed the source file was.
  *
- *  Unlike +imageWithWebPData:targetWidth:error: (which scales to an exact
- *  width and lets height float proportionally), this bounds the *larger* of
- *  width/height to targetWidth — a stricter, format-agnostic cap that's more
- *  appropriate here since it guarantees a hard ceiling on decoded memory
- *  regardless of the source image's aspect ratio.
+ *  Scales to an exact width, matching +imageWithWebPData:targetWidth:error:
+ *  above: ImageIO's thumbnail API only lets you bound whichever dimension is
+ *  *larger* to a max pixel size, which for portrait images (like manga pages,
+ *  taller than wide) would bound height and leave the resulting width smaller
+ *  than intended — forcing whatever displays it to upscale, and blurring text
+ *  in the process. To avoid that, this reads the source's actual pixel
+ *  dimensions first and computes the max-pixel-size ImageIO needs in order
+ *  for the *width* to come out to targetWidth. Height is left to float
+ *  however tall it needs to be (this app also serves webcomic-style long
+ *  strips, which can be far taller than they are wide) — aggregate memory
+ *  across many cached pages is bounded by the cache's own totalCostLimit/
+ *  countLimit instead of by capping any single image's height here.
  *
  *  @param data        The raw encoded image bytes.
- *  @param targetWidth The maximum size, in pixels, for the image's larger
- *                      dimension. Aspect ratio is preserved; images already
- *                      smaller than this are not upscaled.
+ *  @param targetWidth The width, in pixels, to scale the decoded image to.
+ *                      Images already narrower than this are not upscaled.
  *  @param error       On failure, set to an NSError describing what went wrong.
  *
  *  @return The decoded, downsampled UIImage, or nil if decoding failed.
@@ -174,9 +180,21 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
         return nil;
     }
 
+    CGFloat maxPixelSize = targetWidth;
+    NSDictionary *properties =
+        (__bridge_transfer NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
+    CGFloat sourceWidth = [properties[(__bridge NSString *) kCGImagePropertyPixelWidth] doubleValue];
+    CGFloat sourceHeight = [properties[(__bridge NSString *) kCGImagePropertyPixelHeight] doubleValue];
+
+    if (sourceWidth > 0 && sourceHeight > 0 && sourceWidth > targetWidth)
+    {
+        CGFloat scaleFactor = targetWidth / sourceWidth;
+        maxPixelSize = sourceHeight * scaleFactor;
+    }
+
     NSDictionary *thumbnailOptions = @{
         (__bridge NSString *) kCGImageSourceCreateThumbnailFromImageAlways : @YES,
-        (__bridge NSString *) kCGImageSourceThumbnailMaxPixelSize : @(targetWidth),
+        (__bridge NSString *) kCGImageSourceThumbnailMaxPixelSize : @(maxPixelSize),
         (__bridge NSString *) kCGImageSourceCreateThumbnailWithTransform : @YES,
     };
 

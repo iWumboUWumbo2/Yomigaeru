@@ -12,13 +12,21 @@
 #import "YGRNetworkManager.h"
 
 /**
- *  The maximum size, in pixels, a decoded page image's larger dimension is
- *  downsampled to. Roughly 2x the iPad 1's largest screen dimension (1024pt
- *  @1x), which leaves headroom for the reader's pinch-zoom before the image
- *  looks soft, while keeping a single decoded page well under 20MB instead of
- *  the tens of MB an un-downsampled full-resolution scan can cost.
+ *  The width, in pixels, page images are downsampled to before caching: the
+ *  device's actual screen size, so a page is decoded at exactly the width the
+ *  reader displays it at (see YGRPageViewController's width-fit scaling) and
+ *  never needs to be upscaled to fill the screen — which is what was making
+ *  text illegible. Uses the larger of the screen's two dimensions so quality
+ *  doesn't depend on which orientation happened to be active when this ran.
+ *
+ *  @return The target width, in pixels, for decoded page images.
  */
-static const CGFloat kYGRPageImageMaxDimension = 2048.0f;
+static CGFloat YGRPageImageTargetWidth(void)
+{
+    UIScreen *screen = [UIScreen mainScreen];
+    CGFloat maxScreenDimension = MAX(screen.bounds.size.width, screen.bounds.size.height);
+    return maxScreenDimension * screen.scale;
+}
 
 @interface YGRImageService ()
 
@@ -179,7 +187,7 @@ static const CGFloat kYGRPageImageMaxDimension = 2048.0f;
             NSError *decodeError = nil;
             UIImage *image = [YGRImageUtility imageFromData:(NSData *) responseObject
                                                     mimeType:contentType
-                                                 targetWidth:kYGRPageImageMaxDimension
+                                                 targetWidth:YGRPageImageTargetWidth()
                                                        error:&decodeError];
 
             if (!image)
