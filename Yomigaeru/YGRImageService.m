@@ -127,21 +127,34 @@ static CGFloat YGRPageImageTargetWidth(void)
     [operation
         setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *contentType = operation.response.allHeaderFields[@"Content-Type"] ?: @"";
+            NSData *data = (NSData *) responseObject;
 
-            NSError *decodeError = nil;
-            UIImage *image = [YGRImageUtility imageFromData:(NSData *) responseObject
-                                                   mimeType:contentType
-                                                targetWidth:[self thumbnailSize].width / 2
-                                                      error:&decodeError];
+            // AFHTTPRequestOperation calls success/failure blocks on the main
+            // queue by default (successCallbackQueue is never set here), so
+            // decoding has to be bounced onto a background queue explicitly —
+            // otherwise this synchronous decode blocks the main thread, and
+            // with it all touch handling, for as long as it takes.
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSError *decodeError = nil;
+                UIImage *image = [YGRImageUtility imageFromData:data
+                                                       mimeType:contentType
+                                                    targetWidth:[self thumbnailSize].width / 2
+                                                          error:&decodeError];
 
-            if (!image)
-            {
-                completion(nil, decodeError);
-                return;
-            }
+                if (!image)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, decodeError);
+                    });
+                    return;
+                }
 
-            [self.thumbnailCache setObject:image forKey:cacheKey];
-            completion(image, nil);
+                [self.thumbnailCache setObject:image forKey:cacheKey];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(image, nil);
+                });
+            });
         }
         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             completion(nil, error);
@@ -183,23 +196,36 @@ static CGFloat YGRPageImageTargetWidth(void)
     [operation
         setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *contentType = operation.response.allHeaderFields[@"Content-Type"] ?: @"";
+            NSData *data = (NSData *) responseObject;
 
-            NSError *decodeError = nil;
-            UIImage *image = [YGRImageUtility imageFromData:(NSData *) responseObject
-                                                    mimeType:contentType
-                                                 targetWidth:YGRPageImageTargetWidth()
-                                                       error:&decodeError];
+            // AFHTTPRequestOperation calls success/failure blocks on the main
+            // queue by default (successCallbackQueue is never set here), so
+            // decoding has to be bounced onto a background queue explicitly —
+            // otherwise this synchronous decode of a full page image blocks
+            // the main thread, and with it all touch handling, for as long
+            // as it takes (worst on the largest/slowest-to-decode pages).
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSError *decodeError = nil;
+                UIImage *image = [YGRImageUtility imageFromData:data
+                                                        mimeType:contentType
+                                                     targetWidth:YGRPageImageTargetWidth()
+                                                           error:&decodeError];
 
-            if (!image)
-            {
-                completion(nil, decodeError);
-                return;
-            }
+                if (!image)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, decodeError);
+                    });
+                    return;
+                }
 
-            NSUInteger cost = image.size.width * image.size.height * 4;
-            [self.pageCache setObject:image forKey:cacheKey cost:cost];
+                NSUInteger cost = image.size.width * image.size.height * 4;
+                [self.pageCache setObject:image forKey:cacheKey cost:cost];
 
-            completion(image, nil);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(image, nil);
+                });
+            });
         }
         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             completion(nil, error);
