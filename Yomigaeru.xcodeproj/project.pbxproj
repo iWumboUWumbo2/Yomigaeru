@@ -38,12 +38,14 @@
 		03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
 		03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
 		03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */; };
+		8F4460DDCBE34E028416758F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93C320ED225346AF88B9F87B /* ImageIO.framework */; };
 		03DCE24B2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE2492F0DBFAE00E49AB9 /* InfoPlist.strings */; };
 		03DCE24D2F0DBFAE00E49AB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE24C2F0DBFAE00E49AB9 /* main.m */; };
 		03DCE2512F0DBFAE00E49AB9 /* YGRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE2502F0DBFAE00E49AB9 /* YGRAppDelegate.m */; };
 		03DCE2622F0DBFAE00E49AB9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */; };
 		03DCE2632F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */; };
 		03DCE2642F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */; };
+		C8EFB1F45DBD4D438573DACD /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93C320ED225346AF88B9F87B /* ImageIO.framework */; };
 		03DCE26C2F0DBFAE00E49AB9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03DCE26A2F0DBFAE00E49AB9 /* InfoPlist.strings */; };
 		03DCE26F2F0DBFAE00E49AB9 /* YomigaeruTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE26E2F0DBFAE00E49AB9 /* YomigaeruTests.m */; };
 		03DCE2972F0DC0FE00E49AB9 /* YGRCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DCE28E2F0DC0FE00E49AB9 /* YGRCategory.m */; };
@@ -155,6 +157,7 @@
 		03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		93C320ED225346AF88B9F87B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		03DCE2482F0DBFAE00E49AB9 /* Yomigaeru-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Yomigaeru-Info.plist"; sourceTree = "<group>"; };
 		03DCE24A2F0DBFAE00E49AB9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03DCE24C2F0DBFAE00E49AB9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -235,6 +238,7 @@
 				03DCE2412F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */,
 				03DCE2432F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */,
 				03DCE2452F0DBFAE00E49AB9 /* CoreGraphics.framework in Frameworks */,
+				8F4460DDCBE34E028416758F /* ImageIO.framework in Frameworks */,
 				03DCE2AB2F0DC21F00E49AB9 /* WebP.framework in Frameworks */,
 				70D16D28C3AB9EFAD576A708 /* libPods-Yomigaeru.a in Frameworks */,
 			);
@@ -247,6 +251,7 @@
 				03DCE2622F0DBFAE00E49AB9 /* SenTestingKit.framework in Frameworks */,
 				03DCE2632F0DBFAE00E49AB9 /* UIKit.framework in Frameworks */,
 				03DCE2642F0DBFAE00E49AB9 /* Foundation.framework in Frameworks */,
+				C8EFB1F45DBD4D438573DACD /* ImageIO.framework in Frameworks */,
 				03DCE2AC2F0DC21F00E49AB9 /* WebP.framework in Frameworks */,
 				D5185BB292259624AA114037 /* libPods-YomigaeruTests.a in Frameworks */,
 			);
@@ -389,6 +394,7 @@
 				03DCE2402F0DBFAE00E49AB9 /* UIKit.framework */,
 				03DCE2422F0DBFAE00E49AB9 /* Foundation.framework */,
 				03DCE2442F0DBFAE00E49AB9 /* CoreGraphics.framework */,
+				93C320ED225346AF88B9F87B /* ImageIO.framework */,
 				03DCE2612F0DBFAE00E49AB9 /* SenTestingKit.framework */,
 				DBCF7370D363A13B8D97C155 /* libPods-Yomigaeru.a */,
 				B0817C01DA4C9B027C88D490 /* libPods-YomigaeruTests.a */,
