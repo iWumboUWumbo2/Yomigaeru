@@ -143,6 +143,12 @@
 
 #pragma mark - Private Fetching
 
+/**
+ *  Fetches the current page of the source's popular manga list and appends
+ *  the results to `mangaList`, updating pagination state.
+ *
+ *  @param completion Called with an error if the fetch failed, or nil on success.
+ */
 - (void)fetchPopularMangaWithCompletion:(void (^)(NSError *error))completion
 {
     self.isLoadingPage = YES;
@@ -163,6 +169,12 @@
                            }];
 }
 
+/**
+ *  Fetches the current page of the source's latest manga list and appends
+ *  the results to `mangaList`, updating pagination state.
+ *
+ *  @param completion Called with an error if the fetch failed, or nil on success.
+ */
 - (void)fetchLatestMangaWithCompletion:(void (^)(NSError *error))completion
 {
     self.isLoadingPage = YES;

@@ -12,6 +12,19 @@
 
 @implementation YGRExtensionService
 
+#pragma mark - Private Helpers
+
+/**
+ *  Issues a `GET extension/<action>/<pkgName>` request and reports whether
+ *  it succeeded. Backs the install/update/uninstall public API methods,
+ *  which each just supply a different `action` string.
+ *
+ *  @param action The action to perform, e.g. "install", "update", or
+ *  "uninstall".
+ *  @param pkgName The extension's package name.
+ *  @param completion Called with `YES` on success, or `NO` and an error on
+ *  failure.
+ */
 - (void)performExtensionAction:(NSString *)action
                    packageName:(NSString *)pkgName
                     completion:(void (^)(BOOL success, NSError *error))completion
@@ -28,6 +41,8 @@
             completion(NO, error);
         }];
 }
+
+#pragma mark - Public API
 
 - (void)fetchAllExtensionsWithCompletion:(void (^)(NSArray *extensions, NSError *error))completion
 {

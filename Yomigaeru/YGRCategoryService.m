@@ -13,6 +13,8 @@
 
 @implementation YGRCategoryService
 
+#pragma mark - Public API
+
 - (void)fetchAllCategoriesWithCompletion:(void (^)(NSArray *categories, NSError *error))completion
 {
     AFHTTPClient *jsonClient = [[YGRNetworkManager sharedManager] jsonClientInstance];
@@ -54,6 +56,8 @@
             completion(nil, error);
         }];
 }
+
+#pragma mark - Convenience
 
 - (void)fetchLibraryWithCompletion:(void (^)(NSArray *mangas, NSError *error))completion
 {

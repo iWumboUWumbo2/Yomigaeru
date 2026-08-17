@@ -16,6 +16,8 @@
 
 @implementation YGRServerSettingsViewController
 
+#pragma mark - Init
+
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -27,6 +29,8 @@
     }
     return self;
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -41,6 +45,8 @@
 
     [self.tableView reloadData];
 }
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -64,7 +70,7 @@
                                       reuseIdentifier:CellIdentifier];
     }
 
-    NSString *rowTitle = [self.serverSettings objectAtIndex:indexPath.row];
+    NSString *rowTitle = self.serverSettings[indexPath.row];
     if ([rowTitle isEqualToString:@"Base URL"])
     {
         cell.textLabel.text = @"Base URL";
@@ -76,10 +82,12 @@
     return cell;
 }
 
+#pragma mark - Table view delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
-    NSString *rowTitle = [self.serverSettings objectAtIndex:indexPath.row];
+    NSString *rowTitle = self.serverSettings[indexPath.row];
     if ([rowTitle isEqualToString:@"Base URL"])
     {
         YGRServerBaseURLViewController *serverBaseURLViewController =

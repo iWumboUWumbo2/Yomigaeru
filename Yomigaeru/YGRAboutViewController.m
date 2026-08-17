@@ -18,7 +18,9 @@
 
 @implementation YGRAboutViewController
 
-- (id)init
+#pragma mark - Init
+
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
@@ -28,6 +30,8 @@
     }
     return self;
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {
@@ -65,10 +69,10 @@
                                       reuseIdentifier:CellIdentifier];
     }
 
-    NSString *rowTitle = [self.aboutStrings objectAtIndex:indexPath.row];
+    NSString *rowTitle = self.aboutStrings[indexPath.row];
 
     cell.textLabel.text = rowTitle;
-    cell.detailTextLabel.text = [self.aboutDictionary objectForKey:rowTitle];
+    cell.detailTextLabel.text = self.aboutDictionary[rowTitle];
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 

@@ -14,6 +14,8 @@
 
 @implementation YGRViewController
 
+#pragma mark - Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -25,6 +27,8 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
+
+#pragma mark - Rotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

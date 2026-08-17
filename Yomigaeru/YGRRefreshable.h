@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+/** Adopted by view controllers that can reload their own content on demand. */
 @protocol YGRRefreshable <NSObject>
 
 @required
 
+/** Re-fetches and redisplays this object's content. */
 - (void)refresh;
 
 @end

@@ -17,10 +17,19 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
+@property (nonatomic, assign) BOOL hasStartedLoading;
+
 @end
 
 @implementation YGRPageViewController
 
+#pragma mark - Lifecycle
+
+/**
+ *  Builds the zoomable scroll view, image view, and loading spinner used to
+ *  display the page. The image itself is not loaded until
+ *  `viewWillAppear:`.
+ */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -52,13 +61,28 @@
     [self.view addSubview:self.loadingSpinner];
 }
 
+#pragma mark - UIScrollViewDelegate
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.imageView;
 }
 
+#pragma mark - Page Loading
+
+/**
+ *  Displays the given image, scaling it to fill the scroll view's width
+ *  while preserving aspect ratio, resetting the zoom level, and centering
+ *  the image vertically if it's shorter than the screen.
+ *
+ *  @param image The page image to display.
+ */
 - (void)setImage:(UIImage *)image
 {
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld setImage: image=%@ size=%@ scrollView.bounds=%@ thread=%@",
+          (long) self.pageIndex, image, NSStringFromCGSize(image.size),
+          NSStringFromCGRect(self.scrollView.bounds), [NSThread isMainThread] ? @"main" : @"bg");
+
     self.imageView.image = image;
 
     CGSize imageSize = image.size;
@@ -83,8 +107,34 @@
     }
 }
 
+/**
+ *  Fetches this page's image from `YGRImageService` and displays it,
+ *  showing a spinner while the fetch is in flight and an alert if it
+ *  fails.
+ */
 - (void)loadPageImage
 {
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage START mangaId=%@ chapterIndex=%lu self=%p "
+          @"hasStartedLoading=%d",
+          (long) self.pageIndex, self.mangaId, (unsigned long) self.chapterIndex, self,
+          self.hasStartedLoading);
+
+    // viewWillAppear: can end up firing twice for the same page — once via
+    // UIPageViewController's automatic appearance forwarding (when it
+    // happens to apply) and once via our own manual
+    // beginAppearanceTransition:/endAppearanceTransition workaround in
+    // YGRChapterViewController (see presentInitialPageViewController:). Make
+    // this idempotent rather than trying to guarantee exactly one call site
+    // wins.
+    if (self.hasStartedLoading)
+    {
+        NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage — already started, skipping duplicate "
+              @"call",
+              (long) self.pageIndex);
+        return;
+    }
+    self.hasStartedLoading = YES;
+
     [self.loadingSpinner startAnimating];
 
     __weak typeof(self) weakSelf = self;
@@ -97,6 +147,18 @@
                   completion:^(UIImage *pageData, NSError *error) {
                       __strong typeof(weakSelf) strongSelf = weakSelf;
                       if (!strongSelf) return;
+
+                      NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage COMPLETION strongSelf=%p "
+                            @"pageData=%@ error=%@ thread=%@",
+                            (long) weakSelf.pageIndex, strongSelf, pageData, error,
+                            [NSThread isMainThread] ? @"main" : @"bg");
+
+                      if (!strongSelf)
+                      {
+                          NSLog(@"[YGR-DEBUG] PageVC page=%ld strongSelf is nil — deallocated "
+                                @"before completion, bailing",
+                                (long) weakSelf.pageIndex);
+                      }
 
                       dispatch_async(dispatch_get_main_queue(), ^{
                           [strongSelf.loadingSpinner stopAnimating];
@@ -117,10 +179,14 @@
                       }
 
                       dispatch_async(dispatch_get_main_queue(), ^{
+                          NSLog(@"[YGR-DEBUG] PageVC page=%ld about to setImage: on main queue",
+                                (long) strongSelf.pageIndex);
                           [strongSelf setImage:pageData];
                       });
                   }];
 }
+
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -131,9 +197,13 @@
     }
 }
 
+#pragma mark - Lifecycle
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld viewWillAppear self=%p view.bounds=%@ view.window=%@",
+          (long) self.pageIndex, self, NSStringFromCGRect(self.view.bounds), self.view.window);
     self.scrollView.zoomScale = 1.0;
     [self loadPageImage];
 }

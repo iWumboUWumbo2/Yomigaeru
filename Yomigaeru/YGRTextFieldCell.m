@@ -10,6 +10,8 @@
 
 @implementation YGRTextFieldCell
 
+#pragma mark - Initialization
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style
               reuseIdentifier:(NSString *)reuseIdentifier
                   placeholder:(NSString *)placeholder
@@ -28,6 +30,8 @@
     }
     return self;
 }
+
+#pragma mark - Layout
 
 - (void)layoutSubviews
 {

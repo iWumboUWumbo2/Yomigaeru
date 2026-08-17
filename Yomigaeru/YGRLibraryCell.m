@@ -28,7 +28,7 @@
 
 #pragma mark - Init
 
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier];
     if (!self) return nil;

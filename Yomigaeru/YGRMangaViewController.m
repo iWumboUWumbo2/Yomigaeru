@@ -31,7 +31,9 @@
 
 @implementation YGRMangaViewController
 
-- (id)init
+#pragma mark - Init
+
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
@@ -48,6 +50,13 @@
     return self;
 }
 
+#pragma mark - UI Configuration
+
+/**
+ *  Rebuilds the editing toolbar's buttons based on the bookmark/read
+ *  status of the currently selected chapters, showing only the actions
+ *  that apply uniformly across the selection.
+ */
 - (void)configureToolbar
 {
     UIBarButtonItem *unbookmarkButton = [[UIBarButtonItem alloc] initWithTitle:@"Unbookmark" style:UIBarButtonItemStylePlain target:self action:@selector(markSelectedChaptersUnbookmarked)];
@@ -126,6 +135,13 @@
     self.toolbarItems = [toolbar copy];
 }
 
+#pragma mark - Error Handling
+
+/**
+ *  Presents an alert reporting that the given chapter failed to update.
+ *
+ *  @param chapter The chapter whose status update failed.
+ */
 - (void)showAlertForChapter:(YGRChapter *)chapter
 {
     UIAlertView *alert = [[UIAlertView alloc]
@@ -138,6 +154,15 @@
     [alert show];
 }
 
+#pragma mark - Chapter Status Actions
+
+/**
+ *  Applies the given bookmark status to every selected chapter that
+ *  doesn't already have it, reloading their rows and exiting editing mode
+ *  once all requests complete.
+ *
+ *  @param bookmarkStatus The bookmark status to apply to the selection.
+ */
 - (void)markSelectedChaptersWithBookmarkStatus:(BOOL)bookmarkStatus
 {
     NSArray *selected = [self.tableView indexPathsForSelectedRows];
@@ -182,17 +207,26 @@
     [self setEditing:NO animated:YES];
 }
 
+/** Bookmarks the currently selected chapters. */
 - (void)markSelectedChaptersBookmarked
 {
     [self markSelectedChaptersWithBookmarkStatus:YES];
 }
 
 
+/** Removes the bookmark from the currently selected chapters. */
 - (void)markSelectedChaptersUnbookmarked
 {
     [self markSelectedChaptersWithBookmarkStatus:NO];
 }
 
+/**
+ *  Applies the given read status to every selected chapter that doesn't
+ *  already have it, reloading their rows and exiting editing mode once
+ *  all requests complete.
+ *
+ *  @param readStatus The read status to apply to the selection.
+ */
 - (void)markSelectedChaptersWithReadStatus:(BOOL)readStatus
 {
     NSArray *selected = [self.tableView indexPathsForSelectedRows];
@@ -238,17 +272,25 @@
 }
 
 
+/** Marks the currently selected chapters as read. */
 - (void)markSelectedChaptersRead
 {
     [self markSelectedChaptersWithReadStatus:YES];
 }
 
 
+/** Marks the currently selected chapters as unread. */
 - (void)markSelectedChaptersUnread
 {
     [self markSelectedChaptersWithReadStatus:NO];
 }
 
+#pragma mark - Continue Reading
+
+/**
+ *  Presents the reader, modally and wrapped in its own navigation
+ *  controller, starting at the manga's last-read chapter.
+ */
 - (void)continueReading
 {
     // Navigation logic may go here. Create and push another view controller.
@@ -274,6 +316,8 @@
     // Present modally (fullscreen)
     [self presentViewController:navController animated:YES completion:nil];
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
@@ -310,6 +354,12 @@
     [self.tableView addGestureRecognizer:longPress];
 }
 
+/**
+ *  In addition to the standard editing-mode toggle, preserves each visible
+ *  cell's original highlighted text color so it can be restored when
+ *  editing ends, rebuilds the editing toolbar, and shows/hides the
+ *  navigation toolbar and edit button to match.
+ */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
@@ -344,6 +394,14 @@
     [self.navigationController setToolbarHidden:!editing animated:YES];
 }
 
+#pragma mark - Long Press
+
+/**
+ *  Enters editing mode (if needed) and selects the chapter under a long
+ *  press, then refreshes the editing toolbar for the new selection.
+ *
+ *  @param gesture The long-press gesture recognizer that triggered this handler.
+ */
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gesture
 {
     if (gesture.state != UIGestureRecognizerStateBegan)
@@ -368,6 +426,13 @@
     [self configureToolbar];
 }
 
+#pragma mark - Data Fetching
+
+/**
+ *  Fetches the manga's chapter list and reloads the table view, showing
+ *  an alert and animating the loading spinner while the request is in
+ *  flight.
+ */
 - (void)fetchChapters
 {
     [self.loadingSpinner startAnimating];
@@ -404,6 +469,10 @@
                                      }];
 }
 
+/**
+ *  Fetches the full manga record (including the last-read chapter) and
+ *  enables the continue-reading button once a last-read chapter exists.
+ */
 - (void)fetchFullManga
 {
     __weak typeof(self) weakSelf = self;
@@ -426,6 +495,8 @@
         });
     }];
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -466,6 +537,12 @@
     return self.chapters == nil ? 0 : self.chapters.count;
 }
 
+/**
+ *  Configures a swipeable chapter cell (via MGSwipeTableCell), exposing a
+ *  bookmark/unbookmark button on the left edge and read/unread and
+ *  mark-previous-as-read buttons on the right edge, each of which calls
+ *  the manga service and updates the chapter's local state on completion.
+ */
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -480,7 +557,7 @@
 
     // Configure the cell...
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    YGRChapter *selectedChapter = [self.chapters objectAtIndex:indexPath.row];
+    YGRChapter *selectedChapter = self.chapters[indexPath.row];
     cell.textLabel.text = selectedChapter.name;
     
     cell.imageView.image = selectedChapter.bookmarked ? [UIImage imageNamed:@"favorite"] : nil;
@@ -651,6 +728,8 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+#pragma mark - YGRChildRefreshDelegate
+
 - (void)childDidFinishRefreshing
 {
     [self fetchChapters];
@@ -658,6 +737,9 @@
 
 #pragma mark - Manga Info
 
+/**
+ *  Pushes the manga info screen for the currently displayed manga.
+ */
 - (void)showMangaInfo
 {
     YGRMangaInfoViewController *infoVC = [[YGRMangaInfoViewController alloc] init];

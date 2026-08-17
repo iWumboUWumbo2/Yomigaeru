@@ -11,7 +11,9 @@
 
 @implementation YGRStepperCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style
+#pragma mark - Initialization
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style
     reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:UITableViewCellStyleValue1
@@ -33,6 +35,8 @@
     }
     return self;
 }
+
+#pragma mark - Layout
 
 - (void)layoutSubviews
 {
@@ -68,6 +72,13 @@
     self.stepper.maximumValue = maximumValue;
 }
 
+/**
+ *  Target-action handler for the stepper's value-changed event. Updates
+ *  `value`/the text label, then persists the new value to the
+ *  `YGRSettingsManager` prefetch count matching this cell's `tag`.
+ *
+ *  @param sender The stepper whose value changed.
+ */
 - (void)stepperChanged:(UIStepper *)sender
 {
     self.value = (NSInteger)sender.value;

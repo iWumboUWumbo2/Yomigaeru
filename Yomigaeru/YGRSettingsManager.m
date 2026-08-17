@@ -19,6 +19,8 @@ static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
 
 @implementation YGRSettingsManager
 
+#pragma mark - Initialization
+
 + (instancetype)sharedInstance
 {
     static YGRSettingsManager *sharedInstance = nil;
@@ -56,6 +58,8 @@ static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
     return self;
 }
 
+#pragma mark - Server Address
+
 - (void)setServerBaseURL:(NSURL *)serverBaseURL
 {
     if (!serverBaseURL)
@@ -74,6 +78,8 @@ static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
                                                         object:nil];
 }
 
+#pragma mark - URL Helpers
+
 - (NSURL *)URLForPath:(NSString *)path
 {
     return [NSURL URLWithString:path relativeToURL:self.serverBaseURL];
@@ -83,6 +89,8 @@ static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
 {
     return [NSURL URLWithString:endpoint relativeToURL:[self apiBaseURL]];
 }
+
+#pragma mark - Prefetch Count
 
 - (void)setNextPrefetchCount:(NSInteger)prefetchCount
 {

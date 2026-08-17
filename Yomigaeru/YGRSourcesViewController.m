@@ -29,7 +29,9 @@
 
 @implementation YGRSourcesViewController
 
-- (id)init
+#pragma mark - Initialization
+
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
@@ -46,6 +48,8 @@
     }
     return self;
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {
@@ -64,6 +68,13 @@
     [self fetchSources];
 }
 
+#pragma mark - Data Fetching
+
+/**
+ *  Fetches every source from the server and buckets them by language into
+ *  `languages`/`sourcesByLanguage`, then reloads the table. Notifies
+ *  `refreshDelegate` when the fetch completes, and shows an alert on failure.
+ */
 - (void)fetchSources
 {
     [self.languages removeAllObjects];
@@ -92,11 +103,11 @@
 
         for (YGRSource *source in sources)
         {
-            NSMutableArray *arrayForLang = [strongSelf.sourcesByLanguage objectForKey:source.lang];
+            NSMutableArray *arrayForLang = strongSelf.sourcesByLanguage[source.lang];
             if (!arrayForLang)
             {
                 arrayForLang = [NSMutableArray array];
-                [strongSelf.sourcesByLanguage setObject:arrayForLang forKey:source.lang];
+                strongSelf.sourcesByLanguage[source.lang] = arrayForLang;
 
                 [strongSelf.languages addObject:source.lang];
             }
@@ -110,10 +121,18 @@
     }];
 }
 
+#pragma mark - YGRRefreshable
+
+/**
+ *  Re-fetches the source list. Called by a parent controller (e.g. a
+ *  pull-to-refresh container) via the `YGRRefreshable` protocol.
+ */
 - (void)refresh
 {
     [self fetchSources];
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidUnload
 {
@@ -141,9 +160,9 @@
     NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
     NSDictionary *sourcesByLanguageDictionary = (self.isSearching) ? self.searchSourcesByLanguage : self.sourcesByLanguage;
     
-    NSString *sectionLanguage = [languageArray objectAtIndex:section];
+    NSString *sectionLanguage = languageArray[section];
 
-    NSMutableArray *arrayForLang = [sourcesByLanguageDictionary objectForKey:sectionLanguage];
+    NSMutableArray *arrayForLang = sourcesByLanguageDictionary[sectionLanguage];
     if (!arrayForLang)
     {
         return 0;
@@ -152,19 +171,28 @@
     return arrayForLang.count;
 }
 
+/**
+ *  Looks up the source backing a given row, taking into account whether the
+ *  table is currently showing the search results or the full source list.
+ *
+ *  @param indexPath The index path of the row.
+ *
+ *  @return The matching source, or `nil` if the section/row don't resolve
+ *  to one (e.g. a stale index path during a search update).
+ */
 - (YGRSource *)sourceForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *languageArray = (self.isSearching) ? self.searchLanguages : self.languages;
     NSDictionary *sourcesByLanguageDictionary = (self.isSearching) ? self.searchSourcesByLanguage : self.sourcesByLanguage;
     
-    NSString *sectionLanguage = [languageArray objectAtIndex:indexPath.section];
-    NSMutableArray *arrayForLang = [sourcesByLanguageDictionary objectForKey:sectionLanguage];
+    NSString *sectionLanguage = languageArray[indexPath.section];
+    NSMutableArray *arrayForLang = sourcesByLanguageDictionary[sectionLanguage];
     if (!arrayForLang)
     {
         return nil;
     }
 
-    return [arrayForLang objectAtIndex:indexPath.row];
+    return arrayForLang[indexPath.row];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -202,7 +230,7 @@
         return @"Error";
     }
 
-    return [languageArray objectAtIndex:section];
+    return languageArray[section];
 }
 
 #pragma mark - Table view delegate
@@ -219,6 +247,13 @@
 
 #pragma mark - Search bar delegate
 
+/**
+ *  Rebuilds `searchLanguages`/`searchSourcesByLanguage` from `languages`/
+ *  `sourcesByLanguage`, keeping only sources whose lowercased name has
+ *  `searchTerm` as a prefix. An empty term copies the full, unfiltered list.
+ *
+ *  @param searchTerm The current search bar text.
+ */
 - (void)filterSourcesBySearchTerm:(NSString *)searchTerm
 {
     if (searchTerm.length == 0) {

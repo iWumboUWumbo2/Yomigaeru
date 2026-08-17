@@ -67,7 +67,9 @@
 
 @implementation YGRAPITestViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+#pragma mark - Init
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
@@ -77,6 +79,10 @@
     return self;
 }
 
+/**
+ *  Lazily instantiates the API service objects used by the test actions
+ *  below.
+ */
 - (void)initServices
 {
     self.categoryService = [[YGRCategoryService alloc] init];
@@ -85,6 +91,12 @@
     self.sourceService = [[YGRSourceService alloc] init];
 }
 
+#pragma mark - Service Tests
+
+/**
+ *  Exercises `YGRCategoryService`'s category, manga-by-category, and
+ *  library endpoints, logging each result.
+ */
 - (void)testCategoryService
 {
     [self.categoryService fetchAllCategoriesWithCompletion:^(NSArray *categories, NSError *error) {
@@ -101,6 +113,10 @@
     }];
 }
 
+/**
+ *  Exercises `YGRExtensionService`'s fetch/install/update/uninstall
+ *  endpoints for a hardcoded extension package, logging each result.
+ */
 - (void)testExtensionService
 {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -134,6 +150,10 @@
     //                                     }];
 }
 
+/**
+ *  Exercises `YGRMangaService`'s manga detail, library, and chapter
+ *  endpoints for a hardcoded manga id, logging each result.
+ */
 - (void)testMangaService
 {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -187,6 +207,10 @@
                                                }];
 }
 
+/**
+ *  Exercises `YGRSourceService`'s source list, popular/latest manga, and
+ *  search endpoints for a hardcoded source id, logging each result.
+ */
 - (void)testSourceService
 {
     [self.sourceService fetchAllSourcesWithCompletion:^(NSArray *sources, NSError *error) {
@@ -223,6 +247,10 @@
                    }];
 }
 
+/**
+ *  Placeholder test action for exercising WebP image decoding; the body is
+ *  currently commented out.
+ */
 - (void)testWebP
 {
     //    dispatch_async(dispatch_get_main_queue(), ^{
@@ -266,6 +294,18 @@
     //    });
 }
 
+#pragma mark - UI Helpers
+
+/**
+ *  Builds a rounded-rect button configured with the given title and tap
+ *  action.
+ *
+ *  @param title  The button's display title.
+ *  @param action The selector to invoke on this controller when the button
+ *  is tapped.
+ *
+ *  @return A configured, unpositioned button.
+ */
 - (UIButton *)createTestButtonWithTitle:(NSString *)title action:(SEL)action
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -275,6 +315,10 @@
     return button;
 }
 
+/**
+ *  Creates and lays out a vertical stack of buttons, one per service test
+ *  action.
+ */
 - (void)setupTestButtons
 {
     // Create buttons for each service
@@ -301,6 +345,8 @@
         yOffset += buttonHeight + 20; // Move the next button below with a little padding
     }
 }
+
+#pragma mark - Lifecycle
 
 - (void)viewDidLoad
 {

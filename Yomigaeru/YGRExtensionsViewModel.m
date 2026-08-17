@@ -137,6 +137,16 @@ NSString *const kExtensionInstalledKey = @"Installed";
 
 #pragma mark - Private
 
+/**
+ *  Buckets a flat list of extensions into ordered sections, splitting out
+ *  the "updates pending" and "installed" special sections ahead of the
+ *  remaining extensions, which are grouped by language.
+ *
+ *  Rebuilds `allSections` / `allExtensionsBySection` in place; does not
+ *  touch the search-filtered `visibleSections` / `visibleExtensionsBySection`.
+ *
+ *  @param extensions The full, unsectioned list of extensions to bucket.
+ */
 - (void)buildSectionsFromExtensions:(NSArray *)extensions
 {
     NSMutableArray *sections = [NSMutableArray array];

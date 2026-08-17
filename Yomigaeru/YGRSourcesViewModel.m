@@ -121,6 +121,15 @@
 
 #pragma mark - Section building
 
+/**
+ *  Buckets a flat list of sources into sections keyed by language,
+ *  preserving first-seen order for both sections and sources within them.
+ *
+ *  Rebuilds `allSections` / `allSourcesBySection` in place; does not touch
+ *  the search-filtered `visibleSections` / `visibleSourcesBySection`.
+ *
+ *  @param sources The full, unsectioned list of sources to bucket.
+ */
 - (void)buildSectionsFromSources:(NSArray *)sources
 {
     NSMutableArray *sections = [NSMutableArray array];

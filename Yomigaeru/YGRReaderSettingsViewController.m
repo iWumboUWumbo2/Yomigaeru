@@ -20,7 +20,9 @@
 
 @implementation YGRReaderSettingsViewController
 
-- (id)init
+#pragma mark - Init
+
+- (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -30,6 +32,8 @@
     }
     return self;
 }
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
