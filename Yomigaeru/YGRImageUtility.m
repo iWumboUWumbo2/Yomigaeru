@@ -192,6 +192,10 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
         maxPixelSize = sourceHeight * scaleFactor;
     }
 
+    NSLog(@"[YGR-DEBUG] ImageUtility downsampled sourceWidth=%.1f sourceHeight=%.1f "
+          @"targetWidth=%.1f maxPixelSize=%.1f",
+          sourceWidth, sourceHeight, targetWidth, maxPixelSize);
+
     NSDictionary *thumbnailOptions = @{
         (__bridge NSString *) kCGImageSourceCreateThumbnailFromImageAlways : @YES,
         (__bridge NSString *) kCGImageSourceThumbnailMaxPixelSize : @(maxPixelSize),
@@ -240,17 +244,24 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
 
     // Normalize content-type
     NSString *type = mimeType.lowercaseString;
-    NSLog(@"MIME-Type: %@", type);
+    NSLog(@"[YGR-DEBUG] ImageUtility imageFromData MIME-Type=%@ dataLength=%lu targetWidth=%.1f",
+          type, (unsigned long) data.length, targetWidth);
 
     // Check for WebP
     if ([type isEqualToString:@"image/webp"])
     {
-        return [self imageWithWebPData:data targetWidth:(CGFloat) targetWidth error:error];
+        UIImage *image = [self imageWithWebPData:data targetWidth:(CGFloat) targetWidth error:error];
+        NSLog(@"[YGR-DEBUG] ImageUtility imageFromData WebP path result image=%@ error=%@", image,
+              error ? *error : nil);
+        return image;
     }
 
     // Otherwise, decode via ImageIO, downsampling directly to targetWidth so we
     // never materialize a full-resolution bitmap for images we're about to shrink.
-    return [self downsampledImageWithData:data targetWidth:targetWidth error:error];
+    UIImage *image = [self downsampledImageWithData:data targetWidth:targetWidth error:error];
+    NSLog(@"[YGR-DEBUG] ImageUtility imageFromData ImageIO path result image=%@ error=%@", image,
+          error ? *error : nil);
+    return image;
 }
 
 @end

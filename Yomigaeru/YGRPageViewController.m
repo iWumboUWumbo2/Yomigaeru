@@ -77,6 +77,10 @@
  */
 - (void)setImage:(UIImage *)image
 {
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld setImage: image=%@ size=%@ scrollView.bounds=%@ thread=%@",
+          (long) self.pageIndex, image, NSStringFromCGSize(image.size),
+          NSStringFromCGRect(self.scrollView.bounds), [NSThread isMainThread] ? @"main" : @"bg");
+
     self.imageView.image = image;
 
     CGSize imageSize = image.size;
@@ -108,6 +112,9 @@
  */
 - (void)loadPageImage
 {
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage START mangaId=%@ chapterIndex=%lu self=%p",
+          (long) self.pageIndex, self.mangaId, (unsigned long) self.chapterIndex, self);
+
     [self.loadingSpinner startAnimating];
 
     __weak typeof(self) weakSelf = self;
@@ -119,6 +126,18 @@
                     priority:NSOperationQueuePriorityHigh
                   completion:^(UIImage *pageData, NSError *error) {
                       __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                      NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage COMPLETION strongSelf=%p "
+                            @"pageData=%@ error=%@ thread=%@",
+                            (long) weakSelf.pageIndex, strongSelf, pageData, error,
+                            [NSThread isMainThread] ? @"main" : @"bg");
+
+                      if (!strongSelf)
+                      {
+                          NSLog(@"[YGR-DEBUG] PageVC page=%ld strongSelf is nil — deallocated "
+                                @"before completion, bailing",
+                                (long) weakSelf.pageIndex);
+                      }
 
                       dispatch_async(dispatch_get_main_queue(), ^{
                           [strongSelf.loadingSpinner stopAnimating];
@@ -139,6 +158,8 @@
                       }
 
                       dispatch_async(dispatch_get_main_queue(), ^{
+                          NSLog(@"[YGR-DEBUG] PageVC page=%ld about to setImage: on main queue",
+                                (long) strongSelf.pageIndex);
                           [strongSelf setImage:pageData];
                       });
                   }];
@@ -160,6 +181,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld viewWillAppear self=%p view.bounds=%@ view.window=%@",
+          (long) self.pageIndex, self, NSStringFromCGRect(self.view.bounds), self.view.window);
     self.scrollView.zoomScale = 1.0;
     [self loadPageImage];
 }

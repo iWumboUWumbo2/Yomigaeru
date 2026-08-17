@@ -232,6 +232,11 @@
 {
     [super viewWillAppear:animated];
 
+    NSLog(@"[YGR-DEBUG] ChapterVC viewWillAppear self=%p currentChapter=%@ hasAppeared=%d "
+          @"view.bounds=%@ view.window=%@",
+          self, self.currentChapter, self.hasAppeared, NSStringFromCGRect(self.view.bounds),
+          self.view.window);
+
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setToolbarHidden:YES animated:NO];
 
@@ -260,9 +265,13 @@
     [super viewDidAppear:animated];
     [self layoutToolbar];
 
+    NSLog(@"[YGR-DEBUG] ChapterVC viewDidAppear self=%p pendingInitialPageBlock=%@",
+          self, self.pendingInitialPageBlock);
+
     self.hasAppeared = YES;
     if (self.pendingInitialPageBlock)
     {
+        NSLog(@"[YGR-DEBUG] ChapterVC viewDidAppear — running deferred pendingInitialPageBlock");
         void (^block)(void) = self.pendingInitialPageBlock;
         self.pendingInitialPageBlock = nil;
         block();
@@ -359,25 +368,45 @@
                                 direction:(UIPageViewControllerNavigationDirection)direction
                                 pageIndex:(NSInteger)pageIndex
 {
+    NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController pageIndex=%ld hasAppeared=%d "
+          @"self.view.window=%@ thread=%@",
+          (long) pageIndex, self.hasAppeared, self.view.window,
+          [NSThread isMainThread] ? @"main" : @"bg");
+
     __weak typeof(self) weakSelf = self;
     void (^applyBlock)(void) = ^{
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf)
+        {
+            NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController applyBlock — self "
+                  @"deallocated, bailing");
             return;
+        }
+
+        NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController applyBlock RUNNING "
+              @"pageIndex=%ld self.view.window=%@",
+              (long) pageIndex, strongSelf.view.window);
 
         [strongSelf setViewControllers:@[ pageVC ]
                               direction:direction
                                animated:NO
-                             completion:nil];
+                             completion:^(BOOL finished) {
+                                 NSLog(@"[YGR-DEBUG] ChapterVC setViewControllers completion "
+                                       @"finished=%d viewControllers=%@",
+                                       finished, strongSelf.viewControllers);
+                             }];
         [strongSelf updateToolbarWithCurrentPage:pageIndex];
     };
 
     if (self.hasAppeared)
     {
+        NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController — applying immediately");
         applyBlock();
     }
     else
     {
+        NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController — deferring until "
+              @"viewDidAppear");
         self.pendingInitialPageBlock = applyBlock;
     }
 }
@@ -533,8 +562,16 @@
 - (void)loadChapter:(NSInteger)chapterIndex
           direction:(UIPageViewControllerNavigationDirection)direction
 {
+    NSLog(@"[YGR-DEBUG] ChapterVC loadChapter START chapterIndex=%ld chapterCount=%ld self=%p",
+          (long) chapterIndex, (long) self.chapterCount, self);
+
     if (chapterIndex < 1 || chapterIndex > self.chapterCount)
+    {
+        NSLog(@"[YGR-DEBUG] ChapterVC loadChapter BAILING — chapterIndex=%ld out of bounds "
+              @"[1, %ld] — no overlay shown, no view controllers set, nothing will ever render",
+              (long) chapterIndex, (long) self.chapterCount);
         return;
+    }
 
     [self showLoadingOverlay];
 
@@ -544,8 +581,18 @@
                    chapterIndex:chapterIndex
                      completion:^(YGRChapter *chapter, NSError *error) {
                          __strong typeof(weakSelf) self = weakSelf;
+
+                         NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter COMPLETION self=%p chapter=%@ "
+                               @"error=%@ thread=%@",
+                               self, chapter, error,
+                               [NSThread isMainThread] ? @"main" : @"bg");
+
                          if (!self)
+                         {
+                             NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter completion — self "
+                                   @"deallocated, bailing");
                              return;
+                         }
 
                          dispatch_async(dispatch_get_main_queue(), ^{
                              [self hideLoadingOverlay];
@@ -553,6 +600,9 @@
 
                          if (error || !chapter || chapter.pageCount == 0)
                          {
+                             NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter FAILED error=%@ chapter=%@ "
+                                   @"pageCount=%ld",
+                                   error, chapter, (long) chapter.pageCount);
                              dispatch_async(dispatch_get_main_queue(), ^{
                                  UIAlertView *alert =
                                      [[UIAlertView alloc] initWithTitle:@"Error"
@@ -572,8 +622,19 @@
                          NSInteger startPage =
                              MAX(0, MIN(chapter.lastPageRead, chapter.pageCount - 1));
                          UIViewController *pageVC = [self viewControllerForPage:startPage];
+
+                         NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter SUCCESS pageCount=%ld "
+                               @"lastPageRead=%ld startPage=%ld pageVC=%@",
+                               (long) chapter.pageCount, (long) chapter.lastPageRead,
+                               (long) startPage, pageVC);
+
                          if (!pageVC)
+                         {
+                             NSLog(@"[YGR-DEBUG] ChapterVC viewControllerForPage returned nil for "
+                                   @"startPage=%ld — nothing will be presented",
+                                   (long) startPage);
                              return;
+                         }
 
                          dispatch_async(dispatch_get_main_queue(), ^{
                              [self presentInitialPageViewController:pageVC

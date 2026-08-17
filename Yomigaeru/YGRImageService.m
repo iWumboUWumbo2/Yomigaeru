@@ -177,9 +177,14 @@ static CGFloat YGRPageImageTargetWidth(void)
     NSString *cacheKey =
         [NSString stringWithFormat:@"page:%@:%tu:%tu", mangaId, chapterIndex, pageIndex];
 
+    NSLog(@"[YGR-DEBUG] ImageService fetchPage START key=%@ thread=%@", cacheKey,
+          [NSThread isMainThread] ? @"main" : @"bg");
+
     UIImage *cachedPage = [self.pageCache objectForKey:cacheKey];
     if (cachedPage)
     {
+        NSLog(@"[YGR-DEBUG] ImageService fetchPage CACHE HIT key=%@ image=%@", cacheKey,
+              cachedPage);
         completion(cachedPage, nil);
         return;
     }
@@ -188,6 +193,10 @@ static CGFloat YGRPageImageTargetWidth(void)
 
     NSString *path = [NSString
         stringWithFormat:@"manga/%@/chapter/%tu/page/%tu", mangaId, chapterIndex, pageIndex];
+
+    NSLog(@"[YGR-DEBUG] ImageService fetchPage CACHE MISS key=%@ requesting path=%@ "
+          @"imageClient=%@ baseURL=%@",
+          cacheKey, path, imageClient, imageClient.baseURL);
 
     NSURLRequest *request = [imageClient requestWithMethod:@"GET" path:path parameters:nil];
 
@@ -198,6 +207,11 @@ static CGFloat YGRPageImageTargetWidth(void)
             NSString *contentType = operation.response.allHeaderFields[@"Content-Type"] ?: @"";
             NSData *data = (NSData *) responseObject;
 
+            NSLog(@"[YGR-DEBUG] ImageService fetchPage HTTP SUCCESS key=%@ status=%ld "
+                  @"contentType=%@ bytes=%lu thread=%@",
+                  cacheKey, (long) operation.response.statusCode, contentType,
+                  (unsigned long) data.length, [NSThread isMainThread] ? @"main" : @"bg");
+
             // AFHTTPRequestOperation calls success/failure blocks on the main
             // queue by default (successCallbackQueue is never set here), so
             // decoding has to be bounced onto a background queue explicitly —
@@ -205,11 +219,18 @@ static CGFloat YGRPageImageTargetWidth(void)
             // the main thread, and with it all touch handling, for as long
             // as it takes (worst on the largest/slowest-to-decode pages).
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSLog(@"[YGR-DEBUG] ImageService fetchPage DECODE START key=%@ thread=%@",
+                      cacheKey, [NSThread isMainThread] ? @"main" : @"bg");
+
                 NSError *decodeError = nil;
                 UIImage *image = [YGRImageUtility imageFromData:data
                                                         mimeType:contentType
                                                      targetWidth:YGRPageImageTargetWidth()
                                                            error:&decodeError];
+
+                NSLog(@"[YGR-DEBUG] ImageService fetchPage DECODE END key=%@ image=%@ size=%@ "
+                      @"error=%@",
+                      cacheKey, image, NSStringFromCGSize(image.size), decodeError);
 
                 if (!image)
                 {
@@ -223,11 +244,16 @@ static CGFloat YGRPageImageTargetWidth(void)
                 [self.pageCache setObject:image forKey:cacheKey cost:cost];
 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    NSLog(@"[YGR-DEBUG] ImageService fetchPage calling completion() on main "
+                          @"key=%@",
+                          cacheKey);
                     completion(image, nil);
                 });
             });
         }
         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"[YGR-DEBUG] ImageService fetchPage HTTP FAILURE key=%@ status=%ld error=%@",
+                  cacheKey, (long) operation.response.statusCode, error);
             completion(nil, error);
         }];
 
