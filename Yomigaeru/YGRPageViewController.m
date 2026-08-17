@@ -17,6 +17,8 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
+@property (nonatomic, assign) BOOL hasStartedLoading;
+
 @end
 
 @implementation YGRPageViewController
@@ -112,8 +114,26 @@
  */
 - (void)loadPageImage
 {
-    NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage START mangaId=%@ chapterIndex=%lu self=%p",
-          (long) self.pageIndex, self.mangaId, (unsigned long) self.chapterIndex, self);
+    NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage START mangaId=%@ chapterIndex=%lu self=%p "
+          @"hasStartedLoading=%d",
+          (long) self.pageIndex, self.mangaId, (unsigned long) self.chapterIndex, self,
+          self.hasStartedLoading);
+
+    // viewWillAppear: can end up firing twice for the same page — once via
+    // UIPageViewController's automatic appearance forwarding (when it
+    // happens to apply) and once via our own manual
+    // beginAppearanceTransition:/endAppearanceTransition workaround in
+    // YGRChapterViewController (see presentInitialPageViewController:). Make
+    // this idempotent rather than trying to guarantee exactly one call site
+    // wins.
+    if (self.hasStartedLoading)
+    {
+        NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage — already started, skipping duplicate "
+              @"call",
+              (long) self.pageIndex);
+        return;
+    }
+    self.hasStartedLoading = YES;
 
     [self.loadingSpinner startAnimating];
 

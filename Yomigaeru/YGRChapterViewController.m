@@ -23,9 +23,6 @@
 @property (nonatomic, strong) UIView *loadingOverlay;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
-@property (nonatomic, assign) BOOL hasAppeared;
-@property (nonatomic, copy) void (^pendingInitialPageBlock)(void);
-
 @end
 
 @implementation YGRChapterViewController
@@ -232,9 +229,9 @@
 {
     [super viewWillAppear:animated];
 
-    NSLog(@"[YGR-DEBUG] ChapterVC viewWillAppear self=%p currentChapter=%@ hasAppeared=%d "
+    NSLog(@"[YGR-DEBUG] ChapterVC viewWillAppear self=%p currentChapter=%@ "
           @"view.bounds=%@ view.window=%@",
-          self, self.currentChapter, self.hasAppeared, NSStringFromCGRect(self.view.bounds),
+          self, self.currentChapter, NSStringFromCGRect(self.view.bounds),
           self.view.window);
 
     [self.navigationController setNavigationBarHidden:YES animated:NO];
@@ -264,18 +261,6 @@
 {
     [super viewDidAppear:animated];
     [self layoutToolbar];
-
-    NSLog(@"[YGR-DEBUG] ChapterVC viewDidAppear self=%p pendingInitialPageBlock=%@",
-          self, self.pendingInitialPageBlock);
-
-    self.hasAppeared = YES;
-    if (self.pendingInitialPageBlock)
-    {
-        NSLog(@"[YGR-DEBUG] ChapterVC viewDidAppear — running deferred pendingInitialPageBlock");
-        void (^block)(void) = self.pendingInitialPageBlock;
-        self.pendingInitialPageBlock = nil;
-        block();
-    }
 }
 
 /**
@@ -347,18 +332,26 @@
 #pragma mark - Initial Page Presentation
 
 /**
- *  Applies the given page as the page view controller's initial content,
- *  deferring until the receiver has actually finished appearing if it
- *  hasn't yet.
+ *  Applies the given page as the page view controller's initial content.
  *
- *  `UIPageViewController` can silently fail to render its first child view
- *  if `setViewControllers:` is called while the container is still mid
- *  presentation-transition (i.e. between `viewWillAppear:` and
- *  `viewDidAppear:`) — the child gets its own appearance callbacks, but its
- *  view never actually gets composited, leaving a black screen until some
- *  later relayout (a swipe, a rotation) forces it to recover. Since this is
- *  reached from a network completion handler, whether that race is hit
- *  depends on how fast the chapter fetch returns.
+ *  Confirmed via logging (not just the docs): `UIPageViewController` does
+ *  not reliably forward `viewWillAppear:`/`viewDidAppear:` to a child set
+ *  via `setViewControllers:direction:animated:completion:` — the
+ *  completion block fires with `finished=YES` and the child is genuinely
+ *  in `self.viewControllers`, but the child's own `-viewWillAppear:` is
+ *  simply never called, so `YGRPageViewController` never starts fetching
+ *  its image. This is a known, documented gap for the *initial* content
+ *  set on a page view controller (as opposed to swipe-driven page turns,
+ *  which go through UIPageViewController's own transition machinery and
+ *  are unaffected). The fix is to drive the child's appearance transition
+ *  manually. (An earlier attempt deferred this call until after our own
+ *  `viewDidAppear:` on the theory that it was a presentation-timing race;
+ *  logging showed that was wrong — deferring made the missing-callback
+ *  case fire every time instead of intermittently, since it pushed the
+ *  call further outside whatever window the automatic forwarding does
+ *  sometimes catch. `YGRPageViewController.loadPageImage` is idempotent
+ *  now specifically so it doesn't matter whether that automatic
+ *  forwarding also fires in addition to this manual call.)
  *
  *  @param pageVC    The page view controller to present.
  *  @param direction The direction to hand to `setViewControllers:`.
@@ -368,47 +361,21 @@
                                 direction:(UIPageViewControllerNavigationDirection)direction
                                 pageIndex:(NSInteger)pageIndex
 {
-    NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController pageIndex=%ld hasAppeared=%d "
+    NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController pageIndex=%ld "
           @"self.view.window=%@ thread=%@",
-          (long) pageIndex, self.hasAppeared, self.view.window,
-          [NSThread isMainThread] ? @"main" : @"bg");
+          (long) pageIndex, self.view.window, [NSThread isMainThread] ? @"main" : @"bg");
 
-    __weak typeof(self) weakSelf = self;
-    void (^applyBlock)(void) = ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (!strongSelf)
-        {
-            NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController applyBlock — self "
-                  @"deallocated, bailing");
-            return;
-        }
-
-        NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController applyBlock RUNNING "
-              @"pageIndex=%ld self.view.window=%@",
-              (long) pageIndex, strongSelf.view.window);
-
-        [strongSelf setViewControllers:@[ pageVC ]
-                              direction:direction
-                               animated:NO
-                             completion:^(BOOL finished) {
-                                 NSLog(@"[YGR-DEBUG] ChapterVC setViewControllers completion "
-                                       @"finished=%d viewControllers=%@",
-                                       finished, strongSelf.viewControllers);
-                             }];
-        [strongSelf updateToolbarWithCurrentPage:pageIndex];
-    };
-
-    if (self.hasAppeared)
-    {
-        NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController — applying immediately");
-        applyBlock();
-    }
-    else
-    {
-        NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController — deferring until "
-              @"viewDidAppear");
-        self.pendingInitialPageBlock = applyBlock;
-    }
+    [self setViewControllers:@[ pageVC ]
+                    direction:direction
+                     animated:NO
+                   completion:^(BOOL finished) {
+                       NSLog(@"[YGR-DEBUG] ChapterVC setViewControllers completion finished=%d "
+                             @"— manually forcing appearance transition on pageVC=%@",
+                             finished, pageVC);
+                       [pageVC beginAppearanceTransition:YES animated:NO];
+                       [pageVC endAppearanceTransition];
+                   }];
+    [self updateToolbarWithCurrentPage:pageIndex];
 }
 
 #pragma mark - Navigation
