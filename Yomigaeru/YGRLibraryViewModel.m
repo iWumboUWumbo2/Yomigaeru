@@ -61,6 +61,7 @@
 
     [self.categoryService fetchLibraryWithCompletion:^(NSArray *mangas, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
 
         if (error)
         {
@@ -91,6 +92,7 @@
     [self.mangaService deleteFromLibraryWithMangaId:manga.id_
                                          completion:^(BOOL success, NSError *error) {
                                              __strong typeof(weakSelf) strongSelf = weakSelf;
+                                             if (!strongSelf) return;
 
                                              if (error || !success)
                                              {

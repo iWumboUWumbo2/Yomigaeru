@@ -211,6 +211,8 @@
                              completion:^(NSError *error) {
                                  dispatch_async(dispatch_get_main_queue(), ^{
                                      __strong typeof(weakSelf) strongSelf = weakSelf;
+                                     if (!strongSelf) return;
+
                                      [strongSelf hideLoadingSpinner];
 
                                      if (error)
@@ -250,6 +252,8 @@
                               completion:^(NSError *error) {
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                       __strong typeof(weakSelf) strongSelf = weakSelf;
+                                      if (!strongSelf) return;
+
                                       [strongSelf hideLoadingSpinner];
 
                                       if (error)
@@ -312,6 +316,7 @@
                         completion:^(BOOL success, NSError *error) {
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                                if (!strongSelf) return;
 
                                 if (!success || error)
                                 {
@@ -393,6 +398,7 @@
     [self.viewModel loadNextPageWithCompletion:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
 
             if (error)
             {

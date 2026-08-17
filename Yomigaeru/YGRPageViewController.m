@@ -146,6 +146,7 @@
                     priority:NSOperationQueuePriorityHigh
                   completion:^(UIImage *pageData, NSError *error) {
                       __strong typeof(weakSelf) strongSelf = weakSelf;
+                      if (!strongSelf) return;
 
                       NSLog(@"[YGR-DEBUG] PageVC page=%ld loadPageImage COMPLETION strongSelf=%p "
                             @"pageData=%@ error=%@ thread=%@",

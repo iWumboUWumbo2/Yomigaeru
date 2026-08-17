@@ -441,6 +441,7 @@
     [self.mangaService fetchChaptersWithMangaId:self.manga.id_
                                      completion:^(NSArray *chapters, NSError *error) {
                                          __strong typeof(weakSelf) strongSelf = weakSelf;
+                                         if (!strongSelf) return;
 
                                          dispatch_async(dispatch_get_main_queue(), ^{
                                              [strongSelf.loadingSpinner stopAnimating];
@@ -477,7 +478,8 @@
     __weak typeof(self) weakSelf = self;
     [self.mangaService fetchFullMangaWithId:self.manga.id_ completion:^(YGRManga *manga, NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        
+        if (!strongSelf) return;
+
         if (!manga || error)
         {
             return;
@@ -582,7 +584,8 @@
     bookmarkButton.callback = ^BOOL(MGSwipeTableCell *sender) {
         BOOL bookmarkStatus = !selectedChapter.bookmarked;
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        
+        if (!strongSelf) return NO;
+
         [strongSelf.mangaService markBookmarkStatusChapterWithMangaId:strongSelf.manga.id_
                                                          chapterIndex:selectedChapter.index
                                                        bookmarkStatus:bookmarkStatus
@@ -620,7 +623,8 @@
     readButton.callback = ^BOOL(MGSwipeTableCell *sender) {
         BOOL readStatus = !selectedChapter.read;
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        
+        if (!strongSelf) return NO;
+
         [strongSelf.mangaService markReadStatusChapterWithMangaId:strongSelf.manga.id_
                                                      chapterIndex:selectedChapter.index
                                                        readStatus:readStatus
@@ -648,7 +652,8 @@
                        backgroundColor:[UIColor purpleColor]
                               callback:^BOOL(MGSwipeTableCell *sender) {
                                   __strong typeof(weakSelf) strongSelf = weakSelf;
-                                  
+                                  if (!strongSelf) return NO;
+
                                   [strongSelf.mangaService markPrevReadStatusChapterWithMangaId:strongSelf.manga.id_
                                                                                    chapterIndex:selectedChapter.index
                                                                              markPrevReadStatus:YES
