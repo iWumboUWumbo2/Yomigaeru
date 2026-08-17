@@ -1,0 +1,12 @@
+<svg width="640" height="960" viewBox="0 0 640 960" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="640" height="960" fill="#FFFFFF"/>
+
+  <g transform="translate(320, 480)">
+    <!-- icon mark: circle centered on the same baseline as the wordmark -->
+    <circle cx="-160" cy="0" r="38.7" fill="#FFFFFF" stroke="#E30613" stroke-width="2.6"/>
+    <text x="-160" y="0" font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif" font-size="41" fill="#111111" text-anchor="middle" dominant-baseline="central">蘇</text>
+
+    <!-- wordmark -->
+    <text x="-100" y="0" font-family="'Avenir Next Ultra Light', 'Avenir Next'" font-weight="100" font-size="54" fill="#111111" text-anchor="start" dominant-baseline="central">Yomigaeru</text>
+  </g>
+</svg>
