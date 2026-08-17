@@ -14,17 +14,25 @@
 #pragma mark - Decoding
 
 /**
- *  Decodes raw image data into a UIImage, downscaling to a target width.
+ *  Decodes raw image data into a UIImage, downsampling directly to a bounded
+ *  size rather than decoding at full resolution and scaling afterward — this
+ *  keeps peak decode memory proportional to @c targetWidth, not to the source
+ *  image's actual resolution.
  *
  *  Dispatches to a dedicated WebP decoder when @c mimeType is "image/webp"
- *  (UIImage can't decode WebP on its own); otherwise decodes via
- *  +[UIImage imageWithData:].
+ *  (UIImage/ImageIO can't decode WebP on their own), which scales to an exact
+ *  width and lets height float proportionally. All other formats (JPEG, PNG,
+ *  etc.) decode via ImageIO's thumbnail-generation API, which instead bounds
+ *  the *larger* of width/height to @c targetWidth — a stricter, format-
+ *  agnostic memory ceiling regardless of the source image's aspect ratio.
  *
  *  @param data        The raw image bytes.
  *  @param mimeType     The content type reported for @c data, e.g. "image/webp"
  *                      or "image/jpeg". Used only to pick the WebP path.
- *  @param targetWidth  The width, in points, to scale the decoded image to
- *                      (aspect ratio preserved). Only honored on the WebP path.
+ *  @param targetWidth  The maximum size, in pixels, to downsample the decoded
+ *                      image to (see above for exactly which dimension this
+ *                      bounds, per format). Images already smaller than this
+ *                      are not upscaled.
  *  @param error        On failure, set to an NSError describing what went wrong
  *                      (invalid/missing data, unsupported format, decode failure).
  *

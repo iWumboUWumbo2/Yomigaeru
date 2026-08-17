@@ -130,7 +130,7 @@
                               UIAlertView *alert =
                                   [[UIAlertView alloc] initWithTitle:@"Error"
                                                              message:@"Failed to load page image"
-                                                            delegate:self
+                                                            delegate:strongSelf
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
                               [alert show];

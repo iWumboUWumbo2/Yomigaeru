@@ -11,6 +11,15 @@
 #import "YGRImageUtility.h"
 #import "YGRNetworkManager.h"
 
+/**
+ *  The maximum size, in pixels, a decoded page image's larger dimension is
+ *  downsampled to. Roughly 2x the iPad 1's largest screen dimension (1024pt
+ *  @1x), which leaves headroom for the reader's pinch-zoom before the image
+ *  looks soft, while keeping a single decoded page well under 20MB instead of
+ *  the tens of MB an un-downsampled full-resolution scan can cost.
+ */
+static const CGFloat kYGRPageImageMaxDimension = 2048.0f;
+
 @interface YGRImageService ()
 
 @property (nonatomic, strong) NSCache *thumbnailCache;
@@ -41,12 +50,26 @@
     {
         _thumbnailCache = [[NSCache alloc] init];
         _thumbnailCache.name = @"YGRThumbnailCache";
+        _thumbnailCache.countLimit = 200; // bound long library-browsing sessions
 
         _pageCache = [[NSCache alloc] init];
-        _pageCache.totalCostLimit = 25 * 1024 * 1024; // 25 MB
+        _pageCache.totalCostLimit = 60 * 1024 * 1024; // 60 MB
+        _pageCache.countLimit = 12; // backstop independent of prefetch settings
         _pageCache.name = @"YGRPageCache";
+
+        // NSCache doesn't reliably self-purge under memory pressure on this
+        // era of iOS, so purge both caches explicitly on memory warnings.
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                  selector:@selector(didReceiveMemoryWarning)
+                                                      name:UIApplicationDidReceiveMemoryWarningNotification
+                                                    object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Thumbnails
@@ -147,22 +170,33 @@
 
     NSURLRequest *request = [imageClient requestWithMethod:@"GET" path:path parameters:nil];
 
-    AFImageRequestOperation *operation =
-        [AFImageRequestOperation imageRequestOperationWithRequest:request
-            imageProcessingBlock:^UIImage *(UIImage *image) {
-                return image;
-            }
-            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                NSUInteger cost = image.size.width * image.size.height * 4;
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
-                [self.pageCache setObject:image forKey:cacheKey cost:cost];
+    [operation
+        setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *contentType = operation.response.allHeaderFields[@"Content-Type"] ?: @"";
 
-                completion(image, nil);
+            NSError *decodeError = nil;
+            UIImage *image = [YGRImageUtility imageFromData:(NSData *) responseObject
+                                                    mimeType:contentType
+                                                 targetWidth:kYGRPageImageMaxDimension
+                                                       error:&decodeError];
+
+            if (!image)
+            {
+                completion(nil, decodeError);
+                return;
             }
-            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                completion(nil, error);
-            }];
-    
+
+            NSUInteger cost = image.size.width * image.size.height * 4;
+            [self.pageCache setObject:image forKey:cacheKey cost:cost];
+
+            completion(image, nil);
+        }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            completion(nil, error);
+        }];
+
     operation.queuePriority = priority;
     [imageClient enqueueHTTPRequestOperation:operation];
 }

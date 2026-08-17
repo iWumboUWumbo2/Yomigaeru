@@ -7,6 +7,7 @@
 //
 
 #import "YGRImageUtility.h"
+#import <ImageIO/ImageIO.h>
 #import <WebP/decode.h>
 #import <WebP/encode.h>
 
@@ -123,6 +124,86 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
     return image;
 }
 
+#pragma mark - Private Downsampled Decoding
+
+/**
+ *  Decodes image data (JPEG, PNG, etc. — anything ImageIO understands) directly
+ *  at a reduced pixel size via `CGImageSourceCreateThumbnailAtIndex`, instead of
+ *  decoding at full resolution and only then scaling. This keeps peak decode
+ *  memory bounded to the target size rather than the source image's actual
+ *  resolution, which matters a lot on memory-constrained devices: a decoded
+ *  bitmap costs `width * height * 4` bytes regardless of how compressed the
+ *  source file was.
+ *
+ *  Unlike +imageWithWebPData:targetWidth:error: (which scales to an exact
+ *  width and lets height float proportionally), this bounds the *larger* of
+ *  width/height to targetWidth — a stricter, format-agnostic cap that's more
+ *  appropriate here since it guarantees a hard ceiling on decoded memory
+ *  regardless of the source image's aspect ratio.
+ *
+ *  @param data        The raw encoded image bytes.
+ *  @param targetWidth The maximum size, in pixels, for the image's larger
+ *                      dimension. Aspect ratio is preserved; images already
+ *                      smaller than this are not upscaled.
+ *  @param error       On failure, set to an NSError describing what went wrong.
+ *
+ *  @return The decoded, downsampled UIImage, or nil if decoding failed.
+ */
++ (UIImage *)downsampledImageWithData:(NSData *)data
+                           targetWidth:(CGFloat)targetWidth
+                                 error:(NSError *__autoreleasing *)error
+{
+    if (!data || targetWidth <= 0)
+    {
+        if (error)
+            *error =
+                [NSError errorWithDomain:YGRImageUtilityDomain
+                                    code:-20
+                                userInfo:@{NSLocalizedDescriptionKey : @"Invalid data or width"}];
+        return nil;
+    }
+
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) data, NULL);
+    if (!source)
+    {
+        if (error)
+            *error = [NSError
+                errorWithDomain:YGRImageUtilityDomain
+                           code:-21
+                       userInfo:@{NSLocalizedDescriptionKey : @"Failed to create image source"}];
+        return nil;
+    }
+
+    NSDictionary *thumbnailOptions = @{
+        (__bridge NSString *) kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+        (__bridge NSString *) kCGImageSourceThumbnailMaxPixelSize : @(targetWidth),
+        (__bridge NSString *) kCGImageSourceCreateThumbnailWithTransform : @YES,
+    };
+
+    CGImageRef thumbnailRef =
+        CGImageSourceCreateThumbnailAtIndex(source, 0, (__bridge CFDictionaryRef) thumbnailOptions);
+    CFRelease(source);
+
+    if (!thumbnailRef)
+    {
+        if (error)
+            *error = [NSError
+                errorWithDomain:YGRImageUtilityDomain
+                           code:-22
+                       userInfo:@{NSLocalizedDescriptionKey : @"Failed to decode image"}];
+        return nil;
+    }
+
+    UIImage *image = [UIImage imageWithCGImage:thumbnailRef
+                                         scale:[UIScreen mainScreen].scale
+                                   orientation:UIImageOrientationUp];
+    CGImageRelease(thumbnailRef);
+
+    return image;
+}
+
+#pragma mark - Public API
+
 + (UIImage *)imageFromData:(NSData *)data
                   mimeType:(NSString *)mimeType
                targetWidth:(CGFloat)targetWidth
@@ -149,16 +230,9 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
         return [self imageWithWebPData:data targetWidth:(CGFloat) targetWidth error:error];
     }
 
-    // Otherwise, decode normally
-    UIImage *image = [UIImage imageWithData:data];
-
-    if (!image && error)
-    {
-        *error = [NSError errorWithDomain:@"YGRImageUtility"
-                                     code:-11
-                                 userInfo:@{NSLocalizedDescriptionKey : @"Failed to decode image"}];
-    }
-    return image;
+    // Otherwise, decode via ImageIO, downsampling directly to targetWidth so we
+    // never materialize a full-resolution bitmap for images we're about to shrink.
+    return [self downsampledImageWithData:data targetWidth:targetWidth error:error];
 }
 
 @end
