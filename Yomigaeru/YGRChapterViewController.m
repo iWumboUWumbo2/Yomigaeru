@@ -232,13 +232,6 @@
         [self.scrollView addSubview:slot];
     }
 
-    CGFloat pageWidth = self.view.bounds.size.width;
-    CGFloat pageHeight = self.view.bounds.size.height;
-
-    self.scrollView.contentSize = self.isVerticalReading
-        ? CGSizeMake(pageWidth, pageHeight * self.pageViews.count)
-        : CGSizeMake(pageWidth * self.pageViews.count, pageHeight);
-
     [self repositionPageViewSlots];
 
     [self.view addSubview:self.scrollView];
@@ -254,26 +247,51 @@
 }
 
 /**
- *  Lays out the three sliding slots along the reader's current scroll axis
- *  and recenters the scroll view on the middle slot.
+ *  Lays out the three sliding slots along the reader's current scroll axis,
+ *  sizing the scrollable content to include only the neighbors that
+ *  actually exist. Slot 0 always holds the previous page's content, slot 1
+ *  the current page, and slot 2 the next page's content — that spatial
+ *  order never changes — but at the first or last page of a chapter one of
+ *  those neighbors has nothing to show (see -configureSlot:withPage:
+ *  pageCount:, which leaves it blank via -prepareForReuse). Previously the
+ *  content was always exactly 3 slots wide regardless, so scrolling into
+ *  that blank neighbor was always physically possible: nothing then
+ *  brought the user back, since advanceForwards/advanceBackwards refuse to
+ *  move past the real boundary, leaving them stranded looking at a blank
+ *  page. Excluding a nonexistent neighbor from contentSize entirely makes
+ *  scrolling to it impossible in the first place — attempting to do so
+ *  just rubber-bands, like any other paging reader's end-of-content
+ *  bounce.
  */
 - (void)repositionPageViewSlots
 {
     BOOL vertical = self.isVerticalReading;
     CGFloat pageWidth = self.view.bounds.size.width;
     CGFloat pageHeight = self.view.bounds.size.height;
+    CGFloat pageExtent = vertical ? pageHeight : pageWidth;
+
+    BOOL hasPrevious = self.currentChapter && self.currentPage > 0;
+    BOOL hasNext = self.currentChapter && self.currentPage < self.currentChapter.pageCount - 1;
+
+    CGFloat currentPosition = hasPrevious ? 1.0f : 0.0f;
+    NSUInteger reachableSlotCount = 1 + (hasPrevious ? 1 : 0) + (hasNext ? 1 : 0);
 
     for (NSUInteger i = 0; i < self.pageViews.count; i++)
     {
         YGRPageView *slot = self.pageViews[i];
+        CGFloat position = currentPosition + ((CGFloat) i - 1.0f);
         slot.frame = vertical
-            ? CGRectMake(0.0f, pageHeight * i, pageWidth, pageHeight)
-            : CGRectMake(pageWidth * i, 0.0f, pageWidth, pageHeight);
+            ? CGRectMake(0.0f, position * pageExtent, pageWidth, pageHeight)
+            : CGRectMake(position * pageExtent, 0.0f, pageWidth, pageHeight);
     }
 
+    self.scrollView.contentSize = vertical
+        ? CGSizeMake(pageWidth, pageExtent * reachableSlotCount)
+        : CGSizeMake(pageExtent * reachableSlotCount, pageHeight);
+
     self.scrollView.contentOffset = vertical
-        ? CGPointMake(0.0f, pageHeight)
-        : CGPointMake(pageWidth, 0.0f);
+        ? CGPointMake(0.0f, currentPosition * pageExtent)
+        : CGPointMake(currentPosition * pageExtent, 0.0f);
 }
 
 /**
@@ -423,16 +441,26 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if (!self.currentChapter)
+        return;
+
     BOOL vertical = self.isVerticalReading;
     CGFloat pageExtent = vertical ? self.view.bounds.size.height : self.view.bounds.size.width;
     CGFloat offset = vertical ? self.scrollView.contentOffset.y : self.scrollView.contentOffset.x;
-    NSUInteger scrolledPage = offset / pageExtent;
 
-    if (scrolledPage == 2 && self.currentPage < self.currentChapter.pageCount - 1)
+    // Slot positions shift depending on which neighbors exist (see
+    // -repositionPageViewSlots), so the "current" slot isn't always at a
+    // fixed offset -- recompute where it is now and compare against that,
+    // rather than assuming it's always the middle of a fixed 3-wide strip.
+    BOOL hasPrevious = self.currentPage > 0;
+    CGFloat currentPosition = hasPrevious ? 1.0f : 0.0f;
+    NSInteger scrolledPosition = (NSInteger) roundf(offset / pageExtent);
+
+    if (scrolledPosition > currentPosition && self.currentPage < self.currentChapter.pageCount - 1)
     {
         [self advanceForwards];
     }
-    else if (scrolledPage == 0 && self.currentPage > 0)
+    else if (scrolledPosition < currentPosition && self.currentPage > 0)
     {
         [self advanceBackwards];
     }
@@ -576,6 +604,8 @@
             strongSelf.chapterNumber = chapter.chapterNumber;
 
             strongSelf.currentPage = MAX(0, MIN(chapter.lastPageRead, chapter.pageCount - 1));
+
+            [strongSelf repositionPageViewSlots];
 
             if (strongSelf.currentPage > 0)
             {
