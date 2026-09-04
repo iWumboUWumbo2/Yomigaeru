@@ -77,6 +77,37 @@
     return self.imageView;
 }
 
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    [self centerImageView];
+}
+
+/**
+ *  Keeps the image view centered within the scroll view's bounds as the
+ *  zoom level changes. Needed because zooming a plain UIView (rather than
+ *  a container view wrapping it) rescales that view's own frame in place;
+ *  a letterboxed page (one shorter than the screen after being scaled to
+ *  fit width) would otherwise drift toward the content area's top-left
+ *  origin as soon as zoomScale moved off 1.0, since that frame's origin —
+ *  not wherever it visually appeared before zooming started — is what the
+ *  zoom transform actually scales around.
+ */
+- (void)centerImageView
+{
+    CGSize boundsSize = self.scrollView.bounds.size;
+    CGRect frame = self.imageView.frame;
+
+    frame.origin.x = (frame.size.width < boundsSize.width)
+        ? (boundsSize.width - frame.size.width) / 2.0f
+        : 0.0f;
+
+    frame.origin.y = (frame.size.height < boundsSize.height)
+        ? (boundsSize.height - frame.size.height) / 2.0f
+        : 0.0f;
+
+    self.imageView.frame = frame;
+}
+
 #pragma mark - Page Loading
 
 /**
@@ -101,15 +132,11 @@
     
     self.imageView.frame = CGRectMake(0, 0, width, height);
     self.scrollView.contentSize = CGSizeMake(width, height);
-    
+
     // Reset zoom
     self.scrollView.zoomScale = 1.0;
-    
-    // Center vertically if image is shorter than screen
-    if (height < scrollSize.height)
-    {
-        self.imageView.center = CGPointMake(scrollSize.width / 2, scrollSize.height / 2);
-    }
+
+    [self centerImageView];
 }
 
 /**
