@@ -17,6 +17,21 @@ static const size_t bitsPerComponent = 8;
 static const size_t bitsPerPixel = 32;
 static const size_t bytesPerPixel = 4;
 
+/**
+ *  Upper bound, in bytes, on a single decoded page's RGBA bitmap.
+ *  Width-locking the downsample (see -downsampledImageWithData:targetWidth:
+ *  error:) keeps normal, page-shaped manga scans sharp, but for
+ *  webcomic-style strips many times taller than they are wide it leaves
+ *  decoded height — and so decoded memory — unbounded: a single such strip
+ *  can cost 40MB+ of RGBA, and the reader keeps up to three pages resident
+ *  at once (previous/current/next), which is enough to jetsam-kill a
+ *  256MB iPad 1 by the second page. This budget is the ceiling that keeps
+ *  even an extreme-aspect-ratio strip's decode bounded, at the cost of
+ *  falling short of targetWidth (and so looking softer) for strips tall
+ *  enough to hit it.
+ */
+static const NSUInteger kMaxDecodedPageBytes = 16 * 1024 * 1024; // 16 MB
+
 static void WebPFreeImageData(void *info, const void *data, size_t size)
 {
     (void) info;
@@ -142,11 +157,13 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
  *  than intended — forcing whatever displays it to upscale, and blurring text
  *  in the process. To avoid that, this reads the source's actual pixel
  *  dimensions first and computes the max-pixel-size ImageIO needs in order
- *  for the *width* to come out to targetWidth. Height is left to float
- *  however tall it needs to be (this app also serves webcomic-style long
- *  strips, which can be far taller than they are wide) — aggregate memory
- *  across many cached pages is bounded by the cache's own totalCostLimit/
- *  countLimit instead of by capping any single image's height here.
+ *  for the *width* to come out to targetWidth. Height is normally left to
+ *  float however tall it needs to be (this app also serves webcomic-style
+ *  long strips, which can be far taller than they are wide) — but if that
+ *  would decode past `kMaxDecodedPageBytes`, both dimensions are shrunk
+ *  further, proportionally, until the decoded bitmap fits the budget. That
+ *  only ever engages for extreme aspect ratios; ordinary page-shaped scans
+ *  are unaffected and still come out at exactly targetWidth.
  *
  *  @param data        The raw encoded image bytes.
  *  @param targetWidth The width, in pixels, to scale the decoded image to.
@@ -201,6 +218,20 @@ static void WebPFreeImageData(void *info, const void *data, size_t size)
         // dimension, so ImageIO's cap is a no-op and the image passes through
         // at native resolution (still not upscaled).
         CGFloat scaleFactor = targetWidth / sourceWidth;
+
+        // Width-locking alone leaves decoded area — and so decoded memory —
+        // unbounded for strips far taller than they are wide. If scaling to
+        // exactly targetWidth would decode past our byte budget, shrink both
+        // dimensions further, proportionally, until it fits.
+        CGFloat scaledWidth = sourceWidth * scaleFactor;
+        CGFloat scaledHeight = sourceHeight * scaleFactor;
+        CGFloat decodedBytes = scaledWidth * scaledHeight * bytesPerPixel;
+        if (decodedBytes > kMaxDecodedPageBytes)
+        {
+            CGFloat shrink = sqrtf((CGFloat) kMaxDecodedPageBytes / decodedBytes);
+            scaleFactor *= shrink;
+        }
+
         maxPixelSize = MAX(sourceWidth, sourceHeight) * scaleFactor;
     }
 
