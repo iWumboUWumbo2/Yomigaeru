@@ -12,6 +12,8 @@
 static NSString *const kServerAddressKey = @"serverAddress";
 static NSString *const kNextPrefetchCountKey = @"nextPrefetchCount";
 static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
+static NSString *const kReadingDirectionKey = @"readingDirection";
+static NSString *const kPagingEnabledKey = @"pagingEnabled";
 
 @interface YGRSettingsManager ()
 
@@ -43,17 +45,23 @@ static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
         [defaults registerDefaults:@{
                                      kServerAddressKey : @"http://localhost:4567/",
                                      kNextPrefetchCountKey : @(2),
-                                     kPreviousPrefetchCountKey: @(1)
+                                     kPreviousPrefetchCountKey: @(1),
+                                     kReadingDirectionKey : @(YGRReadingDirectionHorizontal),
+                                     kPagingEnabledKey : @(YES)
                                      }];
-        
+
         // Server Address
         NSString *baseURLString = [defaults stringForKey:kServerAddressKey];
         _serverBaseURL = [NSURL URLWithString:baseURLString];
         _apiBaseURL = [NSURL URLWithString:@"api/v1/" relativeToURL:_serverBaseURL];
-        
+
         // Prefetch Count
         _nextPrefetchCount = [defaults integerForKey:kNextPrefetchCountKey];
         _previousPrefetchCount = [defaults integerForKey:kPreviousPrefetchCountKey];
+
+        // Reader Behavior
+        _readingDirection = (YGRReadingDirection)[defaults integerForKey:kReadingDirectionKey];
+        _pagingEnabled = [defaults boolForKey:kPagingEnabledKey];
     }
     return self;
 }
@@ -108,6 +116,24 @@ static NSString *const kPreviousPrefetchCountKey = @"previousPrefetchCount";
     
     [[NSUserDefaults standardUserDefaults] setInteger:prefetchCount
                                                forKey:kPreviousPrefetchCountKey];
+}
+
+#pragma mark - Reader Behavior
+
+- (void)setReadingDirection:(YGRReadingDirection)readingDirection
+{
+    _readingDirection = readingDirection;
+
+    [[NSUserDefaults standardUserDefaults] setInteger:readingDirection
+                                               forKey:kReadingDirectionKey];
+}
+
+- (void)setPagingEnabled:(BOOL)pagingEnabled
+{
+    _pagingEnabled = pagingEnabled;
+
+    [[NSUserDefaults standardUserDefaults] setBool:pagingEnabled
+                                             forKey:kPagingEnabledKey];
 }
 
 @end

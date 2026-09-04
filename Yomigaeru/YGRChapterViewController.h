@@ -2,7 +2,8 @@
 //  YGRChapterViewController.h
 //  Yomigaeru
 //
-//  Created by John Connery on 2026/01/06.
+//  Created by John Connery on 8/20/26.
+//  Copyright (c) 2026 Wumbo World. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -10,14 +11,9 @@
 #import "YGRChapter.h"
 #import "YGRChildRefreshDelegate.h"
 #import "YGRManga.h"
+#import "YGRPageView.h"
 
-/**
- *  A page-view-controller-based chapter reader that pages through a
- *  chapter's images, tracks and persists reading progress, and prefetches
- *  nearby page images as the user reads.
- */
-@interface YGRChapterViewController
-    : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIAlertViewDelegate>
+@interface YGRChapterViewController : UIViewController <UIScrollViewDelegate, UIAlertViewDelegate, YGRPageViewDelegate>
 
 #pragma mark - Configuration
 
@@ -35,13 +31,14 @@
 #pragma mark - Initialization
 
 /**
- *  Creates a chapter reader configured with the given page view controller
- *  transition style.
+ *  Creates a chapter reader. The transition style/navigation orientation
+ *  parameters are accepted for call-site compatibility but are otherwise
+ *  unused, since this reader pages via its own sliding `UIScrollView`
+ *  rather than `UIPageViewController`.
  *
- *  @param style                 The page transition style to use.
- *  @param navigationOrientation The navigation orientation to use.
- *  @param options               Options dictionary forwarded to
- *  UIPageViewController.
+ *  @param style                 Unused.
+ *  @param navigationOrientation Unused.
+ *  @param options               Unused.
  *
  *  @return A newly initialized chapter view controller.
  */
@@ -56,10 +53,7 @@
  *  first unread page.
  *
  *  @param chapterIndex The 1-based index of the chapter to load.
- *  @param direction    The page transition direction to use when displaying
- *  the loaded chapter's first page.
  */
-- (void)loadChapter:(NSInteger)chapterIndex
-          direction:(UIPageViewControllerNavigationDirection)direction;
+- (void)loadChapter:(NSInteger)chapterIndex;
 
 @end

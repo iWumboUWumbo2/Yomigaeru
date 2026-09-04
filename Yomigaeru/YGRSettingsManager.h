@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+/** The direction the reader advances through pages. */
+typedef NS_ENUM(NSInteger, YGRReadingDirection) {
+    YGRReadingDirectionHorizontal,
+    YGRReadingDirectionVertical
+};
+
 /**
  *  Wraps `NSUserDefaults` to persist and expose the app's user-configurable
  *  settings: the server address and how many chapters to prefetch in each
@@ -30,6 +36,11 @@
 @property (nonatomic, assign) NSInteger nextPrefetchCount;
 /** How many preceding chapters to prefetch while reading; clamped to 1...10. */
 @property (nonatomic, assign) NSInteger previousPrefetchCount;
+
+/** The direction the reader advances through pages. Defaults to `YGRReadingDirectionHorizontal`. */
+@property (nonatomic, assign) YGRReadingDirection readingDirection;
+/** Whether the reader snaps to discrete page boundaries (`YES`) or scrolls continuously (`NO`). Defaults to `YES`. */
+@property (nonatomic, assign) BOOL pagingEnabled;
 
 #pragma mark - Initialization
 

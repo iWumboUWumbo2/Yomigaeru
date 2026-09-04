@@ -2,13 +2,15 @@
 //  YGRChapterViewController.m
 //  Yomigaeru
 //
-//  Created by John Connery on 2026/01/06.
+//  Created by John Connery on 8/20/26.
+//  Copyright (c) 2026 Wumbo World. All rights reserved.
 //
 
 #import "YGRChapterViewController.h"
+
 #import "YGRImageService.h"
 #import "YGRMangaService.h"
-#import "YGRPageViewController.h"
+#import "YGRPageView.h"
 #import "YGRSettingsManager.h"
 
 @interface YGRChapterViewController ()
@@ -23,6 +25,10 @@
 @property (nonatomic, strong) UIView *loadingOverlay;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingSpinner;
 
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) NSArray *pageViews;
+@property (nonatomic, assign) NSUInteger currentPage;
+
 @end
 
 @implementation YGRChapterViewController
@@ -30,12 +36,10 @@
 #pragma mark - Init
 
 - (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
-        navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation
-                      options:(NSDictionary *)options
+                  navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation
+                                options:(NSDictionary *)options
 {
-    self = [super initWithTransitionStyle:style
-                    navigationOrientation:navigationOrientation
-                                  options:options];
+    self = [super init];
     if (self)
     {
         _mangaService = [[YGRMangaService alloc] init];
@@ -171,11 +175,6 @@
     [self layoutToolbar];
 }
 
-/**
- *  Sets the chapter title, installs the back button and tap-to-toggle-bars
- *  gesture, builds the toolbar, and prepares (but does not show) the
- *  loading overlay.
- */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -191,9 +190,6 @@
                                          style:UIBarButtonItemStylePlain
                                         target:self
                                         action:@selector(dismissSelf)];
-
-    self.dataSource = self;
-    self.delegate = self;
 
     UITapGestureRecognizer *tap =
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
@@ -217,11 +213,71 @@
     CGRect bounds = self.view.bounds;
     self.loadingSpinner.center = CGPointMake(bounds.size.width / 2.0f, bounds.size.height / 2.0f);
     [self.loadingOverlay addSubview:self.loadingSpinner];
+
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    self.scrollView.delegate = self;
+    self.scrollView.pagingEnabled = [YGRSettingsManager sharedInstance].pagingEnabled;
+    self.scrollView.directionalLockEnabled = YES;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    self.pageViews = @[ [[YGRPageView alloc] init],
+                        [[YGRPageView alloc] init],
+                        [[YGRPageView alloc] init] ];
+
+    for (YGRPageView *slot in self.pageViews)
+    {
+        slot.delegate = self;
+        [self.scrollView addSubview:slot];
+    }
+
+    CGFloat pageWidth = self.view.bounds.size.width;
+    CGFloat pageHeight = self.view.bounds.size.height;
+
+    self.scrollView.contentSize = self.isVerticalReading
+        ? CGSizeMake(pageWidth, pageHeight * self.pageViews.count)
+        : CGSizeMake(pageWidth * self.pageViews.count, pageHeight);
+
+    [self repositionPageViewSlots];
+
+    [self.view addSubview:self.scrollView];
 }
 
 /**
- *  Loads the chapter from scratch if none is loaded yet; otherwise restores
- *  the page the user last read.
+ *  Whether the reader is currently configured to page vertically, per
+ *  `YGRSettingsManager`.
+ */
+- (BOOL)isVerticalReading
+{
+    return [YGRSettingsManager sharedInstance].readingDirection == YGRReadingDirectionVertical;
+}
+
+/**
+ *  Lays out the three sliding slots along the reader's current scroll axis
+ *  and recenters the scroll view on the middle slot.
+ */
+- (void)repositionPageViewSlots
+{
+    BOOL vertical = self.isVerticalReading;
+    CGFloat pageWidth = self.view.bounds.size.width;
+    CGFloat pageHeight = self.view.bounds.size.height;
+
+    for (NSUInteger i = 0; i < self.pageViews.count; i++)
+    {
+        YGRPageView *slot = self.pageViews[i];
+        slot.frame = vertical
+            ? CGRectMake(0.0f, pageHeight * i, pageWidth, pageHeight)
+            : CGRectMake(pageWidth * i, 0.0f, pageWidth, pageHeight);
+    }
+
+    self.scrollView.contentOffset = vertical
+        ? CGPointMake(0.0f, pageHeight)
+        : CGPointMake(pageWidth, 0.0f);
+}
+
+/**
+ *  Loads the chapter from scratch if none is loaded yet.
  *
  *  @param animated Whether the appearance is animated.
  */
@@ -229,31 +285,12 @@
 {
     [super viewWillAppear:animated];
 
-    NSLog(@"[YGR-DEBUG] ChapterVC viewWillAppear self=%p currentChapter=%@ "
-          @"view.bounds=%@ view.window=%@",
-          self, self.currentChapter, NSStringFromCGRect(self.view.bounds),
-          self.view.window);
-
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self.navigationController setToolbarHidden:YES animated:NO];
 
     if (!self.currentChapter)
     {
-        [self loadChapter:self.chapterIndex
-                direction:UIPageViewControllerNavigationDirectionForward];
-    }
-    else
-    {
-        NSInteger pageIndex =
-            MAX(0, MIN(self.currentChapter.lastPageRead, self.currentChapter.pageCount - 1));
-
-        UIViewController *pageVC = [self viewControllerForPage:pageIndex];
-        if (pageVC)
-        {
-            [self presentInitialPageViewController:pageVC
-                                          direction:UIPageViewControllerNavigationDirectionForward
-                                          pageIndex:pageIndex];
-        }
+        [self loadChapter:self.chapterIndex];
     }
 }
 
@@ -273,23 +310,21 @@
 {
     [super viewWillDisappear:animated];
 
-    YGRPageViewController *currentPageVC =
-        (YGRPageViewController *) self.viewControllers.firstObject;
-    if (!currentPageVC)
+    if (!self.currentChapter)
         return;
 
     __weak typeof(self) weakSelf = self;
-    
+
     NSDictionary *parameters;
-    if (currentPageVC.pageIndex == self.currentChapter.pageCount - 1)
+    if (self.currentPage == self.currentChapter.pageCount - 1)
     {
-        parameters = @{@"read" : @"true", @"lastPageRead" : @(currentPageVC.pageIndex)};
+        parameters = @{@"read" : @"true", @"lastPageRead" : @(self.currentPage)};
     }
     else
     {
-        parameters = @{@"lastPageRead" : @(currentPageVC.pageIndex)};
+        parameters = @{@"lastPageRead" : @(self.currentPage)};
     }
-    
+
     [self.mangaService modifyChapterWithMangaId:self.manga.id_
                                    chapterIndex:self.chapterIndex
                                      parameters:parameters
@@ -324,58 +359,21 @@
 {
     if (buttonIndex == 0)
     {
-        NSLog(@"Dismissed");
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
-#pragma mark - Initial Page Presentation
+#pragma mark - YGRPageViewDelegate
 
-/**
- *  Applies the given page as the page view controller's initial content.
- *
- *  Confirmed via logging (not just the docs): `UIPageViewController` does
- *  not reliably forward `viewWillAppear:`/`viewDidAppear:` to a child set
- *  via `setViewControllers:direction:animated:completion:` — the
- *  completion block fires with `finished=YES` and the child is genuinely
- *  in `self.viewControllers`, but the child's own `-viewWillAppear:` is
- *  simply never called, so `YGRPageViewController` never starts fetching
- *  its image. This is a known, documented gap for the *initial* content
- *  set on a page view controller (as opposed to swipe-driven page turns,
- *  which go through UIPageViewController's own transition machinery and
- *  are unaffected). The fix is to drive the child's appearance transition
- *  manually. (An earlier attempt deferred this call until after our own
- *  `viewDidAppear:` on the theory that it was a presentation-timing race;
- *  logging showed that was wrong — deferring made the missing-callback
- *  case fire every time instead of intermittently, since it pushed the
- *  call further outside whatever window the automatic forwarding does
- *  sometimes catch. `YGRPageViewController.loadPageImage` is idempotent
- *  now specifically so it doesn't matter whether that automatic
- *  forwarding also fires in addition to this manual call.)
- *
- *  @param pageVC    The page view controller to present.
- *  @param direction The direction to hand to `setViewControllers:`.
- *  @param pageIndex The 0-based page index being presented, for the toolbar.
- */
-- (void)presentInitialPageViewController:(UIViewController *)pageVC
-                                direction:(UIPageViewControllerNavigationDirection)direction
-                                pageIndex:(NSInteger)pageIndex
+- (void)pageView:(YGRPageView *)pageView didFailToLoadWithError:(NSError *)error
 {
-    NSLog(@"[YGR-DEBUG] ChapterVC presentInitialPageViewController pageIndex=%ld "
-          @"self.view.window=%@ thread=%@",
-          (long) pageIndex, self.view.window, [NSThread isMainThread] ? @"main" : @"bg");
-
-    [self setViewControllers:@[ pageVC ]
-                    direction:direction
-                     animated:NO
-                   completion:^(BOOL finished) {
-                       NSLog(@"[YGR-DEBUG] ChapterVC setViewControllers completion finished=%d "
-                             @"— manually forcing appearance transition on pageVC=%@",
-                             finished, pageVC);
-                       [pageVC beginAppearanceTransition:YES animated:NO];
-                       [pageVC endAppearanceTransition];
-                   }];
-    [self updateToolbarWithCurrentPage:pageIndex];
+    UIAlertView *alert =
+        [[UIAlertView alloc] initWithTitle:@"Error"
+                                   message:@"Failed to load page image"
+                                  delegate:self
+                         cancelButtonTitle:@"OK"
+                         otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Navigation
@@ -398,112 +396,7 @@
     [self.navigationController setToolbarHidden:!hidden animated:YES];
 }
 
-#pragma mark - Chapter/Page Helpers
-
-/**
- *  Builds a page view controller configured to display the given page of
- *  the current chapter.
- *
- *  @param pageIndex The 0-based page index to display.
- *
- *  @return A configured `YGRPageViewController`, or `nil` if the index is
- *  out of range or no chapter is currently loaded.
- */
-- (UIViewController *)viewControllerForPage:(NSInteger)pageIndex
-{
-    if (!self.currentChapter || pageIndex < 0 || pageIndex >= self.currentChapter.pageCount)
-    {
-        return nil;
-    }
-
-    YGRPageViewController *pageVC = [[YGRPageViewController alloc] init];
-    pageVC.mangaId = self.manga.id_;
-    pageVC.chapterIndex = self.chapterIndex;
-    pageVC.pageIndex = pageIndex;
-
-    return pageVC;
-}
-
-#pragma mark - UIPageViewControllerDataSource
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-      viewControllerBeforeViewController:(UIViewController *)viewController
-{
-
-    YGRPageViewController *currentPageVC = (YGRPageViewController *) viewController;
-    NSInteger previousPage = currentPageVC.pageIndex - 1;
-    if (previousPage < 0)
-        return nil; // Don't load previous chapter
-    return [self viewControllerForPage:previousPage];
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-       viewControllerAfterViewController:(UIViewController *)viewController
-{
-
-    YGRPageViewController *currentPageVC = (YGRPageViewController *) viewController;
-    NSInteger nextPage = currentPageVC.pageIndex + 1;
-    if (nextPage >= self.currentChapter.pageCount)
-        return nil; // Don't load next chapter
-    return [self viewControllerForPage:nextPage];
-}
-
-#pragma mark - Chapter Loading
-
-/**
- *  Eagerly fetches every page image for the given chapter at low priority.
- *  Currently unused (the call site is commented out).
- *
- *  @param chapter The chapter whose pages should be prefetched.
- */
-- (void)prefetchImagesForChapter:(YGRChapter *)chapter
-{
-    if (!chapter)
-        return;
-
-    for (NSInteger pageIndex = 0; pageIndex < chapter.pageCount; pageIndex++)
-    {
-        [[YGRImageService sharedService]
-            fetchPageWithMangaId:self.manga.id_
-                    chapterIndex:self.chapterIndex
-                       pageIndex:pageIndex
-                        priority:NSOperationQueuePriorityLow
-                      completion:^(UIImage *image, NSError *error) {
-                          if (error)
-                          {
-                              NSLog(@"Prefetch failed for page %ld: %@", (long) pageIndex, error);
-                          }
-                      }];
-    }
-}
-
-/**
- *  Prefetches page images within a window around the given page, sized by
- *  the user's previous/next prefetch-count settings.
- *
- *  @param pageIndex The 0-based page index to prefetch around.
- */
-- (void)prefetchAroundPage:(NSInteger)pageIndex
-{
-    if (!self.currentChapter) return;
-    
-    NSInteger pageCount = self.currentChapter.pageCount;
-    
-    YGRSettingsManager *settingsManager = [YGRSettingsManager sharedInstance];
-    
-    NSInteger start = MAX(0, pageIndex - settingsManager.previousPrefetchCount);
-    NSInteger end   = MIN(pageCount - 1, pageIndex + settingsManager.nextPrefetchCount);
-    
-    for (NSInteger i = start; i <= end; i++)
-    {
-        [[YGRImageService sharedService]
-         fetchPageWithMangaId:self.manga.id_
-         chapterIndex:self.chapterIndex
-         pageIndex:i
-         priority:NSOperationQueuePriorityLow
-         completion:nil];
-    }
-}
+#pragma mark - Loading Overlay
 
 /**
  *  Adds the loading overlay to the view (if needed) and starts its spinner.
@@ -526,106 +419,180 @@
     [self.loadingOverlay removeFromSuperview];
 }
 
-- (void)loadChapter:(NSInteger)chapterIndex
-          direction:(UIPageViewControllerNavigationDirection)direction
-{
-    NSLog(@"[YGR-DEBUG] ChapterVC loadChapter START chapterIndex=%ld chapterCount=%ld self=%p",
-          (long) chapterIndex, (long) self.chapterCount, self);
+#pragma mark - UIScrollViewDelegate
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    BOOL vertical = self.isVerticalReading;
+    CGFloat pageExtent = vertical ? self.view.bounds.size.height : self.view.bounds.size.width;
+    CGFloat offset = vertical ? self.scrollView.contentOffset.y : self.scrollView.contentOffset.x;
+    NSUInteger scrolledPage = offset / pageExtent;
+
+    if (scrolledPage == 2 && self.currentPage < self.currentChapter.pageCount - 1)
+    {
+        [self advanceForwards];
+    }
+    else if (scrolledPage == 0 && self.currentPage > 0)
+    {
+        [self advanceBackwards];
+    }
+}
+
+- (void)advanceForwards
+{
+    if (self.currentPage >= self.currentChapter.pageCount - 1)
+    {
+        return;
+    }
+
+    self.currentPage++;
+
+    YGRPageView *recycled = self.pageViews[0];
+    self.pageViews = @[ self.pageViews[1], self.pageViews[2], recycled ];
+
+    [self repositionPageViewSlots];
+
+    [self configureSlot:recycled
+                   withPage:self.currentPage + 1
+                  pageCount:self.currentChapter.pageCount];
+
+    [self updateToolbarWithCurrentPage:self.currentPage];
+    [self prefetchAroundPage:self.currentPage];
+}
+
+- (void)configureSlot:(YGRPageView *)slot
+                 withPage:(NSInteger)pageIndex
+                pageCount:(NSInteger)pageCount
+{
+    if (pageIndex < 0 || pageIndex >= pageCount)
+    {
+        [slot prepareForReuse];
+        return;
+    }
+
+    [slot configureWithMangaId:self.currentChapter.mangaId
+                  chapterIndex:self.chapterIndex
+                     pageIndex:pageIndex];
+}
+
+- (void)advanceBackwards
+{
+    if (self.currentPage <= 0)
+    {
+        return;
+    }
+
+    self.currentPage--;
+
+    YGRPageView *recycled = self.pageViews[2];
+    self.pageViews = @[ recycled, self.pageViews[0], self.pageViews[1] ];
+
+    [self repositionPageViewSlots];
+
+    [self configureSlot:recycled
+                   withPage:(NSInteger) self.currentPage - 1
+                  pageCount:self.currentChapter.pageCount];
+
+    [self updateToolbarWithCurrentPage:self.currentPage];
+    [self prefetchAroundPage:self.currentPage];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Chapter Loading
+
+/**
+ *  Prefetches page images within a window around the given page, sized by
+ *  the user's previous/next prefetch-count settings.
+ *
+ *  @param pageIndex The 0-based page index to prefetch around.
+ */
+- (void)prefetchAroundPage:(NSInteger)pageIndex
+{
+    if (!self.currentChapter) return;
+
+    NSInteger pageCount = self.currentChapter.pageCount;
+
+    YGRSettingsManager *settingsManager = [YGRSettingsManager sharedInstance];
+
+    NSInteger start = MAX(0, pageIndex - settingsManager.previousPrefetchCount);
+    NSInteger end   = MIN(pageCount - 1, pageIndex + settingsManager.nextPrefetchCount);
+
+    for (NSInteger i = start; i <= end; i++)
+    {
+        [[YGRImageService sharedService]
+         fetchPageWithMangaId:self.manga.id_
+         chapterIndex:self.chapterIndex
+         pageIndex:i
+         priority:NSOperationQueuePriorityLow
+         completion:nil];
+    }
+}
+
+- (void)loadChapter:(NSInteger)chapterIndex
+{
     if (chapterIndex < 1 || chapterIndex > self.chapterCount)
     {
-        NSLog(@"[YGR-DEBUG] ChapterVC loadChapter BAILING — chapterIndex=%ld out of bounds "
-              @"[1, %ld] — no overlay shown, no view controllers set, nothing will ever render",
-              (long) chapterIndex, (long) self.chapterCount);
         return;
     }
 
     [self showLoadingOverlay];
 
     __weak typeof(self) weakSelf = self;
-    [self.mangaService
-        fetchChapterWithMangaId:self.manga.id_
-                   chapterIndex:chapterIndex
-                     completion:^(YGRChapter *chapter, NSError *error) {
-                         __strong typeof(weakSelf) strongSelf = weakSelf;
+    [self.mangaService fetchChapterWithMangaId:self.manga.id_ chapterIndex:chapterIndex completion:^(YGRChapter *chapter, NSError *error) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (!strongSelf) return;
 
-                         NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter COMPLETION self=%p chapter=%@ "
-                               @"error=%@ thread=%@",
-                               strongSelf, chapter, error,
-                               [NSThread isMainThread] ? @"main" : @"bg");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf hideLoadingOverlay];
+        });
 
-                         if (!strongSelf)
-                         {
-                             NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter completion — self "
-                                   @"deallocated, bailing");
-                             return;
-                         }
+        if (error || !chapter || chapter.pageCount == 0)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                __strong typeof(weakSelf) strongSelf = weakSelf;
 
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             [strongSelf hideLoadingOverlay];
-                         });
+                UIAlertView *alert =
+                [[UIAlertView alloc] initWithTitle:@"Error"
+                                           message:@"Failed to load chapter"
+                                          delegate:strongSelf
+                                 cancelButtonTitle:@"OK"
+                                 otherButtonTitles:nil];
+                [alert show];
+            });
+            return;
+        }
 
-                         if (error || !chapter || chapter.pageCount == 0)
-                         {
-                             NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter FAILED error=%@ chapter=%@ "
-                                   @"pageCount=%ld",
-                                   error, chapter, (long) chapter.pageCount);
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                                 UIAlertView *alert =
-                                     [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"Failed to load chapter"
-                                                               delegate:strongSelf
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-                                 [alert show];
-                             });
-                             return;
-                         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
 
-                         strongSelf.currentChapter = chapter;
-                         strongSelf.chapterIndex = chapterIndex;
-                         strongSelf.chapterNumber = chapter.chapterNumber;
+            strongSelf.currentChapter = chapter;
+            strongSelf.chapterIndex = chapterIndex;
+            strongSelf.chapterNumber = chapter.chapterNumber;
 
-                         NSInteger startPage =
-                             MAX(0, MIN(chapter.lastPageRead, chapter.pageCount - 1));
-                         UIViewController *pageVC = [strongSelf viewControllerForPage:startPage];
+            strongSelf.currentPage = MAX(0, MIN(chapter.lastPageRead, chapter.pageCount - 1));
 
-                         NSLog(@"[YGR-DEBUG] ChapterVC fetchChapter SUCCESS pageCount=%ld "
-                               @"lastPageRead=%ld startPage=%ld pageVC=%@",
-                               (long) chapter.pageCount, (long) chapter.lastPageRead,
-                               (long) startPage, pageVC);
+            if (strongSelf.currentPage > 0)
+            {
+                [strongSelf.pageViews[0] configureWithMangaId:strongSelf.manga.id_ chapterIndex:strongSelf.chapterIndex pageIndex:strongSelf.currentPage - 1];
+            }
 
-                         if (!pageVC)
-                         {
-                             NSLog(@"[YGR-DEBUG] ChapterVC viewControllerForPage returned nil for "
-                                   @"startPage=%ld — nothing will be presented",
-                                   (long) startPage);
-                             return;
-                         }
+            [strongSelf.pageViews[1] configureWithMangaId:strongSelf.manga.id_ chapterIndex:strongSelf.chapterIndex pageIndex:strongSelf.currentPage];
 
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             [strongSelf presentInitialPageViewController:pageVC
-                                                                 direction:direction
-                                                                 pageIndex:startPage];
-//                             [strongSelf prefetchImagesForChapter:chapter];
-                         });
-                     }];
-}
+            if (strongSelf.currentPage < chapter.pageCount - 1)
+            {
+                [strongSelf.pageViews[2] configureWithMangaId:strongSelf.manga.id_ chapterIndex:strongSelf.chapterIndex pageIndex:strongSelf.currentPage + 1];
+            }
 
-#pragma mark - UIPageViewControllerDelegate
-
-- (void)pageViewController:(UIPageViewController *)pageViewController
-         didFinishAnimating:(BOOL)finished
-    previousViewControllers:(NSArray *)previousViewControllers
-        transitionCompleted:(BOOL)completed
-{
-    if (completed)
-    {
-        YGRPageViewController *currentViewController =
-            (YGRPageViewController *) pageViewController.viewControllers.firstObject;
-        [self updateToolbarWithCurrentPage:currentViewController.pageIndex];
-        [self prefetchAroundPage:currentViewController.pageIndex];
-    }
+            [strongSelf updateToolbarWithCurrentPage:strongSelf.currentPage];
+            [strongSelf prefetchAroundPage:strongSelf.currentPage];
+        });
+    }];
 }
 
 @end
