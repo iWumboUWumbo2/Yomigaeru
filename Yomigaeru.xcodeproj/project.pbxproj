@@ -86,6 +86,7 @@
 		03E20F452F2D01BF00757FFD /* YGRReaderSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E20F442F2D01BF00757FFD /* YGRReaderSettingsViewController.m */; };
 		03E20F482F2D0CAF00757FFD /* YGRStepperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E20F472F2D0CAF00757FFD /* YGRStepperCell.m */; };
 		0E7C3275CB5D6355D4C05266 /* YGRSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3B2DE7C2A33B90705A28F2 /* YGRSwitchCell.m */; };
+		9276A39ED25E98DDDA8D4383 /* YGRPullToRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 373D635310D67A6F71D95C72 /* YGRPullToRefreshView.m */; };
 		03F4D4482F1BD7F400F7E804 /* YGRImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F4D4472F1BD7F400F7E804 /* YGRImageService.m */; };
 		03FFDB502F0F25EA00813B1C /* YGRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FFDB4F2F0F25EA00813B1C /* YGRSettingsViewController.m */; };
 		03FFDB512F0F25EA00813B1C /* YGRSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FFDB4F2F0F25EA00813B1C /* YGRSettingsViewController.m */; };
@@ -213,6 +214,8 @@
 		03E20F472F2D0CAF00757FFD /* YGRStepperCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRStepperCell.m; sourceTree = "<group>"; };
 		4AA355386EA63CA724CAC035 /* YGRSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRSwitchCell.h; sourceTree = "<group>"; };
 		CA3B2DE7C2A33B90705A28F2 /* YGRSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRSwitchCell.m; sourceTree = "<group>"; };
+		5B694B9642EA956992D674E0 /* YGRPullToRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRPullToRefreshView.h; sourceTree = "<group>"; };
+		373D635310D67A6F71D95C72 /* YGRPullToRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRPullToRefreshView.m; sourceTree = "<group>"; };
 		03E20F492F31867800757FFD /* YGRGitVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRGitVersion.h; sourceTree = "<group>"; };
 		03F4D4462F1BD7F400F7E804 /* YGRImageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YGRImageService.h; sourceTree = "<group>"; };
 		03F4D4472F1BD7F400F7E804 /* YGRImageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YGRImageService.m; sourceTree = "<group>"; };
@@ -456,6 +459,8 @@
 			children = (
 				03DCE2CE2F0DC3D300E49AB9 /* YGRTabBarController.h */,
 				03DCE2CF2F0DC3D300E49AB9 /* YGRTabBarController.m */,
+				5B694B9642EA956992D674E0 /* YGRPullToRefreshView.h */,
+				373D635310D67A6F71D95C72 /* YGRPullToRefreshView.m */,
 				038216C22F19B13D00D5D620 /* Protocols */,
 				0357B1FD2F0F67B000D5096E /* Cells */,
 				03DCE2E12F0DC40300E49AB9 /* Library */,
@@ -800,6 +805,7 @@
 				03DCE29D2F0DC0FE00E49AB9 /* YGRManga.m in Sources */,
 				03E20F482F2D0CAF00757FFD /* YGRStepperCell.m in Sources */,
 				0E7C3275CB5D6355D4C05266 /* YGRSwitchCell.m in Sources */,
+				9276A39ED25E98DDDA8D4383 /* YGRPullToRefreshView.m in Sources */,
 				03DCE29F2F0DC0FE00E49AB9 /* YGRSource.m in Sources */,
 				03F4D4482F1BD7F400F7E804 /* YGRImageService.m in Sources */,
 				03DCE2A52F0DC19000E49AB9 /* YGRMangaStatusUtility.m in Sources */,

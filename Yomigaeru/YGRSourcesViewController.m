@@ -8,14 +8,17 @@
 
 #import "YGRSourcesViewController.h"
 
+#import "YGRPullToRefreshView.h"
 #import "YGRSourceLibraryViewController.h"
 #import "YGRSourceService.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
-@interface YGRSourcesViewController ()
+@interface YGRSourcesViewController () <YGRPullToRefreshDelegate>
 
 @property (nonatomic, strong) YGRSourceService *sourceService;
+
+@property (nonatomic, strong) YGRPullToRefreshView *pullToRefreshView;
 
 @property (nonatomic, strong) NSMutableArray *languages;
 @property (nonatomic, strong) NSMutableDictionary *sourcesByLanguage;
@@ -55,11 +58,27 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.pullToRefreshView = [[YGRPullToRefreshView alloc] initWithScrollView:self.tableView];
+    self.pullToRefreshView.delegate = self;
+}
 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view
-    // controller. self.navigationItem.rightBarButtonItem = self.editButtonItem;
+#pragma mark - UIScrollViewDelegate (via UITableViewDelegate)
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.pullToRefreshView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.pullToRefreshView scrollViewDidEndDragging];
+}
+
+#pragma mark - YGRPullToRefreshDelegate
+
+- (void)pullToRefreshViewDidTriggerRefresh:(YGRPullToRefreshView *)pullToRefreshView
+{
+    [self refresh];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,8 +91,9 @@
 
 /**
  *  Fetches every source from the server and buckets them by language into
- *  `languages`/`sourcesByLanguage`, then reloads the table. Notifies
- *  `refreshDelegate` when the fetch completes, and shows an alert on failure.
+ *  `languages`/`sourcesByLanguage`, then reloads the table. Collapses the
+ *  pull-to-refresh header when the fetch completes, and shows an alert on
+ *  failure.
  */
 - (void)fetchSources
 {
@@ -85,7 +105,7 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) return;
 
-        [strongSelf.refreshDelegate childDidFinishRefreshing];
+        [strongSelf.pullToRefreshView finishLoading];
 
         if (error)
         {
@@ -124,8 +144,9 @@
 #pragma mark - YGRRefreshable
 
 /**
- *  Re-fetches the source list. Called by a parent controller (e.g. a
- *  pull-to-refresh container) via the `YGRRefreshable` protocol.
+ *  Re-fetches the source list. Called by the `YGRPullToRefreshDelegate`
+ *  callback on user pull, and available to any other caller via the
+ *  `YGRRefreshable` protocol.
  */
 - (void)refresh
 {

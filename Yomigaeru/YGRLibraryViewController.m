@@ -12,14 +12,14 @@
 
 #import "YGRImageService.h"
 #import "YGRLibraryCell.h"
+#import "YGRPullToRefreshView.h"
 
 @interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate,
-                                        UIActionSheetDelegate>
+                                        UIActionSheetDelegate, YGRPullToRefreshDelegate>
 
 @property (nonatomic, strong) YGRLibraryViewModel *viewModel;
 
-@property (nonatomic, strong) UIBarButtonItem *refreshButton;
-@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
+@property (nonatomic, strong) YGRPullToRefreshView *pullToRefreshView;
 
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, assign) NSUInteger selectedIndex;
@@ -59,7 +59,6 @@
 
     self.title = @"Library";
 
-    [self configureNavigationBar];
     [self configureActionSheet];
     [self configureGridView];
 }
@@ -70,33 +69,12 @@
     [self fetchLibrary];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self disableSpinner];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
 }
 
 #pragma mark - UI Configuration
-
-/**
- *  Installs the refresh bar button item and prepares the spinner used to
- *  replace it while a library fetch is in progress.
- */
-- (void)configureNavigationBar
-{
-    self.refreshButton =
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                      target:self
-                                                      action:@selector(refreshLibrary)];
-    self.refreshSpinner = [[UIActivityIndicatorView alloc]
-        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.navigationItem.leftBarButtonItem = self.refreshButton;
-}
 
 /**
  *  Builds the action sheet presented on a long press, offering delete,
@@ -130,6 +108,28 @@
                                                       action:@selector(handleLongPress:)];
     longPress.minimumPressDuration = 0.5f;
     [self.gridView addGestureRecognizer:longPress];
+
+    self.pullToRefreshView = [[YGRPullToRefreshView alloc] initWithScrollView:self.gridView];
+    self.pullToRefreshView.delegate = self;
+}
+
+#pragma mark - AQGridViewDelegate (scroll tracking)
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.pullToRefreshView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.pullToRefreshView scrollViewDidEndDragging];
+}
+
+#pragma mark - YGRPullToRefreshDelegate
+
+- (void)pullToRefreshViewDidTriggerRefresh:(YGRPullToRefreshView *)pullToRefreshView
+{
+    [self fetchLibrary];
 }
 
 #pragma mark - Long Press & Action Sheet
@@ -237,42 +237,12 @@
     }
 }
 
-#pragma mark - Spinner
-
-/**
- *  Replaces the refresh bar button item with an animating spinner, if not
- *  already animating.
- */
-- (void)enableSpinner
-{
-    if (![self.refreshSpinner isAnimating])
-    {
-        self.navigationItem.leftBarButtonItem.enabled = NO;
-        [self.refreshSpinner startAnimating];
-        self.navigationItem.leftBarButtonItem =
-            [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
-    }
-}
-
-/**
- *  Stops the spinner and restores the refresh bar button item, if it was
- *  animating.
- */
-- (void)disableSpinner
-{
-    if ([self.refreshSpinner isAnimating])
-    {
-        [self.refreshSpinner stopAnimating];
-        self.navigationItem.leftBarButtonItem = self.refreshButton;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-    }
-}
-
 #pragma mark - Data Fetching
 
 /**
  *  Fetches the current library from the view model and reloads the grid
- *  view, disabling the spinner and showing an error alert on failure.
+ *  view, collapsing the pull-to-refresh header and showing an error alert
+ *  on failure.
  */
 - (void)fetchLibrary
 {
@@ -283,7 +253,7 @@
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!strongSelf) return;
 
-            [strongSelf disableSpinner];
+            [strongSelf.pullToRefreshView finishLoading];
 
             if (error)
             {
@@ -297,12 +267,10 @@
 }
 
 /**
- *  Enables the spinner and re-fetches the library; invoked by the refresh
- *  bar button item.
+ *  Re-fetches the library; invoked after a bulk mark-read/unread action.
  */
 - (void)refreshLibrary
 {
-    [self enableSpinner];
     [self fetchLibrary];
 }
 

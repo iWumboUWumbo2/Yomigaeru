@@ -11,14 +11,17 @@
 #import "YGRExtensionsViewModel.h"
 #import "YGRExtension.h"
 #import "YGRExtensionInfoViewController.h"
+#import "YGRPullToRefreshView.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <MGSwipeTableCell/MGSwipeButton.h>
 #import <MGSwipeTableCell/MGSwipeTableCell.h>
 
-@interface YGRExtensionsViewController () <UISearchBarDelegate>
+@interface YGRExtensionsViewController () <UISearchBarDelegate, YGRPullToRefreshDelegate>
 
 @property (nonatomic, strong) YGRExtensionsViewModel *viewModel;
+
+@property (nonatomic, strong) YGRPullToRefreshView *pullToRefreshView;
 
 @end
 
@@ -40,7 +43,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    self.pullToRefreshView = [[YGRPullToRefreshView alloc] initWithScrollView:self.tableView];
+    self.pullToRefreshView.delegate = self;
+
+    [self refresh];
+}
+
+#pragma mark - UIScrollViewDelegate (via UITableViewDelegate)
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.pullToRefreshView scrollViewDidScroll];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.pullToRefreshView scrollViewDidEndDragging];
+}
+
+#pragma mark - YGRPullToRefreshDelegate
+
+- (void)pullToRefreshViewDidTriggerRefresh:(YGRPullToRefreshView *)pullToRefreshView
+{
     [self refresh];
 }
 
@@ -48,7 +73,7 @@
 
 /**
  *  Re-fetches the extensions list via the view model and reloads the table
- *  view on completion.
+ *  view on completion, collapsing the pull-to-refresh header.
  */
 - (void)refresh
 {
@@ -56,8 +81,9 @@
     [self.viewModel refreshWithCompletion:^(NSError *error) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) return;
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
+            [strongSelf.pullToRefreshView finishLoading];
             [strongSelf.tableView reloadData];
         });
     }];

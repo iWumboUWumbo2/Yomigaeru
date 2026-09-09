@@ -6,20 +6,14 @@
 //  Copyright (c) 2026年 Wumbo World. All rights reserved.
 //
 
-#import "YGRChildRefreshDelegate.h"
 #import "YGRRefreshable.h"
 #import <UIKit/UIKit.h>
 
 /**
  *  Lists available sources grouped by language, letting the user search and
- *  drill into a source's manga catalog.
+ *  drill into a source's manga catalog. Supports swipe-down-to-refresh.
  */
 @interface YGRSourcesViewController : UITableViewController <YGRRefreshable, UISearchBarDelegate>
-
-#pragma mark - Configuration
-
-/** Notified via `childDidFinishRefreshing` once a source fetch completes. */
-@property (nonatomic, weak) id<YGRChildRefreshDelegate> refreshDelegate;
 
 #pragma mark - Initialization
 

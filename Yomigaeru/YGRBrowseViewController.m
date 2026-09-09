@@ -19,9 +19,6 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) YGRBrowseSearchBarDelegateProxy *searchBarDelegateProxy;
 
-@property (nonatomic, strong) UIBarButtonItem *refreshButton;
-@property (nonatomic, strong) UIActivityIndicatorView *refreshSpinner;
-
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) NSArray *viewControllerTitles;
 @property (nonatomic, strong) UIViewController<YGRRefreshable, UISearchBarDelegate> *currentViewController;
@@ -185,7 +182,7 @@
 
 /**
  *  Handles a segmented control value change by cycling to the corresponding
- *  child view controller and clearing the refresh spinner.
+ *  child view controller.
  *
  *  @param sender The segmented control that changed value.
  */
@@ -200,7 +197,6 @@
     UIViewController<YGRRefreshable, UISearchBarDelegate> *newViewController =
         self.viewControllers[sender.selectedSegmentIndex];
     [self cycleToNewViewController:newViewController];
-    [self disableSpinner];
 }
 
 #pragma mark - Content Setup
@@ -224,74 +220,17 @@
 }
 
 /**
- *  Instantiates the Sources and Extensions child view controllers and sets
- *  self as their refresh delegate.
+ *  Instantiates the Sources and Extensions child view controllers. Each
+ *  manages its own data fetching and swipe-down-to-refresh independently.
  */
 - (void)configureViewControllers
 {
     YGRSourcesViewController *sourcesViewController = [[YGRSourcesViewController alloc] init];
-    sourcesViewController.refreshDelegate = self;
-
     YGRExtensionsViewController *extensionsViewController =
         [[YGRExtensionsViewController alloc] init];
-    extensionsViewController.refreshDelegate = self;
 
     self.viewControllers = @[ sourcesViewController, extensionsViewController ];
     self.viewControllerTitles = @[ @"Sources", @"Extensions" ];
-}
-
-#pragma mark - Spinner
-
-/**
- *  Replaces the refresh bar button item with an animating spinner, if not
- *  already animating.
- */
-- (void)enableSpinner
-{
-    if (![self.refreshSpinner isAnimating])
-    {
-        self.navigationItem.leftBarButtonItem.enabled = NO;
-        [self.refreshSpinner startAnimating];
-        self.navigationItem.leftBarButtonItem =
-            [[UIBarButtonItem alloc] initWithCustomView:self.refreshSpinner];
-    }
-}
-
-/**
- *  Stops the spinner and restores the refresh bar button item, if it was
- *  animating.
- */
-- (void)disableSpinner
-{
-    if ([self.refreshSpinner isAnimating])
-    {
-        [self.refreshSpinner stopAnimating];
-        self.navigationItem.leftBarButtonItem = self.refreshButton;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-    }
-}
-
-#pragma mark - Refresh
-
-/**
- *  Enables the spinner and asks the current child view controller to
- *  refresh itself; invoked by the refresh bar button item.
- */
-- (void)refreshLibrary
-{
-    [self enableSpinner];
-    [self.currentViewController refresh];
-}
-
-#pragma mark - YGRChildRefreshDelegate
-
-/**
- *  Stops the refresh spinner once the active child reports that it has
- *  finished refreshing.
- */
-- (void)childDidFinishRefreshing
-{
-    [self disableSpinner];
 }
 
 #pragma mark - Lifecycle
@@ -304,15 +243,6 @@
     self.title = @"Browse";
     self.view.backgroundColor = [UIColor whiteColor];
 
-    // Refresh button & spinner
-    self.refreshButton =
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                      target:self
-                                                      action:@selector(refreshLibrary)];
-    self.refreshSpinner = [[UIActivityIndicatorView alloc]
-        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.navigationItem.leftBarButtonItem = self.refreshButton;
-    
     self.navigationItem.rightBarButtonItem =
     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
                                                   target:self
@@ -332,12 +262,6 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self disableSpinner];
 }
 
 - (void)viewDidUnload
