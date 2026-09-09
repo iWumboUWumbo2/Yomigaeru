@@ -1,24 +1,21 @@
 //
-//  YGRLibraryCell.h
+//  YGRLibraryCellDisplaying.h
 //  Yomigaeru
 //
-//  Created by John Connery on 2026/01/14.
+//  Created by John Connery on 2026/09/09.
 //  Copyright (c) 2026年 Wumbo World. All rights reserved.
 //
 
-#import "AQGridViewCell.h"
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "YGRLibraryCellDisplaying.h"
 
 /**
- *  The AQGridView-backed library cell used on iOS 5. See
- *  YGRLibraryCellContentView for the actual visual implementation, which
- *  this cell embeds and forwards to; YGRLibraryCollectionViewCell is the
- *  UICollectionView-backed counterpart used on iOS 6+.
+ *  Common display interface implemented by both YGRLibraryCell (the
+ *  AQGridView-backed cell used on iOS 5) and YGRLibraryCollectionViewCell
+ *  (the UICollectionView-backed cell used on iOS 6+), so callers can
+ *  configure whichever one is active identically.
  */
-@interface YGRLibraryCell : AQGridViewCell <YGRLibraryCellDisplaying>
-
-#pragma mark - Properties
+@protocol YGRLibraryCellDisplaying <NSObject>
 
 /** The cover thumbnail image. Assigning triggers a layout pass. */
 @property (nonatomic, strong) UIImage *image;
@@ -32,15 +29,11 @@
  */
 @property (nonatomic, assign) NSInteger unreadCount;
 
-#pragma mark - Border
-
 /** Hides the border used to indicate the manga is in the user's library. */
 - (void)hideBorder;
 
 /** Shows the border used to indicate the manga is in the user's library. */
 - (void)showBorder;
-
-#pragma mark - Loading Spinner
 
 /** Starts the thumbnail-loading spinner. */
 - (void)showLoadingSpinner;

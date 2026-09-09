@@ -4,6 +4,7 @@
 //
 //  Created by John Connery on 2025/10/23.
 //  Updated for AQGridView ARC 2026/01/14
+//  Updated to add a UICollectionView path for iOS 6+ 2026/09/09
 //
 
 #import "YGRLibraryViewController.h"
@@ -12,9 +13,16 @@
 
 #import "YGRImageService.h"
 #import "YGRLibraryCell.h"
+#import "YGRLibraryCollectionViewCell.h"
+#import "YGRMangaSplitViewController.h"
 #import "YGRPullToRefreshView.h"
 
+#import <AQGridView/AQGridView.h>
+
+static NSString *const kYGRLibraryCellIdentifier = @"LibraryCell";
+
 @interface YGRLibraryViewController () <AQGridViewDataSource, AQGridViewDelegate,
+                                        UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,
                                         UIActionSheetDelegate, YGRPullToRefreshDelegate>
 
 @property (nonatomic, strong) YGRLibraryViewModel *viewModel;
@@ -25,6 +33,13 @@
 @property (nonatomic, assign) NSUInteger selectedIndex;
 
 @property (nonatomic, assign) CGSize portraitCellSize;
+
+// On iOS 6+, `collectionView` is used and `gridView` is nil; on iOS 5,
+// `gridView` is used and `collectionView` is nil. See -[YGRLibraryViewController
+// usesCollectionView] and -itemsScrollView.
+@property (nonatomic, assign) BOOL usesCollectionView;
+@property (nonatomic, strong) AQGridView *gridView;
+@property (nonatomic, strong) UICollectionView *collectionView;
 
 @end
 
@@ -39,6 +54,7 @@
     {
         _viewModel = [[YGRLibraryViewModel alloc] init];
         _selectedIndex = NSNotFound;
+        _usesCollectionView = (NSClassFromString(@"UICollectionView") != nil);
 
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenWidth = screenRect.size.width;
@@ -90,30 +106,71 @@
 }
 
 /**
- *  Configures the grid view's data source, delegate, and appearance, and
- *  attaches the long-press gesture recognizer used to trigger the edit
- *  action sheet.
+ *  Builds whichever grid technology is active (UICollectionView on iOS 6+,
+ *  AQGridView on iOS 5), attaches the long-press gesture recognizer used to
+ *  trigger the edit action sheet, and wires up pull-to-refresh.
  */
 - (void)configureGridView
 {
+    if (self.usesCollectionView)
+    {
+        [self configureCollectionView];
+    }
+    else
+    {
+        [self configureAQGridView];
+    }
+
+    UILongPressGestureRecognizer *longPress =
+        [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                      action:@selector(handleLongPress:)];
+    longPress.minimumPressDuration = 0.5f;
+    [self.itemsScrollView addGestureRecognizer:longPress];
+
+    self.pullToRefreshView = [[YGRPullToRefreshView alloc] initWithScrollView:self.itemsScrollView];
+    self.pullToRefreshView.delegate = self;
+}
+
+- (void)configureAQGridView
+{
+    self.gridView = [[AQGridView alloc] initWithFrame:self.view.bounds];
     self.gridView.dataSource = self;
     self.gridView.delegate = self;
     self.gridView.backgroundColor = [UIColor whiteColor];
     self.gridView.separatorStyle = AQGridViewCellSeparatorStyleNone;
     self.gridView.bounces = YES;
     self.gridView.alwaysBounceVertical = YES;
-
-    UILongPressGestureRecognizer *longPress =
-        [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                      action:@selector(handleLongPress:)];
-    longPress.minimumPressDuration = 0.5f;
-    [self.gridView addGestureRecognizer:longPress];
-
-    self.pullToRefreshView = [[YGRPullToRefreshView alloc] initWithScrollView:self.gridView];
-    self.pullToRefreshView.delegate = self;
+    self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:self.gridView];
 }
 
-#pragma mark - AQGridViewDelegate (scroll tracking)
+- (void)configureCollectionView
+{
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.itemSize = self.portraitCellSize;
+
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
+                                               collectionViewLayout:layout];
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.alwaysBounceVertical = YES;
+    self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.collectionView registerClass:[YGRLibraryCollectionViewCell class]
+             forCellWithReuseIdentifier:kYGRLibraryCellIdentifier];
+    [self.view addSubview:self.collectionView];
+}
+
+/**
+ *  The active scroll view, whichever grid technology is in use. Both
+ *  AQGridView and UICollectionView are UIScrollView subclasses.
+ */
+- (UIScrollView *)itemsScrollView
+{
+    return self.usesCollectionView ? (UIScrollView *)self.collectionView : (UIScrollView *)self.gridView;
+}
+
+#pragma mark - Scroll Tracking
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -146,21 +203,37 @@
         return;
     }
 
-    CGPoint point = [gesture locationInView:self.gridView];
-    NSInteger index = [self.gridView indexForItemAtPoint:point];
+    CGPoint point = [gesture locationInView:self.itemsScrollView];
 
-    if (index == NSNotFound)
+    NSUInteger index;
+    CGRect itemRect;
+
+    if (self.usesCollectionView)
     {
-        return;
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:point];
+        if (!indexPath)
+        {
+            return;
+        }
+        index = (NSUInteger)indexPath.item;
+        itemRect = [self.collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+    }
+    else
+    {
+        NSInteger foundIndex = [self.gridView indexForItemAtPoint:point];
+        if (foundIndex == NSNotFound)
+        {
+            return;
+        }
+        index = (NSUInteger)foundIndex;
+        itemRect = [self.gridView rectForItemAtIndex:index];
     }
 
     self.selectedIndex = index;
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
-        [self.actionSheet showFromRect:[self.gridView rectForItemAtIndex:index]
-                                inView:self.view
-                              animated:YES];
+        [self.actionSheet showFromRect:itemRect inView:self.view animated:YES];
     }
     else
     {
@@ -190,10 +263,7 @@
                                       return;
                                   }
 
-                                  [strongSelf.gridView
-                                      deleteItemsAtIndices:[NSIndexSet
-                                                               indexSetWithIndex:strongSelf.selectedIndex]
-                                             withAnimation:AQGridViewItemAnimationFade];
+                                  [strongSelf deleteItemAtIndex:strongSelf.selectedIndex];
                               });
                           }];
     }
@@ -237,6 +307,19 @@
     }
 }
 
+- (void)deleteItemAtIndex:(NSUInteger)index
+{
+    if (self.usesCollectionView)
+    {
+        [self.collectionView deleteItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:index inSection:0] ]];
+    }
+    else
+    {
+        [self.gridView deleteItemsAtIndices:[NSIndexSet indexSetWithIndex:index]
+                              withAnimation:AQGridViewItemAnimationFade];
+    }
+}
+
 #pragma mark - Data Fetching
 
 /**
@@ -261,9 +344,21 @@
                 return;
             }
 
-            [strongSelf.gridView reloadData];
+            [strongSelf reloadItems];
         });
     }];
+}
+
+- (void)reloadItems
+{
+    if (self.usesCollectionView)
+    {
+        [self.collectionView reloadData];
+    }
+    else
+    {
+        [self.gridView reloadData];
+    }
 }
 
 /**
@@ -291,48 +386,24 @@
     [alert show];
 }
 
-#pragma mark - AQGridViewDataSource
-
-- (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView
-{
-    return [self.viewModel numberOfItems];
-}
-
-- (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView
-{
-    return self.portraitCellSize;
-}
+#pragma mark - Shared Cell Configuration
 
 /**
- *  Dequeues (or creates) a library cell and populates it with the manga's
- *  title and unread count, then asynchronously fetches its thumbnail,
- *  guarding against the cell having been reused for a different manga by
- *  the time the fetch completes.
+ *  Populates a library cell (either grid technology, via the shared
+ *  YGRLibraryCellDisplaying interface) with the manga's title and unread
+ *  count, then asynchronously fetches its thumbnail, guarding against the
+ *  cell having been reused for a different manga by the time the fetch
+ *  completes.
  */
-- (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index
+- (void)configureCell:(id<YGRLibraryCellDisplaying>)cell atIndex:(NSUInteger)index
 {
-    static NSString *CellIdentifier = @"LibraryCell";
-
-    YGRLibraryCell *cell =
-        (YGRLibraryCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (!cell)
-    {
-        CGSize cellSize = [self portraitGridCellSizeForGridView:self.gridView];
-
-        cell =
-            [[YGRLibraryCell alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)
-                                  reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = AQGridViewCellSelectionStyleBlueGray;
-    }
-
     YGRManga *manga = [self.viewModel mangaAtIndex:index];
     cell.title = manga.title;
     cell.unreadCount = manga.unreadCount;
     cell.image = [UIImage imageNamed:@"placeholder"];
     [cell showLoadingSpinner];
 
-    __weak typeof(cell) weakCell = cell;
+    __weak id<YGRLibraryCellDisplaying> weakCell = cell;
     [[YGRImageService sharedService]
         fetchThumbnailWithMangaId:manga.id_
                        completion:^(UIImage *thumbnailImage, NSError *error) {
@@ -347,6 +418,54 @@
                                }
                            });
                        }];
+}
+
+- (void)navigateToMangaAtIndex:(NSUInteger)index
+{
+    YGRManga *selectedManga = [self.viewModel mangaAtIndex:index];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        YGRMangaSplitViewController *splitVC =
+            [[YGRMangaSplitViewController alloc] initWithManga:selectedManga];
+        [self presentViewController:splitVC animated:YES completion:nil];
+        return;
+    }
+
+    YGRMangaViewController *mangaVC = [[YGRMangaViewController alloc] init];
+    mangaVC.manga = selectedManga;
+
+    [self.navigationController pushViewController:mangaVC animated:YES];
+}
+
+#pragma mark - AQGridViewDataSource
+
+- (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView
+{
+    return [self.viewModel numberOfItems];
+}
+
+- (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView
+{
+    return self.portraitCellSize;
+}
+
+- (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index
+{
+    YGRLibraryCell *cell =
+        (YGRLibraryCell *)[gridView dequeueReusableCellWithIdentifier:kYGRLibraryCellIdentifier];
+
+    if (!cell)
+    {
+        CGSize cellSize = self.portraitCellSize;
+
+        cell =
+            [[YGRLibraryCell alloc] initWithFrame:CGRectMake(0, 0, cellSize.width, cellSize.height)
+                                  reuseIdentifier:kYGRLibraryCellIdentifier];
+        cell.selectionStyle = AQGridViewCellSelectionStyleBlueGray;
+    }
+
+    [self configureCell:cell atIndex:index];
 
     return cell;
 }
@@ -356,12 +475,49 @@
 - (void)gridView:(AQGridView *)gridView didSelectItemAtIndex:(NSUInteger)index
 {
     [gridView deselectItemAtIndex:index animated:YES];
+    [self navigateToMangaAtIndex:index];
+}
 
-    YGRManga *selectedManga = [self.viewModel mangaAtIndex:index];
-    YGRMangaViewController *mangaVC = [[YGRMangaViewController alloc] init];
-    mangaVC.manga = selectedManga;
+#pragma mark - UICollectionViewDataSource
 
-    [self.navigationController pushViewController:mangaVC animated:YES];
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [self.viewModel numberOfItems];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    YGRLibraryCollectionViewCell *cell =
+        (YGRLibraryCollectionViewCell *)[collectionView
+            dequeueReusableCellWithReuseIdentifier:kYGRLibraryCellIdentifier
+                                       forIndexPath:indexPath];
+
+    [self configureCell:cell atIndex:(NSUInteger)indexPath.item];
+
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                    layout:(UICollectionViewLayout *)collectionViewLayout
+    sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.portraitCellSize;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+    [self navigateToMangaAtIndex:(NSUInteger)indexPath.item];
 }
 
 @end

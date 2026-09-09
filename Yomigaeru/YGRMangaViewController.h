@@ -22,6 +22,24 @@
 @property (nonatomic, strong) YGRManga *manga;
 
 /**
+ *  When YES, hides the button that would otherwise push
+ *  YGRMangaInfoViewController. Set by YGRMangaSplitViewController when this
+ *  controller is embedded as its master pane on iPad, where the info
+ *  screen is already visible alongside it and pushing it again would be
+ *  redundant. Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL hidesInfoButton;
+
+/**
+ *  When both are set, a Done button is added to the navigation bar
+ *  invoking `doneAction` on `doneTarget`. Set by YGRMangaSplitViewController
+ *  on its master pane, which is the one pinned to the screen's outer edge,
+ *  to dismiss itself.
+ */
+@property (nonatomic, weak) id doneTarget;
+@property (nonatomic, assign) SEL doneAction;
+
+/**
  *  Creates a new manga view controller in plain table style.
  *
  *  @return An initialized YGRMangaViewController instance.

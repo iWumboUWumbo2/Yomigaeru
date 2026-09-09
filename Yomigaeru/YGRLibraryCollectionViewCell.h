@@ -1,22 +1,21 @@
 //
-//  YGRLibraryCell.h
+//  YGRLibraryCollectionViewCell.h
 //  Yomigaeru
 //
-//  Created by John Connery on 2026/01/14.
+//  Created by John Connery on 2026/09/09.
 //  Copyright (c) 2026年 Wumbo World. All rights reserved.
 //
 
-#import "AQGridViewCell.h"
 #import <UIKit/UIKit.h>
 #import "YGRLibraryCellDisplaying.h"
 
 /**
- *  The AQGridView-backed library cell used on iOS 5. See
+ *  The UICollectionView-backed library cell used on iOS 6+. See
  *  YGRLibraryCellContentView for the actual visual implementation, which
- *  this cell embeds and forwards to; YGRLibraryCollectionViewCell is the
- *  UICollectionView-backed counterpart used on iOS 6+.
+ *  this cell embeds and forwards to; YGRLibraryCell is the AQGridView-backed
+ *  counterpart used on iOS 5.
  */
-@interface YGRLibraryCell : AQGridViewCell <YGRLibraryCellDisplaying>
+@interface YGRLibraryCollectionViewCell : UICollectionViewCell <YGRLibraryCellDisplaying>
 
 #pragma mark - Properties
 

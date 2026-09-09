@@ -324,16 +324,37 @@
     [super viewDidLoad];
 
     self.title = self.manga.title;
-    
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    [infoButton addTarget:self
-                   action:@selector(showMangaInfo)
-         forControlEvents:UIControlEventTouchUpInside];
-    
+
+    NSMutableArray *rightBarButtonItems = [NSMutableArray array];
+
+    // Set by YGRMangaSplitViewController on iPad, where this pane sits at
+    // the screen's outer edge and is the natural place for the button that
+    // dismisses the whole split view.
+    if (self.doneTarget && self.doneAction)
+    {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                      target:self.doneTarget
+                                                                                      action:self.doneAction];
+        [rightBarButtonItems addObject:doneButton];
+    }
+
+    // When shown as the master of YGRMangaSplitViewController (iPad), the
+    // info screen is already visible in the detail pane, so the button that
+    // would otherwise push it is redundant.
+    if (!self.hidesInfoButton)
+    {
+        UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+        [infoButton addTarget:self
+                       action:@selector(showMangaInfo)
+             forControlEvents:UIControlEventTouchUpInside];
+        [rightBarButtonItems addObject:[[UIBarButtonItem alloc] initWithCustomView:infoButton]];
+    }
+
     self.continueButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(continueReading)];
     self.continueButton.enabled = NO;
-    
-    self.navigationItem.rightBarButtonItems = @[ [[UIBarButtonItem alloc] initWithCustomView:infoButton], self.continueButton ];
+    [rightBarButtonItems addObject:self.continueButton];
+
+    self.navigationItem.rightBarButtonItems = [rightBarButtonItems copy];
 
     self.loadingSpinner = [[UIActivityIndicatorView alloc]
         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

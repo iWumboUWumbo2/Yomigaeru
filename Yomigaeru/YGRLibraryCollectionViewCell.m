@@ -1,26 +1,26 @@
 //
-//  YGRLibraryCell.m
+//  YGRLibraryCollectionViewCell.m
 //  Yomigaeru
 //
 
-#import "YGRLibraryCell.h"
+#import "YGRLibraryCollectionViewCell.h"
 #import "YGRLibraryCellContentView.h"
 
-@interface YGRLibraryCell ()
+@interface YGRLibraryCollectionViewCell ()
 
 @property (nonatomic, strong) YGRLibraryCellContentView *contentContainer;
 
 @end
 
-@implementation YGRLibraryCell
+@implementation YGRLibraryCollectionViewCell
 
 @dynamic image, title, unreadCount;
 
 #pragma mark - Init
 
-- (instancetype)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier];
+    self = [super initWithFrame:frame];
     if (!self) return nil;
 
     self.backgroundColor = [UIColor clearColor];
@@ -91,6 +91,17 @@
 - (void)hideLoadingSpinner
 {
     [self.contentContainer hideLoadingSpinner];
+}
+
+#pragma mark - Selection Appearance
+
+// UICollectionViewCell has no AQGridViewCellSelectionStyle equivalent, so
+// approximate the old blue-gray flash directly.
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    self.contentContainer.backgroundColor =
+        highlighted ? [UIColor colorWithWhite:0.7 alpha:0.4] : [UIColor clearColor];
 }
 
 #pragma mark - Layout
