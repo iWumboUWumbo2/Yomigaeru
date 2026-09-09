@@ -30,6 +30,15 @@
 
 @property (nonatomic, weak) id<YGRPageViewDelegate> delegate;
 
+/**
+ *  Recognizes a double tap on the page and toggles zoom in response (see
+ *  -handleDoubleTap:). Exposed so a container that also recognizes single
+ *  taps (e.g. for page-turn tap zones) can require its own tap recognizer
+ *  to fail before this one, so a double tap isn't also read as a single
+ *  tap.
+ */
+@property (nonatomic, strong, readonly) UITapGestureRecognizer *doubleTapGestureRecognizer;
+
 #pragma mark - Configuration
 
 /** The id of the manga this page belongs to. */

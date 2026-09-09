@@ -59,6 +59,11 @@
                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.loadingSpinner.hidesWhenStopped = YES;
     [self addSubview:self.loadingSpinner];
+
+    _doubleTapGestureRecognizer =
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    _doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+    [self.scrollView addGestureRecognizer:_doubleTapGestureRecognizer];
 }
 
 - (void)layoutSubviews
@@ -80,6 +85,34 @@
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     [self centerImageView];
+}
+
+#pragma mark - Double-Tap Zoom
+
+/**
+ *  Toggles between the minimum and maximum zoom scale, zooming in centered
+ *  on the tapped point when zooming in.
+ */
+- (void)handleDoubleTap:(UITapGestureRecognizer *)recognizer
+{
+    if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale)
+    {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
+        return;
+    }
+
+    CGFloat zoomScale = self.scrollView.maximumZoomScale;
+    CGPoint tapPoint = [recognizer locationInView:self.imageView];
+
+    CGFloat width = self.scrollView.bounds.size.width / zoomScale;
+    CGFloat height = self.scrollView.bounds.size.height / zoomScale;
+
+    CGRect zoomRect = CGRectMake(tapPoint.x - width / 2.0f,
+                                  tapPoint.y - height / 2.0f,
+                                  width,
+                                  height);
+
+    [self.scrollView zoomToRect:zoomRect animated:YES];
 }
 
 /**

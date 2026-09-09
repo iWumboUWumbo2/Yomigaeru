@@ -28,6 +28,7 @@
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) NSArray *pageViews;
 @property (nonatomic, assign) NSUInteger currentPage;
+@property (nonatomic, assign) BOOL isAnimatingPageTurn;
 
 @end
 
@@ -192,7 +193,7 @@
                                         action:@selector(dismissSelf)];
 
     UITapGestureRecognizer *tap =
-        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleNavigationBar)];
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     tap.numberOfTapsRequired = 1;
     [self.view addGestureRecognizer:tap];
 
@@ -230,6 +231,11 @@
     {
         slot.delegate = self;
         [self.scrollView addSubview:slot];
+
+        // Let a double tap (zoom) on any slot fully resolve before the
+        // single-tap zones/nav-toggle gesture above decides it's just a
+        // single tap.
+        [tap requireGestureRecognizerToFail:slot.doubleTapGestureRecognizer];
     }
 
     [self repositionPageViewSlots];
@@ -414,6 +420,34 @@
     [self.navigationController setToolbarHidden:!hidden animated:YES];
 }
 
+/**
+ *  With horizontal paging, a tap in the left or right third of the screen
+ *  turns the page instead of toggling the nav bar; a tap in the middle
+ *  third (or any tap when paging/vertical scrolling is active) falls back
+ *  to the usual toggle.
+ */
+- (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
+{
+    if ([YGRSettingsManager sharedInstance].pagingEnabled && !self.isVerticalReading)
+    {
+        CGFloat width = self.view.bounds.size.width;
+        CGFloat x = [recognizer locationInView:self.view].x;
+
+        if (x < width / 3.0f)
+        {
+            [self advanceBackwards:YES];
+            return;
+        }
+        else if (x > width * 2.0f / 3.0f)
+        {
+            [self advanceForwards:YES];
+            return;
+        }
+    }
+
+    [self toggleNavigationBar];
+}
+
 #pragma mark - Loading Overlay
 
 /**
@@ -458,21 +492,61 @@
 
     if (scrolledPosition > currentPosition && self.currentPage < self.currentChapter.pageCount - 1)
     {
-        [self advanceForwards];
+        [self advanceForwards:NO];
     }
     else if (scrolledPosition < currentPosition && self.currentPage > 0)
     {
-        [self advanceBackwards];
+        [self advanceBackwards:NO];
     }
 }
 
-- (void)advanceForwards
+/**
+ *  Advances to the next page. Swiping already visually moves the scroll
+ *  view before this is ever called (it runs from -scrollViewDidEndDecelerating:,
+ *  after the user's own drag has settled), so the recycle-and-recenter
+ *  below needs no animation of its own there. A tap zone has no drag to
+ *  ride along with, so `animated:YES` drives that motion explicitly first
+ *  and only recycles once it's done -- see -handleSingleTap:.
+ */
+- (void)advanceForwards:(BOOL)animated
 {
-    if (self.currentPage >= self.currentChapter.pageCount - 1)
+    if (self.isAnimatingPageTurn || !self.currentChapter
+        || self.currentPage >= self.currentChapter.pageCount - 1)
     {
         return;
     }
 
+    if (!animated)
+    {
+        [self performAdvanceForwards];
+        return;
+    }
+
+    self.isAnimatingPageTurn = YES;
+
+    BOOL vertical = self.isVerticalReading;
+    CGFloat pageExtent = vertical ? self.view.bounds.size.height : self.view.bounds.size.width;
+    CGFloat nextPosition = (self.currentPage > 0 ? 1.0f : 0.0f) + 1.0f;
+
+    CGPoint targetOffset = vertical
+        ? CGPointMake(0.0f, nextPosition * pageExtent)
+        : CGPointMake(nextPosition * pageExtent, 0.0f);
+
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.25
+        animations:^{
+            weakSelf.scrollView.contentOffset = targetOffset;
+        }
+        completion:^(BOOL finished) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
+            [strongSelf performAdvanceForwards];
+            strongSelf.isAnimatingPageTurn = NO;
+        }];
+}
+
+- (void)performAdvanceForwards
+{
     self.currentPage++;
 
     YGRPageView *recycled = self.pageViews[0];
@@ -503,13 +577,47 @@
                      pageIndex:pageIndex];
 }
 
-- (void)advanceBackwards
+/**
+ *  Backward counterpart to -advanceForwards:; see its comment.
+ */
+- (void)advanceBackwards:(BOOL)animated
 {
-    if (self.currentPage <= 0)
+    if (self.isAnimatingPageTurn || self.currentPage <= 0)
     {
         return;
     }
 
+    if (!animated)
+    {
+        [self performAdvanceBackwards];
+        return;
+    }
+
+    self.isAnimatingPageTurn = YES;
+
+    BOOL vertical = self.isVerticalReading;
+    CGFloat pageExtent = vertical ? self.view.bounds.size.height : self.view.bounds.size.width;
+    CGFloat previousPosition = (self.currentPage > 0 ? 1.0f : 0.0f) - 1.0f;
+
+    CGPoint targetOffset = vertical
+        ? CGPointMake(0.0f, previousPosition * pageExtent)
+        : CGPointMake(previousPosition * pageExtent, 0.0f);
+
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.25
+        animations:^{
+            weakSelf.scrollView.contentOffset = targetOffset;
+        }
+        completion:^(BOOL finished) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
+            [strongSelf performAdvanceBackwards];
+            strongSelf.isAnimatingPageTurn = NO;
+        }];
+}
+
+- (void)performAdvanceBackwards
+{
     self.currentPage--;
 
     YGRPageView *recycled = self.pageViews[2];
