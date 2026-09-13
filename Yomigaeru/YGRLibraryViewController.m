@@ -505,11 +505,27 @@ static NSString *const kYGRLibraryCellIdentifier = @"LibraryCell";
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
+- (CGSize)thumbnailSizeForCollectionView:(UICollectionView *)collectionView
+{
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
+    UIEdgeInsets sectionInset = layout.sectionInset;
+    CGFloat interitemSpacing = layout.minimumInteritemSpacing;
+    
+    int columnCount = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 4 : 2;
+    
+    CGFloat availableWidth = CGRectGetWidth(collectionView.bounds)
+    - sectionInset.left - sectionInset.right
+    - (interitemSpacing * (columnCount - 1));
+    
+    CGFloat cellWidth = floorf(availableWidth / columnCount);
+    return CGSizeMake(cellWidth, cellWidth * 1.25);
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView
                     layout:(UICollectionViewLayout *)collectionViewLayout
     sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.portraitCellSize;
+    return [self thumbnailSizeForCollectionView:collectionView];
 }
 
 #pragma mark - UICollectionViewDelegate

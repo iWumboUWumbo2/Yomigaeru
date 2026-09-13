@@ -138,7 +138,7 @@ static CGFloat YGRPageImageTargetWidth(void)
                 NSError *decodeError = nil;
                 UIImage *image = [YGRImageUtility imageFromData:data
                                                        mimeType:contentType
-                                                    targetWidth:[self thumbnailSize].width / 2
+                                                    targetWidth:[self thumbnailSize].width
                                                           error:&decodeError];
 
                 if (!image)

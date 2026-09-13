@@ -222,6 +222,10 @@
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 
     self.pageViews = @[ [[YGRPageView alloc] init],
                         [[YGRPageView alloc] init],
@@ -241,6 +245,12 @@
     [self repositionPageViewSlots];
 
     [self.view addSubview:self.scrollView];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self repositionPageViewSlots];
 }
 
 /**
